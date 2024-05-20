@@ -1,0 +1,61 @@
+@import 'config';
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  background-color: $primary-background;
+  color: $text-color;
+  font-family: inherit;
+}
+
+::placeholder {
+  color: grey;
+}
+
+button {
+  border: 0;
+  outline: 0;
+  color: $text-color;
+  padding: 0.7rem;
+  box-shadow: 0 4px 4px 0 rgba($primary-background, 0.25);
+  border-radius: 0.4rem;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  text-decoration: none;
+  font-size: 14px;
+}
+
+p, span {
+  font-size: 14px;
+}
+
+input {
+  font-family: inherit;
+}
+
+input:-internal-autofill-selected {
+  background-color: transparent !important;
+  color: inherit !important;
+  appearance: textfield;
+}
+
+input:-internal-edge-excel-like-autofill-previewed {
+  font: inherit;
+}

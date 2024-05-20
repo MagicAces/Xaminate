@@ -1,0 +1,27 @@
+@import "config";
+
+@mixin flexin($justify: center, $align: center, $direction: row, $gap: 1.8rem) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-direction: $direction;
+    gap: $gap;
+}
+
+@mixin responsive($size) {
+    $query: map-get($breakpoints, $size);
+
+    @media #{$query} {
+        @content;
+    }
+}
+
+@mixin container {
+    background-color: $secondary-background;
+    border-radius: 0.6rem;
+    width: 400px;
+    margin: 1.5rem;
+    padding: 1.8rem 2.1rem 2.1rem;
+    position: relative;
+    box-shadow: 0 0 0.5px 1px $highlight-color;
+}

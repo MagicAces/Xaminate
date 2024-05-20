@@ -1,0 +1,35 @@
+@import 'config';
+@import 'mixins';
+
+.tooltip {
+    @include flexin;
+
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    svg {
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+        font-size: 17px;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        svg {
+            color: $hover-green;
+        }
+    }
+}
+
+.tooltipMenu {
+    background-color: $secondary-background;
+    border: 1px solid $border-color;
+    padding: 0.5rem 1rem;
+
+    &Content {
+        text-transform: none;
+        font-family: inherit !important;
+        color: $text-color;
+        font-size: 14px;
+        padding: 0;
+    }
+}

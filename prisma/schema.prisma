@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Define the data model for ExamsOfficer
+model ExamsOfficer {
+  id             Int       @id @default(autoincrement())
+  first_name     String    
+  last_name      String    
+  email          String    @unique
+  password       String    
+  email_alerts   Boolean   @default(false)
+  created_on     DateTime  @default(now()) @ignore
+  updated_at     DateTime  @updatedAt
+  report         Report[]
+  creator        Session[] @relation("Creator")
+  terminator     Session[] @relation("Terminator")
+  token          Token[]
+
+  @@map("exams_officers")
+}
+
+// Define the data model for Notification
+model Notification {
+  id           Int       @id @default(autoincrement())
+  category     Category     
+  message      String    @db.Text
+  // message      String   
+  read         Boolean   @default(false)
+  category_id  Int
+  created_on   DateTime  @default(now()) 
+  updated_at   DateTime  @updatedAt
+
+  @@map("notifications")
+}
+
+// Define the data model for Venue
+model Venue {
+  id           Int       @id @default(autoincrement())
+  name         String
+  created_on   DateTime  @default(now()) 
+  updated_at   DateTime  @updatedAt
+  session_id   Session[]
+
+  @@map("venues")
+}
+
+// Define the data model for Session
+model Session {
+  id              Int            @id @default(autoincrement())
+  start_time      DateTime
+  end_time        DateTime
+  venue_id        Int
+  comments        String?        @db.Text
+  // comments        String?        
+  actual_end_time DateTime?
+  terminated_by   Int?
+  created_by      Int?
+  created_on      DateTime       @default(now()) 
+  updated_at      DateTime       @updatedAt
+  reports         Report[]
+
+  venue           Venue          @relation(fields: [venue_id], references: [id])
+  terminator      ExamsOfficer?  @relation("Terminator", fields: [terminated_by], references: [id])
+  creator         ExamsOfficer?  @relation("Creator", fields: [created_by], references: [id])
+
+  @@map("sessions")
+}
+
+// Define the data model for Report
+model Report {
+  id                    Int            @id @default(autoincrement())
+  status                Status         @default(Pending)
+  student_id            Int?
+  description           String         @db.Text
+  comments              String?        @db.Text
+  // description           String         
+  // comments              String?        
+  last_edited_by        Int?
+  snapshot_url          String?
+  status_changed        DateTime?
+  session_id            Int
+  created_on            DateTime       @default(now()) 
+  updated_at            DateTime       @updatedAt
+
+  student               Student?       @relation(fields: [student_id], references: [id])
+  editor                ExamsOfficer?  @relation(fields: [last_edited_by], references: [id])
+  session               Session        @relation(fields: [session_id], references: [id])
+
+  @@map("reports")
+}
+
+// Define the data model for Student
+model Student {
+  id             Int       @id @default(autoincrement())
+  first_name     String    
+  last_name      String
+  other_name     String?
+  program        String
+  level          Int
+  index_number   Int       @unique
+  image_url      String?   
+  report         Report[]
+  created_on     DateTime  @default(now()) 
+  updated_at     DateTime  @updatedAt
+
+  @@map("students")
+}
+
+//Define the data model for Token
+model Token {
+  id                Int           @id @default(autoincrement())
+  token             String    
+  expirationDate    DateTime      @default(dbgenerated("now() + interval '15 minutes'"))  
+  created_on        DateTime      @default(now()) 
+  updated_at        DateTime      @updatedAt
+  user_id        Int
+  
+  user              ExamsOfficer  @relation(fields: [user_id], references: [id])
+
+  @@map("tokens")
+}
+
+enum Category {
+  Report
+  Session
+
+  @@map("categories")
+}
+
+enum Status {
+  Pending
+  Approved
+  Rejected
+
+  @@map("report_statuses")
+}

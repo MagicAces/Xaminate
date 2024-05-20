@@ -1,0 +1,364 @@
+@import 'config';
+@import 'mixins';
+
+.modalContainer {
+    position: fixed;
+    inset: 0;
+    @include flexin();
+    z-index: 20;
+    background-color: transparent;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    .profileContainer {
+        padding: 2rem;
+        margin: 1.5rem;
+        padding-top: 0;
+        box-shadow: 0 4px 4px 0 $dark-shadow;
+        background-color: $secondary-background;
+        position: relative;
+        border-radius: 0.5rem;
+        @include flexin($justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 2rem);
+
+        .avatarContainer {
+            width: 100%;
+            margin: 0 auto 3rem;
+            @include flexin;
+
+            .avatar {
+                box-shadow: 0 4px 4px 0 $dark-shadow;
+                position: absolute;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                font-family: inherit !important;
+
+                span {
+                    font-size: 40px !important;
+                }
+            }
+        }
+
+        .closeIcon {
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            padding: 10px;
+            background-color: $primary-background;
+            border-radius: 50%;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            @include flexin;
+
+            svg {
+                font-size: 20px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            svg:hover {
+                color: $hover-green;
+                cursor: pointer;
+            }
+        }
+
+        .profile {
+            width: 100%;
+            @include flexin($justify: stretch,
+                $align: stretch,
+                $direction: column,
+                $gap: 2rem);
+
+
+            .inputBox {
+                width: 100%;
+                @include flexin($justify: stretch,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 1.5rem);
+
+                label {
+                    font-weight: 200;
+                    font-size: 12px;
+                }
+
+                input:read-only {
+                    outline: none;
+                    background-color: $border-color;
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.5rem;
+                    border: 1px solid transparent;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    color: $text-color;
+                }
+
+                input {
+                    outline: none;
+                    background-color: transparent;
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.5rem;
+                    border: 1px solid $border-color;
+                    color: $text-color;
+                    width: 100%;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        border: 1px solid $accent-green;
+
+                    }
+                }
+
+                input:read-only:hover,
+                input:read-only:active,
+                input:read-only:focus {
+                    border: 1px solid transparent !important;
+                }
+
+                .nameBox {
+                    width: 340px;
+                    @include flexin($justify: space-between,
+                        $align: center,
+                        $direction: column,
+                        $gap: 1.5rem);
+
+                    &>div {
+                        width: 100%;
+                        @include flexin($justify: stretch,
+                            $align: flex-start,
+                            $direction: column,
+                            $gap: 0.3rem);
+                    }
+                }
+
+                .emailBox {
+                    width: 100%;
+                    @include flexin($justify: stretch,
+                        $align: flex-start,
+                        $direction: column,
+                        $gap: 0.3rem);
+                }
+            }
+        }
+    }
+
+    .notificationContainer {
+        margin: 1.5rem;
+        height: 85%;
+        box-shadow: 0 4px 4px 0 $dark-shadow;
+        background-color: $secondary-background;
+        position: relative;
+        border-radius: 0.5rem;
+        @include flexin($justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1rem);
+
+        width: 70%;
+
+        @media (max-width: 870px) {
+            width: 85%;
+        }
+
+        @media (max-width: 400px) {
+            width: 95%;
+        }
+
+        .closeIcon {
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            padding: 10px;
+            background-color: $primary-background;
+            border-radius: 50%;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            @include flexin;
+
+            svg {
+                font-size: 20px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            svg:hover {
+                color: $hover-green;
+                cursor: pointer;
+            }
+        }
+
+        .header {
+            padding: 1.5rem;
+            padding-bottom: 0;
+            width: 100%;
+            @include flexin($justify: space-between,
+                $gap: 2rem,
+            );
+
+            .headerLeft {
+                @include flexin($justify: stretch,
+                    $gap: 0.5rem);
+
+                h3 {
+                    font-size: 1.2rem;
+                }
+            }
+
+            .headerRight {
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                @include flexin($justify: flex-start,
+                    $gap: 0.3rem);
+
+                &:hover {
+                    color: $hover-green;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .tabs {
+            margin: 0 1.5rem;
+            border-bottom: 1px solid $border-color;
+
+            @include flexin($justify: space-between,
+                $align: center,
+                $gap: 2rem);
+
+            &Left {
+                @include flexin($align: stretch, $gap: 0);
+
+                &>div {
+                    text-align: center;
+                    padding: 0.5rem 1.5rem;
+                    flex-grow: 1;
+                    border-bottom: 1px solid transparent;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                    @include flexin($gap: 0.5rem);
+
+                    .badge {
+                        background-color: $border-color;
+                        padding: 0.15rem 0.3rem;
+                        border-radius: 0.3rem;
+                        text-align: center;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                        color: $text-color;
+                    }
+                }
+
+                &>div:hover {
+                    background-color: $border-color;
+                    border-top-left-radius: 0.4rem;
+                    border-top-right-radius: 0.4rem;
+                    cursor: pointer;
+                }
+
+
+                .active {
+                    border-bottom: 1px solid $accent-green;
+                    color: $accent-green;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+                    .badge {
+                        background-color: $accent-green;
+                    }
+                }
+            }
+
+            .tooltipBox {
+                padding: 0 1.5rem;
+            }
+        }
+
+        .scrollbar {
+            border-radius: 0.5rem;
+            background-color: $border-color !important;
+        }
+
+        .scrollContainer {
+
+            .scrollContent {
+                @include flexin($justify: space-between,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 0.7rem);
+                padding: 0 1.5rem 1rem;
+
+                .item {
+                    @include flexin($justify: stretch,
+                        $align: stretch,
+                        $gap: 1rem);
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    background-color: $highlight-color;
+                    box-shadow: 0 4px 4px 0 $primary-background;
+                    border: 1px solid transparent;
+                    width: 100%;
+                    position: relative;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                    .greenCircle {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        width: 10px;
+                        height: 10px;
+                        background-color: $accent-green;
+                        border-radius: 50%;
+                    }
+
+                    &>span {
+                        padding: 10px;
+                        background-color: $border-color;
+                        box-shadow: 0 4px 4px 0 $dark-shadow;
+                        border-radius: 0.3rem;
+                        border: 1px solid transparent;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                        @include flexin;
+
+                        svg {
+                            font-size: 20px !important;
+                            color: $accent-green;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                        }
+                    }
+
+                    .text {
+
+                        @include flexin($justify: space-between,
+                            $align: stretch,
+                            $direction: column,
+                            $gap: 0.4rem);
+
+                        span:last-of-type {
+                            font-weight: 200;
+                            font-size: 12px;
+                        }
+                    }
+                }
+
+
+                .item:hover {
+                    background-color: transparent;
+                    border: 1px solid $accent-dark-green;
+                    cursor: pointer;
+
+                    &>span {
+                        border: 1px solid $border-color;
+                        background-color: transparent;
+
+                        svg {
+                            color: $accent-dark-green;
+                        }
+                    }
+                }
+            }
+        }
+
+        .noNotifications {
+            height: 100%;
+            flex-grow: 1;
+            margin: 0 1.5rem 1.5rem;
+            @include flexin;
+            background: $highlight-color;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            border-radius: 0.5rem;
+        }
+    }
+}

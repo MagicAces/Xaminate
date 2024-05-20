@@ -1,0 +1,81 @@
+// Margin and Padding classes
+$spaceamounts: (
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+);
+
+@each $space in $spaceamounts {
+    .m-#{$space} {
+        margin: #{$space}rem !important;
+    }
+
+    .my-#{$space} {
+        margin: #{$space}rem 0 !important;
+    }
+
+    .mx-#{$space} {
+        margin: 0 #{$space}rem !important;
+    }
+
+    .ml-#{$space} {
+        margin: 0 !important;
+        margin-left: #{$space}rem !important;
+    }
+
+    .mr-#{$space} {
+        margin: 0 !important;
+        margin-right: #{$space}rem !important;
+    }
+
+    .mt-#{$space} {
+        margin: 0 !important;
+        margin-top: #{$space}rem !important;
+    }
+
+    .mb-#{$space} {
+        margin: 0 !important;
+        margin-bottom: #{$space}rem !important;
+    }
+
+    .p-#{$space} {
+        padding: #{$space}rem !important;
+    }
+
+    .py-#{$space} {
+        padding: #{$space}rem !important
+    }
+
+    .px-#{$space} {
+        padding: 0 #{$space}rem !important
+    }
+
+    .pl-#{$space} {
+        padding: 0 !important;
+        padding-left: #{$space}rem !important;
+    }
+
+    .pr-#{$space} {
+        padding: 0 !important;
+        padding-right: #{$space}rem !important;
+    }
+
+    .pt-#{$space} {
+        padding: 0 !important;
+        padding-top: #{$space}rem !important;
+    }
+
+    .pb-#{$space} {
+        padding: 0 !important;
+        padding-bottom: #{$space}rem !important;
+    }
+
+    .icon-ml-#{$space} {
+        margin: 0 !important;
+        margin-left: #{$space}px !important;
+    }
+}

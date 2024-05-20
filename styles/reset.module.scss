@@ -1,0 +1,8 @@
+@import 'config';
+@import 'login.module';
+@import 'mixins';
+
+.resetContainer {
+    @extend .formContainer;
+    @include flexin;
+}
