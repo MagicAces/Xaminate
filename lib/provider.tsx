@@ -34,7 +34,7 @@ export default function AllProviders({
       <Providers>
         <QueryClientProvider client={queryClient}>
           <ModalProvider>{children}</ModalProvider>
-          <ReactQueryDevtools initialIsOpen={true} />
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </Providers>
     </SessionProvider>

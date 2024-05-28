@@ -9,7 +9,7 @@ import "@szhsin/react-menu/dist/transitions/slide.css";
 import { formatDistance } from "date-fns";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "react-avatar";
 import { BsEyeFill } from "react-icons/bs";
 import { FaCircle } from "react-icons/fa6";
@@ -21,8 +21,8 @@ import Modal from "./Modal/Modal";
 import {
   markNotificationAsRead,
   markNotificationsAsRead,
-} from "@/server/actions/notification";
-import { useGetUnread } from "@/server/hooks/notification";
+} from "@/server/actions/notifications";
+import { useGetUnread } from "@/server/hooks/notifications";
 import { Notification } from "@/types";
 import { useAction } from "next-safe-action/hooks";
 import { CustomScroll } from "react-custom-scroll";
@@ -42,6 +42,9 @@ const Header = () => {
     markAsRead({ id: notification.id });
   }
 
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [notifications]);
   return (
     <>
       {modalState.mode > 0 && <Modal />}
@@ -168,9 +171,6 @@ const Header = () => {
                 ? `${session?.user?.firstName} ${session?.user?.lastName}`
                 : undefined
             }
-            // src={
-            //   "https://gravatar.com/avatar/dd8888debaa7564112a4425c4189a024?s=200&d=identicon&r=pg"
-            // }
             size={"40"}
             round={true}
             maxInitials={1}

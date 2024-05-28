@@ -21,7 +21,7 @@ model ExamsOfficer {
   email          String    @unique
   password       String    
   email_alerts   Boolean   @default(false)
-  created_on     DateTime  @default(now()) @ignore
+  created_on     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
   report         Report[]
   creator        Session[] @relation("Creator")
@@ -36,7 +36,6 @@ model Notification {
   id           Int       @id @default(autoincrement())
   category     Category     
   message      String    @db.Text
-  // message      String   
   read         Boolean   @default(false)
   category_id  Int
   created_on   DateTime  @default(now()) 
@@ -62,14 +61,18 @@ model Session {
   start_time      DateTime
   end_time        DateTime
   venue_id        Int
-  comments        String?        @db.Text
-  // comments        String?        
+  comments        String?        @db.Text   
   actual_end_time DateTime?
   terminated_by   Int?
   created_by      Int?
+  course_names    String[]
+  course_codes    String[]
+  classes         String[]
+  invigilators    String[]
   created_on      DateTime       @default(now()) 
   updated_at      DateTime       @updatedAt
   reports         Report[]
+  temp_status     TempStatus     @default(pending)
 
   venue           Venue          @relation(fields: [venue_id], references: [id])
   terminator      ExamsOfficer?  @relation("Terminator", fields: [terminated_by], references: [id])
@@ -84,9 +87,7 @@ model Report {
   status                Status         @default(Pending)
   student_id            Int?
   description           String         @db.Text
-  comments              String?        @db.Text
-  // description           String         
-  // comments              String?        
+  comments              String?        @db.Text      
   last_edited_by        Int?
   snapshot_url          String?
   status_changed        DateTime?
@@ -125,7 +126,7 @@ model Token {
   expirationDate    DateTime      @default(dbgenerated("now() + interval '15 minutes'"))  
   created_on        DateTime      @default(now()) 
   updated_at        DateTime      @updatedAt
-  user_id        Int
+  user_id           Int
   
   user              ExamsOfficer  @relation(fields: [user_id], references: [id])
 
@@ -145,4 +146,12 @@ enum Status {
   Rejected
 
   @@map("report_statuses")
+}
+
+enum TempStatus {
+  pending
+  active
+  closed
+  
+  @@map("session_statuses")
 }

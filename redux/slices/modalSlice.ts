@@ -1,23 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ModalSliceState } from "@/types";
+import { ModalSliceState, Session, Venue } from "@/types";
 
 const initialState: ModalSliceState = {
-  loader: false,
+  venues: [],
+  session: {},
 };
 
 const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    setLoader: (state, action: PayloadAction<boolean>) => {
-      state.loader = action.payload;
+    setVenues: (state, action: PayloadAction<Venue[]>) => {
+      state.venues = action.payload;
+    },
+    setSession: (state, action: PayloadAction<Session>) => {
+      state.session = action.payload;
     },
     closeModal: (state) => {
-      state.loader = false;
+      state.session = {};
     },
   },
 });
 
-export const { setLoader, closeModal } = modalSlice.actions;
+export const { setVenues, setSession, closeModal } = modalSlice.actions;
 
 export default modalSlice.reducer;

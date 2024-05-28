@@ -8,17 +8,17 @@ export const metadata: Metadata = {
 };
 
 export default async function Forgot() {
-    return (
-      <>
-        <Starfield
-          starCount={2000}
-          starColor={[56, 142, 60]}
-          speedFactor={0.5}
-          backgroundColor="black"
-        />
-        <div className={styles.resetContainer}>
-          <Reset />
-        </div>
-      </>
-    );
+  return (
+    <>
+      <Starfield
+        starCount={2000}
+        starColor={[56, 142, 60]}
+        speedFactor={0.5}
+        backgroundColor="black"
+      />
+      <div className={styles.resetContainer}>
+        <Reset />
+      </div>
+    </>
+  );
 }

@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import styles from "@/styles/home.module.scss";
+import styles from "@/styles/session.module.scss";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
 
@@ -10,25 +10,26 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import Content from "@/components/Session/Content";
 
 export const metadata: Metadata = {
-  title: "Xaminate | Home",
+  title: "Sessions",
 };
 
-export default async function Home() {
+export default async function Session() {
   const queryClient = new QueryClient();
 
   await usePrefetchQueries(queryClient);
 
   return (
     <>
-      <section className={`${styles.homeSection} ${GeistSans.className}`}>
+      <section className={`${styles.sessionSection} ${GeistSans.className}`}>
         <Sidebar />
-        <div className={styles.homeContainer}>
+        <div className={styles.sessionContainer}>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
+            <Content />
           </HydrationBoundary>
-          <main className={styles.homeBody}></main>
         </div>
       </section>
     </>

@@ -12,7 +12,8 @@ export default function Loading() {
         alignItems: "center",
       }}
     >
-      <Image src={logoCube} alt="Loading" />
+      <Image src={logoCube} alt="Loading" 
+            priority={true}/>
     </div>
   );
 }

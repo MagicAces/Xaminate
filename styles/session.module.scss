@@ -1,0 +1,23 @@
+@import 'config';
+@import 'mixins';
+
+.sessionSection {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-color: $primary-background;
+
+    @include flexin($justify: stretch,
+        $align: stretch,
+        $gap: 0);
+
+    .sessionContainer {
+        @include flexin($justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0);
+        width: calc(100vw - 4rem);
+        position: absolute;
+        right: 0;
+    }
+}

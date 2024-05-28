@@ -1,11 +1,26 @@
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
 
-const prisma = new PrismaClient();
+const venues = [
+  {
+    name: "A110",
+  },
+  {
+    name: "BKB303",
+  },
+  {
+    name: "NEB-GF",
+  },
+];
 
+const prisma = new PrismaClient();
+    
 async function main() {
   const password = await hash("gracian", 12);
-
+  const res = await prisma.venue.createMany({
+    data: venues
+  });
+  console.log(res)
   const user = await prisma.examsOfficer.create({
     data: {
       first_name: "Oniti",

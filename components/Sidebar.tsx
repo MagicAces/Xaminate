@@ -6,7 +6,7 @@ import styles from "@/styles/sidebar.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { MdAdd } from "react-icons/md";
 import {
@@ -17,15 +17,35 @@ import {
   TbTimelineEventExclamation,
 } from "react-icons/tb";
 import Loader from "./Utils/Loader";
+import { useModal } from "@/utils/context";
+import Modal from "./Modal/Modal";
+import { useGetVenues } from "@/server/hooks/venues";
+import { useDispatch } from "react-redux";
+import { setVenues } from "@/redux/slices/modalSlice";
 
 const Sidebar = () => {
   const [fullView, setFullView] = useState(false);
   const pathname = usePathname();
   const { pending } = useFormStatus();
   const [, formAction, isPending] = useFormState(logout, null);
+  const { modalState, setState } = useModal();
+  const dispatch = useDispatch();
+  const { data: venues, error, isLoading } = useGetVenues();
+
+  useEffect(() => {
+    if (error) console.error(error);
+
+    if (venues?.length) dispatch(setVenues(venues.map(venue => ({
+      id: venue.id,
+      name: venue.name,
+      created_on: venue.created_on.toISOString(),
+      updated_at: venue.updated_at.toISOString()
+    }))));
+  }, [venues, error, dispatch]);
 
   return (
     <>
+      {modalState.mode > 0 && <Modal />}
       <div
         className={`${styles.sidebarContainer} ${
           fullView ? styles.sidebarFullContainer : ""
@@ -33,7 +53,7 @@ const Sidebar = () => {
         onMouseEnter={() => setFullView(true)}
         onMouseLeave={() => setFullView(false)}
       >
-        {isPending && <Loader />}
+        {(isPending || pending) && <Loader />}
         <div className={styles.logoContainer}>
           <Image
             src={logo}
@@ -41,6 +61,7 @@ const Sidebar = () => {
             className={styles.logoImage}
             width={40}
             height={40}
+            priority={true}
           />
           <span>aminate</span>
         </div>
@@ -89,7 +110,10 @@ const Sidebar = () => {
           </Link>
         </div>
         <div className={styles.lowerContainer}>
-          <div className={styles.addSession}>
+          <div
+            className={styles.addSession}
+            onClick={() => setState(0, 1, "session")}
+          >
             <span>
               <MdAdd />
             </span>

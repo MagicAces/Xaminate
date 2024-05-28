@@ -9,7 +9,7 @@ const getTime = (date: Date) => {
 
 export const iconDate = (isoDate: string | Date) => {
   if (!isoDate) return " ";
-  
+
   const date = new Date(isoDate);
   const currentDate = new Date();
 
@@ -37,4 +37,20 @@ export const iconDate = (isoDate: string | Date) => {
   }
 
   return message + " " + getTime(date);
+};
+
+export const filterPassedTime = (time: Date) => {
+  const currentDate = new Date();
+  const selectedDate = new Date(time);
+
+  const day = selectedDate.getDay();
+
+  return (
+    day !== 0 && day !== 6 && currentDate.getTime() < selectedDate.getTime()
+  );
+};
+
+export const isWeekday = (date: Date) => {
+  const day = date.getDay();
+  return day !== 0 && day !== 6;
 };

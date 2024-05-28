@@ -1,7 +1,7 @@
 import logoCube from "@/public/images/logo_cube.gif";
 import Image from "next/image";
 
-export default function Loading() {
+const Spinner = () => {
   return (
     <div
       style={{
@@ -12,8 +12,9 @@ export default function Loading() {
         alignItems: "center",
       }}
     >
-      <Image src={logoCube} alt="Loading" 
-            priority={true}/>
+      <Image src={logoCube} alt="Loading" />
     </div>
   );
 }
+
+export default Spinner;
