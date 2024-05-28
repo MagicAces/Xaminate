@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Top = () => {
     const dispatch = useDispatch();
-    const { sessionsBox } = useSelector((state: any) => state.auth);
+    const { sessionsBox } = useSelector((state: any) => state.session);
 
   return (
     <>
