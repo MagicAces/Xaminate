@@ -8,6 +8,7 @@ import _ from "lodash";
 import { SessionQuery } from "@/types";
 import { Prisma } from "@prisma/client";
 import { formatDuration, getStatus, getStatusMessage } from "@/utils/functs";
+import { format } from "date-fns";
 
 export const createSession = authAction(
   sessionSchema,
@@ -33,20 +34,23 @@ export const createSession = authAction(
           temp_status: session.sessionStart < new Date() ? "pending" : "active",
         },
       });
-      const newNotification = await prisma.notification.create({
+      await prisma.notification.create({
         data: {
           category: "Session",
-          message: `Session #${
-            newSession.id
-          } has been created. Status: ${getStatusMessage(
-            session.sessionStart,
-            session.sessionEnd
-          )}`,
+          message: `Session #${newSession.id} has been created. It ${
+            getStatusMessage(session.sessionStart, session.sessionEnd) ===
+            "pending"
+              ? `will start at ${format(
+                  new Date(session.sessionStart),
+                  "h:mm a"
+                )}`
+              : `started at ${format(new Date(session.sessionStart), "h:mm a")}`
+          }`,
           category_id: newSession.id,
         },
       });
       revalidatePath("/");
-      console.log(newSession);
+
       if (newSession) return { success: "Session Created" };
       return { error: "Session could not be created" };
     } catch (error) {
@@ -127,21 +131,21 @@ export const getSessions = async (query: SessionQuery) => {
         prisma.session.count({ where }),
         prisma.session.count({
           where: {
-            AND: [...where.AND, { start_time: { lt: new Date() } }],
+            AND: [...where.AND, { start_time: { gte: new Date() } }],
           },
         }),
         prisma.session.count({
           where: {
             AND: [
               ...where.AND,
-              { start_time: { gte: new Date() } },
-              { end_time: { lte: new Date() } },
+              { start_time: { lte: new Date() } },
+              { end_time: { gte: new Date() } },
             ],
           },
         }),
         prisma.session.count({
           where: {
-            AND: [...where.AND, { end_time: { gt: new Date() } }],
+            AND: [...where.AND, { end_time: { lt: new Date() } }],
           },
         }),
       ]);
@@ -174,6 +178,7 @@ export const getSessions = async (query: SessionQuery) => {
         hasNextPage,
         hasPrevPage,
         pageNumber: page,
+        pendingCount,
         activeCount,
         closedCount,
       },

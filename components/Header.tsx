@@ -22,7 +22,7 @@ import {
   markNotificationAsRead,
   markNotificationsAsRead,
 } from "@/server/actions/notifications";
-import { useGetUnread } from "@/server/hooks/notifications";
+import { useCheckStatus, useGetUnread } from "@/server/hooks/notifications";
 import { Notification } from "@/types";
 import { useAction } from "next-safe-action/hooks";
 import { CustomScroll } from "react-custom-scroll";
@@ -36,6 +36,7 @@ const Header = () => {
   const { execute: markAsRead } = useAction(markNotificationAsRead);
   const { execute: markAllAsRead } = useAction(markNotificationsAsRead);
   const { data: notifications, error, isLoading } = useGetUnread();
+  const { } = useCheckStatus();
 
   function updateNotification(notification: Notification): void {
     if (notification.read) return;

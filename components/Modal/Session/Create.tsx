@@ -4,7 +4,7 @@ import styles from "@/styles/modal.module.scss";
 import { useModal } from "@/utils/context";
 import { filterPassedTime, isWeekday } from "@/utils/dates";
 
-import { SessionWarn, VenueOption } from "@/types";
+import { SessionWarn, SelectOption } from "@/types";
 import {
   createElement,
   forwardRef,
@@ -13,6 +13,7 @@ import {
   useState,
 } from "react";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { IoIosAdd } from "react-icons/io";
 import {
   MdAccessTime,
@@ -24,10 +25,9 @@ import {
 import Select, { components, DropdownIndicatorProps } from "react-select";
 import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
 import Button from "@/components/Utils/Button";
-import { venueOptions } from "@/data/venue";
+import { venueOptions } from "@/data/select";
 
 import { AnimatePresence, motion } from "framer-motion";
-import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useAction } from "next-safe-action/hooks";
@@ -36,7 +36,7 @@ import { SessionInput } from "@/lib/schema";
 import Loader from "@/components/Utils/Loader";
 
 const DropdownIndicator = (
-  props: DropdownIndicatorProps<VenueOption, true>
+  props: DropdownIndicatorProps<SelectOption, true>
 ) => {
   return (
     <components.DropdownIndicator {...props}>

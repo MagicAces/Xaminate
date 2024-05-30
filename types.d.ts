@@ -52,10 +52,9 @@ export interface Venue {
   updated_at: string;
 }
 
-export interface VenueOption {
-  readonly value: number;
+export interface SelectOption {
+  readonly value: number | string;
   readonly label: string;
-  readonly id: number;
 }
 
 export type Session =

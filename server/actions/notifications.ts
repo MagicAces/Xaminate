@@ -3,17 +3,21 @@ import prisma from "@/prisma/prisma";
 import { action } from "./actions";
 import { emptySchema, markNotificationAsReadSchema } from "@/lib/schema";
 import { revalidatePath } from "next/cache";
-import { statusQueue } from "@/lib/queues";
+// import { statusQueue } from "@/lib/queues";
 import { checkSessionStatus } from "@/lib/sessions";
 
-statusQueue.process(async (job, done) => {
-  console.log(job.data);
-  await checkSessionStatus();
-  job.progress(100);
+// statusQueue.process(async (job, done) => {
+//   console.log(job.data);
+//   await checkSessionStatus();
+//   job.progress(100);
 
-  done();
-});
-statusQueue.add({ data: "data" }, { repeat: { cron: "* * * * *" } });
+//   done();
+// });
+
+export const updateStatus = async () => {
+  await checkSessionStatus();
+  return {};
+};
 
 export const fetchUnread = async () => {
   try {

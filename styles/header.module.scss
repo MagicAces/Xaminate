@@ -6,7 +6,7 @@
     height: 4rem;
     width: 100%;
     border-bottom: 1px solid $border-color;
-    padding: 0.25rem 3rem;
+    padding: 0.25rem 2rem;
 
     @include flexin($justify: space-between,
         $align: center,

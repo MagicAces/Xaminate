@@ -4,6 +4,7 @@ import {
   getNotifications,
   markNotificationAsSeen,
   markNotificationsAsSeen,
+  updateStatus,
 } from "../actions/notifications";
 import {
   QueryClient,
@@ -73,3 +74,12 @@ export const useInvalidateNotifications = () => {
     });
 };
 
+export const useCheckStatus = () => {
+  return useQuery({
+    queryFn: async () => await updateStatus(),
+    queryKey: ['session_status'],
+    refetchInterval: 60 * 1000,
+    staleTime: Infinity,
+    refetchIntervalInBackground: true
+  });
+}

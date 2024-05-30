@@ -34,12 +34,12 @@ const sessionSlice = createSlice({
     setSessions: (state, action: PayloadAction<SessionDisplay>) => {
       state.data = action.payload;
     },
-    clearSessionsBox: (state, action) => {
+    clearSessionsBox: (state) => {
       return resetSessionBox(state);
     },
     updateSessionFilters: (state, action) => {
       const { name, value } = action.payload;
-
+      console.log(name, value);
       state.sessionsBox.filter = {
         ...state.sessionsBox.filter,
         [name]: value ? value : "",
@@ -47,7 +47,7 @@ const sessionSlice = createSlice({
 
       return state;
     },
-    mergeSessionFilters: (state, action) => {
+    mergeSessionFilters: (state) => {
       state.sessionsBox.query = {
         ...state.sessionsBox.query,
         ...state.sessionsBox.filter,
@@ -68,7 +68,7 @@ const sessionSlice = createSlice({
       state.sessionsBox.search = search;
       return state;
     },
-    mergeSessionSearch: (state, action) => {
+    mergeSessionSearch: (state) => {
       state.sessionsBox.query = {
         ...state.sessionsBox.query,
         search: state.sessionsBox.search,
