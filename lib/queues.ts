@@ -1,5 +1,5 @@
 import Queue from "bull";
-import client from "./redis"; // Adjust the path according to your structure
+import client from "./redis";
 import { checkSessionStatus } from "./sessions";
 
 const redisOptions = {
@@ -10,6 +10,5 @@ const redisOptions = {
   },
 };
 
-console.log(redisOptions);
 
 export const statusQueue = new Queue("statuses", redisOptions);

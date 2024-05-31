@@ -190,6 +190,35 @@
                         cursor: pointer;
                         background-color: $accent-dark-green;
                     }
+
+                    .clearFilterButton {
+                        padding: 10px;
+                        border-radius: 0.7rem;
+                        box-shadow: 0 4px 4px 0 $dark-shadow;
+                        border: 1px inset transparent;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                        background-color: $rejected-color;
+
+                        @include flexin();
+
+                        svg {
+                            font-size: 17px;
+                            color: $text-color;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                        }
+                    }
+
+                    .clearFilterButton:hover {
+                        cursor: pointer;
+                        background-color: transparent;
+                        border: 1px inset $rejected-color;
+
+                        svg {
+                            color: $rejected-color;
+                        }
+                    }
+
                 }
             }
 

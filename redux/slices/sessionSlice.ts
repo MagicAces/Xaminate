@@ -39,12 +39,11 @@ const sessionSlice = createSlice({
     },
     updateSessionFilters: (state, action) => {
       const { name, value } = action.payload;
-      console.log(name, value);
       state.sessionsBox.filter = {
         ...state.sessionsBox.filter,
         [name]: value ? value : "",
       };
-
+      
       return state;
     },
     mergeSessionFilters: (state) => {
@@ -55,7 +54,7 @@ const sessionSlice = createSlice({
 
       if (state.sessionsBox.query.search) {
         state.sessionsBox.mode = "query";
-      } else if (!isSessionFilterEmpty(state)) {
+      } else if (isSessionFilterEmpty(state)) {
         state.sessionsBox.mode = "none";
       } else {
         state.sessionsBox.mode = "query";

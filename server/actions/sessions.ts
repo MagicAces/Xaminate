@@ -131,7 +131,7 @@ export const getSessions = async (query: SessionQuery) => {
         prisma.session.count({ where }),
         prisma.session.count({
           where: {
-            AND: [...where.AND, { start_time: { gte: new Date() } }],
+            AND: [...where.AND, { start_time: { gt: new Date() } }],
           },
         }),
         prisma.session.count({

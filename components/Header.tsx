@@ -1,6 +1,5 @@
 "use client";
 
-// import notifications from "@/data/notifications";
 import styles from "@/styles/header.module.scss";
 import { useModal } from "@/utils/context";
 import { Menu, MenuGroup, MenuHeader, MenuItem } from "@szhsin/react-menu";
@@ -24,8 +23,8 @@ import {
 } from "@/server/actions/notifications";
 import { useCheckStatus, useGetUnread } from "@/server/hooks/notifications";
 import { Notification } from "@/types";
-import { useAction } from "next-safe-action/hooks";
 import { CustomScroll } from "react-custom-scroll";
+import { useAction } from "next-safe-action/hooks";
 import Loader from "./Utils/Loader";
 
 const Header = () => {
@@ -36,7 +35,7 @@ const Header = () => {
   const { execute: markAsRead } = useAction(markNotificationAsRead);
   const { execute: markAllAsRead } = useAction(markNotificationsAsRead);
   const { data: notifications, error, isLoading } = useGetUnread();
-  const { } = useCheckStatus();
+  const {} = useCheckStatus();
 
   function updateNotification(notification: Notification): void {
     if (notification.read) return;

@@ -242,7 +242,9 @@ const Top: React.FC = () => {
           <div
             role="button"
             title="Filter"
-            className={styles.filterButton}
+            className={`${styles.filterButton} ${
+              reload || isDisabled ? styles.filterButton : ""
+            }`}
             onClick={handleFilterSubmit}
           >
             <MdFilterAlt />

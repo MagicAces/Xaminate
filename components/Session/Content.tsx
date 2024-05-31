@@ -13,12 +13,13 @@ import { toast } from "react-toastify";
 import Body from "./Body";
 import Footer from "./Footer";
 import Top from "./Top";
+import Loader from "../Utils/Loader";
 import { useQueryClient } from "@tanstack/react-query";
 import { getSessions } from "@/server/actions/sessions";
 
 const Content = () => {
   const queryClient = useQueryClient();
-  const { sessionsBox } = useSelector((state: any) => state.session);
+  const { sessionsBox, reload, isDisabled } = useSelector((state: any) => state.session);
   const dispatch = useDispatch();
   const { data, error, isFetching, isLoading, isSuccess, isPlaceholderData } =
     useGetSessions(sessionsBox.query);
@@ -64,6 +65,7 @@ const Content = () => {
   return (
     <>
       <main className={styles.sessionContent}>
+        {(reload || isDisabled) && <Loader />}
         <Top />
         <Body />
         <Footer />

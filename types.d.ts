@@ -103,16 +103,14 @@ export interface SessionDisplay {
     duration: string;
     id: number;
     course_names: string[];
-    venue: {
-      id: number;
-      name: string;
-    };
+    venue_id: number;
   }[];
   totalCount: number;
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
   pageNumber: number;
+  pendingCount: number;
   activeCount: number;
   closedCount: number;
 }

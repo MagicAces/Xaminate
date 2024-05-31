@@ -19,14 +19,14 @@ export const getStatus = (status: string) => {
   if (!status) return [{}];
 
   if (status === "pending") {
-    return [{ start_time: { lt: new Date() } }];
+    return [{ start_time: { gt: new Date() } }];
   } else if (status === "active") {
     return [
-      { start_time: { gte: new Date() } },
-      { end_time: { lte: new Date() } },
+      { start_time: { lte: new Date() } },
+      { end_time: { gte: new Date() } },
     ];
   } else if (status === "closed") {
-    return [{ end_time: { gt: new Date() } }];
+    return [{ end_time: { lt: new Date() } }];
   } else {
     return [{}];
   }
