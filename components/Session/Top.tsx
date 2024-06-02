@@ -5,6 +5,8 @@ import {
   clearSessionsBox,
   mergeSessionFilters,
   mergeSessionSearch,
+  setReload,
+  updateSessionControls,
   updateSessionFilters,
   updateSessionSearch,
 } from "@/redux/slices/sessionSlice";
@@ -77,10 +79,12 @@ const Top: React.FC = () => {
 
   const handleFilterSubmit = () => {
     dispatch(mergeSessionFilters());
+    dispatch(updateSessionControls({ name: "page", value: 1 }));
   };
 
   const handleReset = () => {
     dispatch(clearSessionsBox());
+    dispatch(setReload(true));
   };
 
   const handleClearDate = (name: string) => {
@@ -90,6 +94,7 @@ const Top: React.FC = () => {
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(mergeSessionSearch());
+    dispatch(updateSessionControls({ name: "page", value: 1 }));
   };
 
   const handleSearchClear = () => {

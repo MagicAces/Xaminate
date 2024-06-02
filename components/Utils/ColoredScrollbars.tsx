@@ -33,6 +33,7 @@ const ColoredScrollbars: React.FC<ColoredScrollbarsProps> = (props) => {
     <Scrollbars
       renderView={renderView}
       renderThumbVertical={renderThumb}
+      renderThumbHorizontal={renderThumb}
       hideTracksWhenNotNeeded={true}
       //   autoHide={true}
       {...props}

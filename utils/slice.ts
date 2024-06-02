@@ -15,7 +15,7 @@ export const resetSessionBox = (state: SessionSlice) => {
   state.sessionsBox = {
     query: {
       page: 1,
-      limit: 15,
+      limit: 1,
       venue: 0,
       status: "",
       startTime: "",

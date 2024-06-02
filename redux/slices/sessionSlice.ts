@@ -7,7 +7,7 @@ const initialState: SessionSlice = {
   sessionsBox: {
     query: {
       page: 1,
-      limit: 15,
+      limit: 1,
       venue: 0,
       status: "",
       startTime: "",

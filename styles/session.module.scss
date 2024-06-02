@@ -29,14 +29,13 @@
             @include flexin($justify: stretch,
                 $align: stretch,
                 $direction: column,
-                $gap: 2rem);
+                $gap: 0);
 
             &Top {
                 padding: 1rem 2rem;
                 width: 100%;
                 @include flexin($justify: space-between,
                     $align: stretch,
-                    $direction: row,
                     $gap: 1.5rem);
 
                 .searchBox {
@@ -222,6 +221,140 @@
                 }
             }
 
+            &Body {
+                padding: 1rem 2rem;
+                // height: 76%;
+                // flex-basis: 76%;
+                flex-grow: 1;
+                position: relative;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                overscroll-behavior: contain;
+
+                @include flexin($justify: stretch,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 1rem);
+                    border: 1px solid green;
+
+                &Header {
+                    background-color: $secondary-background;
+                    box-shadow: 0 4px 4px 0 $dark-shadow;
+                    position: sticky;
+                    z-index: 1;
+                    position: -webkit-sticky;
+                    top: 0;
+                    border-radius: 0.5rem;
+                    width: 100%;
+                    border-radius: 0.7rem;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);border: 1px solid blue;
+
+                    .headerText {
+                        border: 1px solid red;
+                        padding: 0.6rem 1.3rem;
+                        height: max-content;
+                        width: 100%;
+                        -webkit-overflow-scrolling: touch;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                        @include flexin($justify: flex-start,
+                            $align: center,
+                            $direction: row,
+                            $gap: 1.5rem);
+
+                        &>span {
+                            color: $text-color;
+                            font-weight: bold;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            flex-grow: 1;
+                        }
+                    }
+                }
+            }
+
+            &Footer {
+
+                padding: 1rem 2rem;
+                width: 100%;
+                @include flexin($justify: space-between,
+                    $align: stretch,
+                    $direction: row,
+                    $gap: 1.5rem);
+
+                &Stats {
+                    @include flexin($justify: flex-start,
+                        $align: center,
+                        $gap: 1rem);
+
+                    span {
+
+                        span {
+                            font-weight: bold;
+                        }
+
+                        br {
+                            display: none
+                        }
+                    }
+                }
+
+                &Navigation {
+                    @include flexin($justify: center,
+                        $align: center,
+                        $gap: 1rem);
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                    button {
+                        background-color: $accent-green;
+                        color: $text-color;
+                        border-radius: 0.7rem;
+                        box-shadow: 0 3px 3px 0 $dark-shadow;
+                        padding: 0.3rem 0.5rem;
+                        @include flexin;
+                        border: 1px solid transparent;
+
+                        svg {
+                            font-size: 16px;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                        }
+                    }
+
+                    button:hover {
+                        background-color: $accent-dark-green;
+                        cursor: pointer;
+                    }
+
+                    button:disabled {
+                        background-color: $highlight-color;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    button:disabled:hover {
+                        background-color: $border-color;
+                        cursor: not-allowed;
+                    }
+                }
+
+                &Input {
+                    @include flexin($justify: flex-end,
+                        $align: center,
+                        $gap: 1rem);
+
+                    input {
+                        width: 40px;
+                        padding: 0.3rem;
+                        background-color: $secondary-background;
+                        box-shadow: 0 4px 4px 0 $dark-shadow;
+                        color: $text-color;
+                        font-size: 14px;
+                        text-align: center;
+                        outline: none;
+                        border: 0;
+                        border-radius: 0.5rem;
+                    }
+                }
+            }
         }
     }
 }

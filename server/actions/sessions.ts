@@ -112,7 +112,7 @@ export const getSessions = async (query: SessionQuery) => {
           select: {
             id: true,
             created_on: true,
-            course_names: true,
+            course_codes: true,
             start_time: true,
             end_time: true,
             venue: {
@@ -154,15 +154,19 @@ export const getSessions = async (query: SessionQuery) => {
       const startTime = session.start_time;
       const endTime = session.end_time;
 
-      const { start_time, end_time, _count, ...rest } = session;
+      const { start_time, end_time, _count, venue, ...rest } = session;
 
       const duration = formatDuration(new Date(startTime), new Date(endTime));
+      const status = getStatusMessage(new Date(startTime), new Date(endTime));
 
       return {
         ...rest,
         reportsCount: _count.reports,
         created_on: session.created_on.toISOString(),
         duration,
+        status,
+        venue_name: venue.name,
+        venue_id: venue.id,
       };
     });
 

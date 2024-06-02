@@ -23,6 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className={GeistSans.className}>
+        <AllProviders>
+            <Theme appearance="dark">
+                {children}
+            </Theme>
+        </AllProviders>
         <ToastContainer
           stacked
           position="bottom-right"
@@ -30,11 +35,6 @@ export default function RootLayout({
           theme="dark"
           pauseOnFocusLoss={false}
         />
-        <AllProviders>
-            <Theme appearance="dark">
-                {children}
-            </Theme>
-        </AllProviders>
       </body>
     </html>
   );

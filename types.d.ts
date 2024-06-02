@@ -95,16 +95,19 @@ export interface SessionWarn {
   sessionEnd: boolean;
   invigilators: number[];
 }
+export interface SessionRow {
+  reportsCount: number;
+  created_on: string;
+  duration: string;
+  id: number;
+  course_codes: string[];
+  venue_id: number;
+  venue_name: string;
+  status: string;
+}
 
 export interface SessionDisplay {
-  sessions: {
-    reportsCount: number;
-    created_on: string;
-    duration: string;
-    id: number;
-    course_names: string[];
-    venue_id: number;
-  }[];
+  sessions: SessionRow[];
   totalCount: number;
   totalPages: number;
   hasNextPage: boolean;
