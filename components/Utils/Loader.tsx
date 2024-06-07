@@ -1,7 +1,7 @@
 import { BarLoader } from "react-spinners";
 import styles from "@/styles/loader.module.scss";
 
-const Loader = ({ curved = true }: { curved: boolean }) => {
+const Loader = ({ curved = true }: { curved?: boolean }) => {
   return (
     <>
       <div
