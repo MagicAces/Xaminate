@@ -105,7 +105,7 @@ export const getSessions = async (query: SessionQuery) => {
         }
       : undefined;
 
-    const where = {
+    const where: Prisma.SessionWhereInput = {
       AND: [
         venue ? { venue_id: venue } : undefined,
         startTime ? { created_on: { gte: new Date(startTime) } } : undefined,
@@ -151,13 +151,13 @@ export const getSessions = async (query: SessionQuery) => {
         prisma.session.count({ where }),
         prisma.session.count({
           where: {
-            AND: [...where.AND, { start_time: { gt: new Date() } }],
+            AND: [...(where.AND as []), { start_time: { gt: new Date() } }],
           },
         }),
         prisma.session.count({
           where: {
             AND: [
-              ...where.AND,
+              ...(where.AND as []),
               { start_time: { lte: new Date() } },
               { end_time: { gte: new Date() } },
             ],
@@ -165,7 +165,7 @@ export const getSessions = async (query: SessionQuery) => {
         }),
         prisma.session.count({
           where: {
-            AND: [...where.AND, { end_time: { lt: new Date() } }],
+            AND: [...(where.AND as []), { end_time: { lt: new Date() } }],
           },
         }),
       ]);
