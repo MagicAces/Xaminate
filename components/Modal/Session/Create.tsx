@@ -74,6 +74,8 @@ const SessionTimeInput = forwardRef<HTMLDivElement, SessionTimeInputProps>(
   )
 );
 
+SessionTimeInput.displayName = "SessionTimeInput";
+
 const Create: React.FC = () => {
   const { exitModal } = useModal();
   const { venues } = useSelector((state: any) => state.modal);
@@ -279,7 +281,7 @@ const Create: React.FC = () => {
 
   useEffect(() => {
     if (status === "hasSucceeded") exitModal();
-  }, [status]);
+  }, [status, exitModal]);
 
   return (
     <>

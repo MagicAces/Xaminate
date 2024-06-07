@@ -10,7 +10,7 @@ import styles from "@/styles/otp.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -34,15 +34,15 @@ const OTP = () => {
   );
   const dispatch = useDispatch();
 
-  const focus = () => {
+  const focus = useCallback(() => {
     if (inputRefs[0]?.current) {
       inputRefs[0].current.focus();
     }
-  };
+  }, [inputRefs]);
 
   useEffect(() => {
     focus();
-  }, []);
+  }, [focus]);
 
   const { execute: send, status: sendStatus } = useAction(sendOTP, {
     onSuccess(data) {
@@ -194,7 +194,7 @@ const OTP = () => {
           </div>
         </form>
         <p className={styles.resendText}>
-          Didn't receive an email?{" "}
+          Didn&apos;t receive an email?{" "}
           <span className={styles.resendLink} onClick={() => send({ email })}>
             {" "}
             Click to resend

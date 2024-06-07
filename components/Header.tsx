@@ -44,7 +44,7 @@ const Header = () => {
 
   useEffect(() => {
     if (error) console.error(error);
-  }, [notifications]);
+  }, [notifications, error]);
   return (
     <>
       {modalState.mode > 0 && <Modal />}

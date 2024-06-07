@@ -72,6 +72,8 @@ const SessionTimeInput = forwardRef<HTMLDivElement, SessionTimeInputProps>(
   )
 );
 
+SessionTimeInput.displayName = "SessionTimeInput";
+
 const Top: React.FC = () => {
   const dispatch = useDispatch();
   const { sessionsBox, reload, isDisabled } = useSelector(

@@ -35,11 +35,9 @@ const Content = () => {
     if (isSuccess && !isFetching && !isLoading) dispatch(setSessions(data));
   }, [
     dispatch,
-    setReload,
     isFetching,
     isLoading,
     isSuccess,
-    setSessions,
     error,
     data,
     isPlaceholderData,

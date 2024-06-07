@@ -105,7 +105,7 @@ export const getSessions = async (query: SessionQuery) => {
         }
       : undefined;
 
-    const where: Prisma.SessionWhereInput = {
+    const where: Prisma.SessionWhereInput | undefined = {
       AND: [
         venue ? { venue_id: venue } : undefined,
         startTime ? { created_on: { gte: new Date(startTime) } } : undefined,

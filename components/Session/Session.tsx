@@ -25,7 +25,7 @@ const Session = ({ id }: { id: number }) => {
     }
 
     if (data?.success) dispatch(setSession(data?.success));
-  }, [error, data, setSession]);
+  }, [error, data, dispatch, router]);
 
   console.log(isLoading, isSuccess);
   return (

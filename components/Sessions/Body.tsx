@@ -105,8 +105,9 @@ const Body = () => {
                   </div>
                 ))
               ) : isDisabled ? (
-                new Array(8).fill("").map(() => (
+                new Array(8).fill("").map((_, index) => (
                   <Skeleton
+                    key={index}
                     baseColor="#2C2C2C"
                     highlightColor="#505050"
                     className={styles.sessionRowOuter}
