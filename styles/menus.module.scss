@@ -1,0 +1,111 @@
+@import 'config';
+@import 'mixins';
+
+.tooltip {
+    @include flexin;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    svg {
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+        font-size: 17px;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        svg {
+            color: $hover-green;
+        }
+    }
+}
+
+.tooltipMenu {
+    background-color: $secondary-background;
+    border: 1px solid $border-color;
+    padding: 0.5rem 1rem;
+
+    &Content {
+        text-transform: none;
+        font-family: inherit !important;
+        color: $text-color;
+        font-size: 14px;
+        padding: 0;
+    }
+}
+
+
+.sessionIcon {
+    @include flexin;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+    svg {
+        font-size: 18px;
+    }
+}
+
+.sessionIcon:hover,
+.sessionIcon:active,
+.sessionOpen {
+    background-color: $border-color;
+    cursor: pointer;
+}
+
+.sessionIconMenu {
+    background-color: $secondary-background;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    padding: 0;
+    border-radius: 0.7rem;
+
+    .sessionIconItem {
+        font-size: 14px;
+        padding: 0.8rem 1rem;
+        color: $text-color;
+        border-bottom: 1px solid $border-color;
+        @include flexin($justify: flex-start, $align: center,
+            $gap: 0.5rem);
+
+        svg {
+            font-size: 20px;
+        }
+    }
+
+    .sessionIconEdit {
+        border-top-left-radius: 0.7rem;
+        border-top-right-radius: 0.7rem;
+    }
+
+    .sessionIconItem:last-of-type {
+        border-bottom: 0;
+        border-bottom-left-radius: 0.7rem;
+        border-bottom-right-radius: 0.7rem;
+    }
+
+    .sessionIconItem:hover {
+        background-color: rgba($color: $text-color, $alpha: 0.1);
+        cursor: pointer;
+        color: $hover-green;
+
+        svg {
+            color: $hover-green;
+        }
+    }
+
+    .sessionIconEnd,
+    .sessionIconExit {
+        color: $rejected-color;
+
+    }
+
+    .sessionIconEnd:hover,
+    .sessionIconExit:hover {
+        color: $lighter-red;
+
+        svg {
+            color: $lighter-red;
+        }
+    }
+}

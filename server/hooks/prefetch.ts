@@ -3,7 +3,7 @@
 import { fetchUnread, getNotifications } from "../actions/notifications";
 import { QueryClient } from "@tanstack/react-query";
 import { getVenues } from "../actions/venues";
-import { getSessions } from "../actions/sessions";
+import { getSession, getSessions } from "../actions/sessions";
 
 export const usePrefetchQueries = async (queryClient: QueryClient) => {
   await Promise.all([
@@ -76,4 +76,18 @@ export const usePrefetchQueries = async (queryClient: QueryClient) => {
       initialPageParam: 0,
     }),
   ]);
+};
+
+export const usePrefetchSession = async (
+  queryClient: QueryClient,
+  id: number
+) => {
+  await queryClient.prefetchQuery({
+    queryKey: ["session", { id }],
+    queryFn: async () => {
+      const data = await getSession(id);
+      if (data.success) return { ...data.success };
+      else return data.error;
+    },
+  });
 };

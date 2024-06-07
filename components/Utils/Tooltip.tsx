@@ -7,7 +7,7 @@ import {
 import { ReactNode, useRef } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
 
-import styles from "@/styles/tooltip.module.scss";
+import styles from "@/styles/menus.module.scss";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 
@@ -18,11 +18,7 @@ const Tooltip = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <div
-        ref={tooltipRef}
-        {...anchorProps}
-        className={styles.tooltip}
-      >
+      <div ref={tooltipRef} {...anchorProps} className={styles.tooltip}>
         <BsInfoCircleFill />
       </div>
       <ControlledMenu

@@ -2,11 +2,10 @@
 @import 'mixins';
 
 .header {
-    max-height: 4rem;
     height: 4rem;
     width: 100%;
     border-bottom: 1px solid $border-color;
-    padding: 0.25rem 2rem;
+    padding: 0.5rem 2rem;
 
     @include flexin($justify: space-between,
         $align: center,

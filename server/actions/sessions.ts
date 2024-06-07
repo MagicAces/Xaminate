@@ -16,38 +16,53 @@ export const createSession = authAction(
     try {
       if (!session.sessionStart || !session.sessionEnd)
         return { error: "Dates can not be empty" };
+      const newSession = await prisma.$transaction(async (prisma) => {
+        if (!session.sessionStart || !session.sessionEnd) return null;
+        const newSession = await prisma.session.create({
+          data: {
+            start_time: session.sessionStart,
+            end_time: session.sessionEnd,
+            created_by: Number(userId),
+            course_names: session.courseNames.map((course) =>
+              _.startCase(_.lowerCase(course))
+            ),
+            course_codes: session.courseCodes.map((code) => _.upperCase(code)),
+            classes: session.classes.map((classe) => _.upperCase(classe)),
+            invigilators: session.invigilators.map((invigilator) =>
+              _.startCase(_.lowerCase(invigilator))
+            ),
+            venue_id: session.venue,
+            temp_status:
+              session.sessionStart < new Date() ? "pending" : "active",
+          },
+        });
 
-      const newSession = await prisma.session.create({
-        data: {
-          start_time: session.sessionStart,
-          end_time: session.sessionEnd,
-          created_by: Number(userId),
-          course_names: session.courseNames.map((course) =>
-            _.startCase(_.lowerCase(course))
-          ),
-          course_codes: session.courseCodes.map((code) => _.upperCase(code)),
-          classes: session.classes.map((classe) => _.upperCase(classe)),
-          invigilators: session.invigilators.map((invigilator) =>
-            _.startCase(_.lowerCase(invigilator))
-          ),
-          venue_id: session.venue,
-          temp_status: session.sessionStart < new Date() ? "pending" : "active",
-        },
-      });
-      await prisma.notification.create({
-        data: {
-          category: "Session",
-          message: `Session #${newSession.id} has been created. It ${
-            getStatusMessage(session.sessionStart, session.sessionEnd) ===
-            "pending"
-              ? `will start at ${format(
-                  new Date(session.sessionStart),
-                  "h:mm a"
-                )}`
-              : `started at ${format(new Date(session.sessionStart), "h:mm a")}`
-          }`,
-          category_id: newSession.id,
-        },
+        await prisma.notification.create({
+          data: {
+            category: "Session",
+            message: `Session #${newSession.id} has been created. It ${
+              getStatusMessage(session.sessionStart, session.sessionEnd) ===
+              "pending"
+                ? `will start at ${format(
+                    new Date(session.sessionStart),
+                    "h:mm a"
+                  )}`
+                : `started at ${format(
+                    new Date(session.sessionStart),
+                    "h:mm a"
+                  )}`
+            }`,
+            category_id: newSession.id,
+          },
+        });
+
+        await prisma.attendance.create({
+          data: {
+            session_id: newSession.id,
+          },
+        });
+
+        return newSession;
       });
       revalidatePath("/");
 
@@ -126,6 +141,11 @@ export const getSessions = async (query: SessionQuery) => {
                 reports: true,
               },
             },
+            attendance: {
+              select: {
+                student_count: true,
+              },
+            },
           },
         }),
         prisma.session.count({ where }),
@@ -154,7 +174,8 @@ export const getSessions = async (query: SessionQuery) => {
       const startTime = session.start_time;
       const endTime = session.end_time;
 
-      const { start_time, end_time, _count, venue, ...rest } = session;
+      const { start_time, end_time, _count, venue, attendance, ...rest } =
+        session;
 
       const duration = formatDuration(new Date(startTime), new Date(endTime));
       const status = getStatusMessage(new Date(startTime), new Date(endTime));
@@ -167,6 +188,7 @@ export const getSessions = async (query: SessionQuery) => {
         status,
         venue_name: venue.name,
         venue_id: venue.id,
+        studentCount: attendance?.student_count || 0,
       };
     });
 
@@ -187,6 +209,86 @@ export const getSessions = async (query: SessionQuery) => {
         closedCount,
       },
     };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getSession = async (id: number) => {
+  try {
+    if (!id) return { error: "Id not found" };
+    const foundSession = await prisma.session.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        attendance: {
+          select: {
+            student_count: true,
+            id: true,
+          },
+        },
+        venue: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+        terminator: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: true,
+          },
+        },
+        creator: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: true,
+          },
+        },
+        reports: {
+          select: {
+            status: true,
+            description: true,
+            created_on: true,
+            student: {
+              select: {
+                index_number: true,
+                first_name: true,
+                last_name: true,
+                program: true,
+                image_url: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            reports: true,
+          },
+        },
+      },
+    });
+
+    if (!foundSession) return { error: "Session not found" };
+
+    const startTime = foundSession.start_time;
+    const endTime = foundSession.end_time;
+
+    const duration = formatDuration(new Date(startTime), new Date(endTime));
+    const status = getStatusMessage(new Date(startTime), new Date(endTime));
+
+    const formattedSession = {
+      ...foundSession,
+      duration,
+      status,
+    };
+    return { success: formattedSession };
   } catch (error) {
     console.error(error);
     throw error;

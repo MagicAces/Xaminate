@@ -73,6 +73,7 @@ model Session {
   updated_at      DateTime       @updatedAt
   reports         Report[]
   temp_status     TempStatus     @default(pending)
+  attendance      Attendance?
 
   venue           Venue          @relation(fields: [venue_id], references: [id])
   terminator      ExamsOfficer?  @relation("Terminator", fields: [terminated_by], references: [id])
@@ -113,10 +114,40 @@ model Student {
   index_number   Int       @unique
   image_url      String?   
   report         Report[]
+  attendances    StudentAttendance[]
   created_on     DateTime  @default(now()) 
   updated_at     DateTime  @updatedAt
 
   @@map("students")
+}
+
+model Attendance {
+  id                    Int                     @id @default(autoincrement())
+  session_id            Int                     @unique
+  unidentified_count    Int                     @default(0)
+  student_count         Int                     @default(0)
+  student_attendance    StudentAttendance[]
+  version_timestamps    DateTime[]
+  created_on            DateTime                @default(now())
+  updated_at            DateTime                @updatedAt
+
+  session               Session                 @relation(fields: [session_id], references: [id])
+
+  @@map("attendances")
+}
+
+model StudentAttendance {
+  id              Int           @id @default(autoincrement())
+  attendance_id   Int
+  student_id      Int
+  history         Boolean[]
+  created_on      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+
+  attendance      Attendance    @relation(fields: [attendance_id], references: [id])
+  student         Student       @relation(fields: [student_id], references: [id])
+
+  @@map("student_attendances")
 }
 
 //Define the data model for Token

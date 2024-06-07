@@ -95,6 +95,7 @@ export interface SessionWarn {
   sessionEnd: boolean;
   invigilators: number[];
 }
+
 export interface SessionRow {
   reportsCount: number;
   created_on: string;
@@ -103,6 +104,7 @@ export interface SessionRow {
   course_codes: string[];
   venue_id: number;
   venue_name: string;
+  studentCount: number;
   status: string;
 }
 
@@ -143,6 +145,69 @@ interface SessionBox {
 export interface SessionSlice {
   data: SessionDisplay | undefined;
   sessionsBox: SessionBox;
+  session: SessionOutput | undefined;
   reload: boolean;
   isDisabled: boolean;
+}
+
+export interface SessionOutput {
+  id: number;
+  start_time: Date;
+  end_time: Date;
+  venue_id: number;
+  comments: string | null;
+  actual_end_time: Date | null;
+  terminated_by: number | null;
+  created_by: number | null;
+  course_names: string[];
+  course_codes: string[];
+  classes: string[];
+  invigilators: string[];
+  created_on: Date;
+  updated_at: Date;
+  temp_status: string;
+  attendance: SessionOutputAttendance | null;
+  venue: SessionOutputVenue;
+  terminator: SessionOutputExamsOfficer | null;
+  creator: SessionOutputExamsOfficer | null;
+  reports: SessionOutputReport[] | null;
+  _count: SessionOutputCount;
+  duration: string;
+  status: string;
+}
+
+interface SessionOutputAttendance {
+  student_count: number;
+  id: number;
+}
+
+interface SessionOutputVenue {
+  name: string;
+  id: number;
+}
+
+interface SessionOutputExamsOfficer {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+interface SessionOutputReport {
+  status: string;
+  description: string;
+  created_on: Date;
+  student: Student;
+}
+
+interface SessionOutputStudent {
+  index_number: number;
+  first_name: string;
+  last_name: string;
+  program: string;
+  image_url: string;
+}
+
+interface SessionOutputCount {
+  reports: number;
 }

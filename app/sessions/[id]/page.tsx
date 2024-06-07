@@ -1,25 +1,31 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import Session from "@/components/Session/Session";
 import styles from "@/styles/session.module.scss";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
+import { redirect, RedirectType } from "next/navigation";
 
-import { usePrefetchQueries } from "@/server/hooks/prefetch";
+import { usePrefetchSession } from "@/server/hooks/prefetch";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import Content from "@/components/Sessions/Content";
 
 export const metadata: Metadata = {
   title: "Sessions",
 };
 
-export default async function Session() {
-  const queryClient = new QueryClient();
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
 
-  await usePrefetchQueries(queryClient);
+  if (!isFinite(parseInt(id)) || parseInt(id) < 1) {
+    redirect("/sessions", RedirectType.replace);
+  }
+
+  const queryClient = new QueryClient();
+  await usePrefetchSession(queryClient, parseInt(id));
 
   return (
     <>
@@ -28,7 +34,7 @@ export default async function Session() {
         <div className={styles.sessionContainer}>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
-            <Content />
+            <Session id={parseInt(id)} />
           </HydrationBoundary>
         </div>
       </section>

@@ -25,6 +25,7 @@
         .sessionContent {
             flex-grow: 1;
             transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            overflow: auto;
 
             @include flexin($justify: stretch,
                 $align: stretch,
@@ -222,67 +223,215 @@
             }
 
             &Body {
-                padding: 1rem 2rem;
-                // height: 76%;
-                // flex-basis: 76%;
                 flex-grow: 1;
                 position: relative;
                 transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
                 overscroll-behavior: contain;
+                padding: 0.4rem 2rem;
 
                 @include flexin($justify: stretch,
                     $align: stretch,
                     $direction: column,
-                    $gap: 1rem);
-                    border: 1px solid green;
+                    $gap: 0rem);
 
                 &Header {
                     background-color: $secondary-background;
-                    box-shadow: 0 4px 4px 0 $dark-shadow;
                     position: sticky;
                     z-index: 1;
                     position: -webkit-sticky;
                     top: 0;
-                    border-radius: 0.5rem;
-                    width: 100%;
                     border-radius: 0.7rem;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);border: 1px solid blue;
+                    width: 100%;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                    .headerText {
-                        border: 1px solid red;
-                        padding: 0.6rem 1.3rem;
-                        height: max-content;
+                    .headerContent {
+                        box-shadow: 0 4px 4px 0 $dark-shadow;
+                        padding: 0.8rem 1.4rem;
                         width: 100%;
+                        overflow: auto;
                         -webkit-overflow-scrolling: touch;
+                        border-radius: 0.7rem;
                         transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
                         @include flexin($justify: flex-start,
                             $align: center,
                             $direction: row,
-                            $gap: 1.5rem);
+                            $gap: 1.7rem);
 
                         &>span {
                             color: $text-color;
-                            font-weight: bold;
+                            font-weight: 300;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             flex-grow: 1;
+                            font-size: 13px;
+                        }
+
+                        .actions {
+                            visibility: hidden;
                         }
                     }
                 }
+
+                .bodyContainer {
+                    width: 100%;
+
+                    .sessionRows {
+                        @include flexin($justify: flex-start,
+                            $align: stretch,
+                            $direction: column,
+                            $gap: 0);
+                        padding: 0;
+                        width: 100%;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                        .sessionRowOuter {
+                            @include flexin($justify: stretch,
+                                $align: stretch, $gap: 0);
+                            width: 100%;
+                            padding: 0.2rem 0;
+                            border-bottom: 1px solid $highlight-color;
+                            flex-grow: 1;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            &>div {
+                                padding: 0.25rem 1.4rem;
+                                @include flexin($justify: flex-start,
+                                    $align: center,
+                                    $gap: 1.7rem);
+                                -webkit-overflow-scrolling: touch;
+                                scroll-snap-type: x mandatory;
+                                overflow-x: auto;
+                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                                width: 100%;
+
+                                &>span {
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    font-size: 13px;
+                                    font-weight: 300;
+                                }
+
+                                .id {
+                                    color: $accent-dark-green;
+                                }
+
+                                .id:hover {
+                                    color: $hover-green;
+                                    cursor: pointer;
+                                }
+
+                                .pending {
+                                    color: $pending-color;
+                                }
+
+                                .active {
+                                    color: $hover-green;
+                                }
+
+                                .closed {
+                                    color: $border-color;
+
+                                }
+
+                                .attendance {
+                                    color: $attendance-color;
+                                }
+
+                                .attendance:hover {
+                                    color: $attendance-color-hover;
+                                }
+
+                                .courseCodes {
+                                    @include flexin($justify: flex-start,
+                                        $align: center,
+                                        $gap: 0.5rem);
+
+                                    .extraBadge {
+                                        color: gray;
+                                        font-weight: 200;
+                                    }
+                                }
+                            }
+                        }
+
+                        .sessionRowOuter:hover {
+                            background-color: rgba($color: $text-color, $alpha: 0.1);
+                        }
+                    }
+                }
+
+                .dateCreated {
+                    flex-basis: 16%;
+                    min-width: 90px;
+                }
+
+                .id {
+                    flex-basis: 8%;
+                    min-width: 30px;
+                }
+
+                .courseCodes {
+                    flex-basis: 14%;
+                    min-width: 100px;
+                }
+
+                .venue {
+                    flex-basis: 12%;
+                    min-width: 65px;
+                }
+
+                .attendance {
+                    flex-basis: 10%;
+                    min-width: 65px;
+                }
+
+                .status {
+                    flex-basis: 12%;
+                    min-width: 50px;
+                }
+
+                .reports {
+                    flex-basis: 9%;
+                    min-width: 60px;
+                }
+
+                .duration {
+                    flex-basis: 15%;
+                    min-width: 120px;
+                }
+
+                .actions {
+                    flex-basis: 4%;
+                    min-width: 30px;
+                }
+
+            }
+
+            .noSessions {
+                flex-grow: 1;
+                height: 100%;
+                width: 100%;
+                margin-top: 3rem;
+                @include flexin;
+                color: gray;
             }
 
             &Footer {
-
                 padding: 1rem 2rem;
                 width: 100%;
-                @include flexin($justify: space-between,
-                    $align: stretch,
+                @include flexin($justify: flex-start,
+                    $align: center,
                     $direction: row,
                     $gap: 1.5rem);
 
                 &Stats {
+                    justify-self: flex-start;
+                    flex-grow: 1;
+                    flex-basis: 33.33%;
+
                     @include flexin($justify: flex-start,
                         $align: center,
                         $gap: 1rem);
@@ -300,6 +449,9 @@
                 }
 
                 &Navigation {
+                    justify-self: center;
+                    flex-grow: 1;
+                    flex-basis: 33.33%;
                     @include flexin($justify: center,
                         $align: center,
                         $gap: 1rem);
@@ -337,6 +489,9 @@
                 }
 
                 &Input {
+                    justify-self: flex-end;
+                    flex-grow: 1;
+                    flex-basis: 33.33%;
                     @include flexin($justify: flex-end,
                         $align: center,
                         $gap: 1rem);
@@ -354,6 +509,153 @@
                         border-radius: 0.5rem;
                     }
                 }
+            }
+        }
+
+        .sessionPage {
+            flex-grow: 1;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            overflow: auto;
+            padding: 1.5rem 2rem;
+
+            @include flexin($justify: stretch,
+                $align: stretch,
+                $direction: column,
+                $gap: 1.5rem);
+
+            &Top {
+                width: 100%;
+                @include flexin($justify: space-between,
+                    $align: stretch,
+                    $gap: 1.5rem);
+
+                &Left {
+
+                    @include flexin($justify: flex-start,
+                        $align: center,
+                        $gap: 1rem);
+
+                    svg {
+                        font-size: 20px;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    svg:hover {
+                        color: $hover-green;
+                        cursor: pointer;
+                    }
+
+                    span {
+                        font-size: 18px;
+
+                        span {
+                            font-weight: 200;
+
+                        }
+                    }
+
+                    &>div {
+                        padding: 0.4rem 0.8rem;
+                        border-radius: 0.5rem;
+                        background-color: $secondary-background;
+                        box-shadow: 0 4px 4px 0 $dark-shadow;
+                        font-size: 12px;
+
+                        @include flexin($justify: space-between,
+                            $align: center,
+                            $gap: 0.5rem);
+
+                        &>div:first-of-type {
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            box-shadow: 0 4px 4px 0 $dark-shadow;
+                        }
+
+                        &>div:last-of-type {
+                            font-size: 12px;
+                            font-weight: 300;
+                            position: relative;
+                            top: 1px;
+                            @include flexin();
+                        }
+                    }
+
+                    div.pending {
+                        color: $pending-color;
+
+                        div:first-of-type {
+                            background-color: $pending-color;
+                        }
+                    }
+
+                    div.active {
+                        color: $hover-green;
+
+                        div:first-of-type {
+                            background-color: $hover-green;
+                        }
+                    }
+
+                    div.closed {
+                        color: #757575;
+
+                        div:first-of-type {
+                            background-color: #757575;
+                        }
+                    }
+
+                }
+
+                &Right {
+                    @include flexin($justify: flex-end,
+                        $align: center,
+                        $gap: 1rem);
+
+                    button {
+                        font-size: 14px;
+                        padding: 0.55rem 1rem;
+                        border-radius: 0.55rem;
+                        border: 1px solid transparent;
+                        @include flexin($gap: 0.4rem);
+
+                        svg {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .editButton {
+                        background-color: $accent-green;
+                    }
+
+                    .editButton:hover {
+                        background-color: $hover-green;
+                    }
+
+                    .endButton,
+                    .terminateButton {
+                        background-color: $rejected-color;
+                    }
+
+                    .endButton:hover,
+                    .terminateButton:hover {
+                        background-color: transparent;
+                        color: $rejected-color;
+                        border: 1px solid $rejected-color;
+                    }
+
+                    .closedButton {
+                        background-color: $secondary-background;
+                    }
+
+                    .closedButton:hover {
+                        background-color: transparent;
+                        border: 1px solid $border-color;
+                        color: $border-color;
+
+                    }
+                }
+
             }
         }
     }

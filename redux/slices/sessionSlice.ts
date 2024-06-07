@@ -1,4 +1,4 @@
-import { SessionDisplay, SessionSlice, Venue } from "@/types";
+import { SessionDisplay, SessionSlice, SessionOutput } from "@/types";
 import { isSessionFilterEmpty, resetSessionBox } from "@/utils/slice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -7,7 +7,7 @@ const initialState: SessionSlice = {
   sessionsBox: {
     query: {
       page: 1,
-      limit: 1,
+      limit: 10,
       venue: 0,
       status: "",
       startTime: "",
@@ -23,6 +23,7 @@ const initialState: SessionSlice = {
     search: "",
     mode: "none",
   },
+  session: undefined,
   reload: false,
   isDisabled: false,
 };
@@ -37,13 +38,16 @@ const sessionSlice = createSlice({
     clearSessionsBox: (state) => {
       return resetSessionBox(state);
     },
+    setSession: (state, action: PayloadAction<SessionOutput>) => {
+      state.session = action.payload;
+    },
     updateSessionFilters: (state, action) => {
       const { name, value } = action.payload;
       state.sessionsBox.filter = {
         ...state.sessionsBox.filter,
         [name]: value ? value : "",
       };
-      
+
       return state;
     },
     mergeSessionFilters: (state) => {
@@ -105,6 +109,7 @@ const sessionSlice = createSlice({
 
 export const {
   setSessions,
+  setSession,
   updateSessionFilters,
   updateSessionSearch,
   mergeSessionFilters,
