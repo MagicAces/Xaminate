@@ -105,14 +105,16 @@ export const getSessions = async (query: SessionQuery) => {
         }
       : undefined;
 
-    const where: Prisma.SessionWhereInput | undefined = {
-      AND: [
-        venue ? { venue_id: venue } : undefined,
-        startTime ? { created_on: { gte: new Date(startTime) } } : undefined,
-        endTime ? { created_on: { lte: new Date(endTime) } } : undefined,
-        ...statusResult,
-        searchFilter,
-      ].filter((x) => x !== undefined),
+    const andConditions: Prisma.SessionWhereInput[] = [
+      venue ? { venue_id: venue } : undefined,
+      startTime ? { created_on: { gte: new Date(startTime) } } : undefined,
+      endTime ? { created_on: { lte: new Date(endTime) } } : undefined,
+      ...statusResult,
+      searchFilter,
+    ].filter((x): x is Prisma.SessionWhereInput => x !== undefined);
+
+    const where: Prisma.SessionWhereInput = {
+      AND: andConditions,
     };
 
     const [sessions, totalCount, pendingCount, activeCount, closedCount] =
