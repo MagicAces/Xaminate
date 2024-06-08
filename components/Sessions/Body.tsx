@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { SessionRow } from "@/types";
 import { formatArray, formatSessionDate } from "@/utils/functs";
 import { capitalize, toUpper } from "lodash";
-import { FaEllipsis } from "react-icons/fa6";
 import SessionScrollbars from "../Utils/SessionScrollbars";
 import Skeleton from "react-loading-skeleton";
 import SessionIcon from "../Utils/SessionIcon";

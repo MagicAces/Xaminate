@@ -1,8 +1,12 @@
 export const formatDuration = (start: Date, end: Date): string => {
   const diffMs = end.getTime() - start.getTime();
-  const diffHrs = Math.ceil(diffMs / (1000 * 60 * 60)); // Get ceiling value of hours
-  const remainingMs = diffMs % (1000 * 60 * 60);
-  const diffMins = Math.ceil(remainingMs / (1000 * 60)); // Get ceiling value of minutes
+  let diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  let diffMins = Math.ceil((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (diffMins >= 60) {
+    diffMins = 0;
+    diffHrs += 1;
+  }
 
   if (diffHrs > 0 && diffMins > 0) {
     return `${diffHrs} hr${diffHrs > 1 ? "s" : ""} ${diffMins} min${
@@ -14,7 +18,6 @@ export const formatDuration = (start: Date, end: Date): string => {
     return `${diffMins} min${diffMins > 1 ? "s" : ""}`;
   }
 };
-
 export const getStatus = (status: string) => {
   if (!status) return [{}];
 

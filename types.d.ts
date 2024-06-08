@@ -152,19 +152,19 @@ export interface SessionSlice {
 
 export interface SessionOutput {
   id: number;
-  start_time: Date;
-  end_time: Date;
+  start_time: string;
+  end_time: string;
   venue_id: number;
   comments: string | null;
-  actual_end_time: Date | null;
+  actual_end_time: string | undefined;
   terminated_by: number | null;
   created_by: number | null;
   course_names: string[];
   course_codes: string[];
   classes: string[];
   invigilators: string[];
-  created_on: Date;
-  updated_at: Date;
+  created_on: string;
+  updated_at: string;
   temp_status: string;
   attendance: SessionOutputAttendance | null;
   venue: SessionOutputVenue;
@@ -196,7 +196,7 @@ interface SessionOutputExamsOfficer {
 interface SessionOutputReport {
   status: string;
   description: string;
-  created_on: Date;
+  created_on: string;
   student: Student;
 }
 

@@ -8,12 +8,13 @@ import Loader from "../Utils/Loader";
 import styles from "@/styles/session.module.scss";
 import Top from "./Top";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSession } from "@/redux/slices/sessionSlice";
 import Skeleton from "react-loading-skeleton";
 
 const Session = ({ id }: { id: number }) => {
-  const { data, isLoading, error, isSuccess } = useGetSession(id);
+  const { data, isLoading, error } = useGetSession(id);
+  const { session } = useSelector((state: any) => state.session);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -27,26 +28,36 @@ const Session = ({ id }: { id: number }) => {
     if (data?.success) dispatch(setSession(data?.success));
   }, [error, data, dispatch, router]);
 
-  console.log(isLoading, isSuccess);
   return (
     <>
       {isLoading && <Loader curved={false} />}
       <div className={styles.sessionPage}>
-        {isLoading || !isSuccess ? (
-          <Skeleton
-            baseColor="#2C2C2C"
-            highlightColor="#505050"
-            className={styles.sessionPageTop}
-            height={20}
-            style={{
-              borderRadius: "0.5rem",
-              marginTop: "0.5rem",
-              padding: "1rem",
-            }}
-          />
-        ) : (
-          <Top />
-        )}
+        <Skeleton
+          baseColor="#2C2C2C"
+          highlightColor="#505050"
+          className={styles.sessionPageTop}
+          enableAnimation={true}
+          inline={false}
+          duration={6000}
+          height={20}
+          style={{
+            borderRadius: "0.5rem",
+            marginTop: "0.5rem",
+            padding: "1rem",
+          }}
+        />
+        <Skeleton
+          baseColor="#2C2C2C"
+          highlightColor="#505050"
+          className={styles.sessionPageTop}
+          height={20}
+          style={{
+            borderRadius: "0.5rem",
+            marginTop: "0.5rem",
+            padding: "1rem",
+          }}
+        />
+        {!session ? null : <Top />}
       </div>
     </>
   );

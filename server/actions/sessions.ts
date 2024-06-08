@@ -284,11 +284,21 @@ export const getSession = async (id: number) => {
 
     const duration = formatDuration(new Date(startTime), new Date(endTime));
     const status = getStatusMessage(new Date(startTime), new Date(endTime));
+    const formattedReports = foundSession.reports.map((report) => ({
+      ...report,
+      created_on: report.created_on.toISOString(),
+    }));
 
     const formattedSession = {
       ...foundSession,
+      start_time: foundSession.start_time.toISOString(),
+      end_time: foundSession.end_time.toISOString(),
+      created_on: foundSession.created_on.toISOString(),
+      updated_at: foundSession.updated_at.toISOString(),
+      actual_end_time: foundSession?.actual_end_time?.toISOString(),
       duration,
       status,
+      reports: formattedReports,
     };
     return { success: formattedSession };
   } catch (error) {

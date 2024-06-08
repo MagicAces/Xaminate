@@ -20,7 +20,7 @@ const Top = () => {
       <div className={styles.sessionPageTop}>
         <div className={styles.sessionPageTopLeft}>
           <IoMdArrowBack />
-          <span>
+          <span className={styles.sessionId}>
             Session <span>#{id}</span>
           </span>
           <div className={styles[`${session?.status}`]}>
