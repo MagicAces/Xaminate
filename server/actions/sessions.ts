@@ -255,6 +255,7 @@ export const getSession = async (id: number) => {
         },
         reports: {
           select: {
+            id: true,
             status: true,
             description: true,
             created_on: true,
@@ -283,6 +284,7 @@ export const getSession = async (id: number) => {
     const endTime = foundSession.end_time;
 
     const duration = formatDuration(new Date(startTime), new Date(endTime));
+    
     const status = getStatusMessage(new Date(startTime), new Date(endTime));
     const formattedReports = foundSession.reports.map((report) => ({
       ...report,
@@ -296,6 +298,7 @@ export const getSession = async (id: number) => {
       created_on: foundSession.created_on.toISOString(),
       updated_at: foundSession.updated_at.toISOString(),
       actual_end_time: foundSession?.actual_end_time?.toISOString(),
+      actualDuration: foundSession?.actual_end_time ? formatDuration(new Date(startTime), new Date(foundSession?.actual_end_time)) : undefined,
       duration,
       status,
       reports: formattedReports,

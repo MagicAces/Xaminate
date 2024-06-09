@@ -545,12 +545,12 @@
                         cursor: pointer;
                     }
 
-                    .sessionId {
+                    &>span {
                         font-size: 18px;
 
                         span {
                             font-weight: 200;
-
+                            font-size: 18px;
                         }
                     }
 

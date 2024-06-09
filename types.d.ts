@@ -157,6 +157,7 @@ export interface SessionOutput {
   venue_id: number;
   comments: string | null;
   actual_end_time: string | undefined;
+  actualDuration: string | undefined;
   terminated_by: number | null;
   created_by: number | null;
   course_names: string[];
@@ -194,6 +195,7 @@ interface SessionOutputExamsOfficer {
 }
 
 interface SessionOutputReport {
+  id: number;
   status: string;
   description: string;
   created_on: string;

@@ -1,21 +1,28 @@
 export const formatDuration = (start: Date, end: Date): string => {
   const diffMs = end.getTime() - start.getTime();
-  let diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-  let diffMins = Math.ceil((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const date = new Date(diffMs);
 
-  if (diffMins >= 60) {
-    diffMins = 0;
-    diffHrs += 1;
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+
+  if (seconds > 0) {
+    if (minutes + 1 === 60) {
+      minutes = 0;
+      hours += 1;
+    } else {
+      minutes += 1;
+    }
   }
 
-  if (diffHrs > 0 && diffMins > 0) {
-    return `${diffHrs} hr${diffHrs > 1 ? "s" : ""} ${diffMins} min${
-      diffMins > 1 ? "s" : ""
+  if (hours > 0 && minutes > 0) {
+    return `${hours} hr${hours > 1 ? "s" : ""} ${minutes} min${
+      minutes > 1 ? "s" : ""
     }`;
-  } else if (diffHrs > 0) {
-    return `${diffHrs} hr${diffHrs > 1 ? "s" : ""}`;
+  } else if (hours > 0) {
+    return `${hours} hr${hours > 1 ? "s" : ""}`;
   } else {
-    return `${diffMins} min${diffMins > 1 ? "s" : ""}`;
+    return `${minutes} min${minutes > 1 ? "s" : ""}`;
   }
 };
 export const getStatus = (status: string) => {
@@ -86,4 +93,23 @@ export const formatArray = (
   }
 
   return { first: firstElement, extra: `+${additionalCount}` };
+};
+
+/**
+ * Converts an ISO string date to a CCTV footage timestamp format.
+ *
+ * @param isoString - The ISO string date to be formatted.
+ * @returns A string in the format "YYYY-MM-DD HH:mm:ss".
+ */
+export const formatToCCTVTimestamp = (isoString: string): string => {
+  const date = new Date(isoString);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };

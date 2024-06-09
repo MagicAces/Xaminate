@@ -11,7 +11,6 @@ import { Notification as INotification } from "@/types";
 import { useModal } from "@/utils/context";
 import { iconDate } from "@/utils/dates";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { CustomScroll } from "react-custom-scroll";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { TbReport, TbTimelineEventExclamation } from "react-icons/tb";

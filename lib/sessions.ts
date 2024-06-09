@@ -56,11 +56,10 @@ export const checkSessionStatus = async () => {
       where: {
         id: { in: activeToClosedSessions.map((session) => session.id) },
       },
-      data: { temp_status: "closed" },
+      data: { temp_status: "closed", actual_end_time: new Date() },
     }),
     prisma.notification.createMany({
       data: [...pendingToActiveNotifications, ...activeToClosedNotifications],
     }),
   ]);
-  console.log("done");
 };

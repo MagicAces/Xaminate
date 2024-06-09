@@ -1,6 +1,6 @@
 import { IoMdArrowBack } from "react-icons/io";
 import styles from "@/styles/session.module.scss";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { SessionOutput } from "@/types";
 import { capitalize } from "lodash";
@@ -14,12 +14,13 @@ const Top = () => {
   const { session }: { session: SessionOutput } = useSelector(
     (state: any) => state.session
   );
+  const router = useRouter();
 
   return (
     <>
       <div className={styles.sessionPageTop}>
         <div className={styles.sessionPageTopLeft}>
-          <IoMdArrowBack />
+          <IoMdArrowBack onClick={() => router.push("/sessions")} />
           <span className={styles.sessionId}>
             Session <span>#{id}</span>
           </span>
