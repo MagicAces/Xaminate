@@ -17,6 +17,7 @@ import { IoCheckmarkDone } from "react-icons/io5";
 import { TbReport, TbTimelineEventExclamation } from "react-icons/tb";
 import Modal from "./Modal/Modal";
 
+import logo from "@/public/images/logo.svg";
 import {
   markNotificationAsRead,
   markNotificationsAsRead,
@@ -26,6 +27,10 @@ import { Notification } from "@/types";
 import { CustomScroll } from "react-custom-scroll";
 import { useAction } from "next-safe-action/hooks";
 import Loader from "./Utils/Loader";
+import Image from "next/image";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { useDispatch } from "react-redux";
+import { setFullView } from "@/redux/slices/sidebarSlice";
 
 const Header = () => {
   const pathname = usePathname();
@@ -35,7 +40,8 @@ const Header = () => {
   const { execute: markAsRead } = useAction(markNotificationAsRead);
   const { execute: markAllAsRead } = useAction(markNotificationsAsRead);
   const { data: notifications, error, isLoading } = useGetUnread();
-  const {} = useCheckStatus();
+  const { } = useCheckStatus();
+  const dispatch = useDispatch();
 
   function updateNotification(notification: Notification): void {
     if (notification.read) return;
@@ -50,6 +56,17 @@ const Header = () => {
       {modalState.mode > 0 && <Modal />}
       <div className={styles.header}>
         <div className={styles.leftSection}>
+          <div className={styles.logoContainer}>
+            <GiHamburgerMenu onClick={() => dispatch(setFullView(true))}/>
+            <Image
+              src={logo}
+              alt="logo.svg"
+              className={styles.logoImage}
+              width={40}
+              height={40}
+              priority={true}
+            />
+          </div>
           {pathname.split("/")[1] === ""
             ? "Home"
             : `${pathname.split("/")[1][0].toUpperCase()}${pathname

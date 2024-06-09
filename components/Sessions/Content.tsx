@@ -59,11 +59,27 @@ const Content = () => {
         },
       });
     }
+
+    if (!isPlaceholderData && data?.hasPrevPage) {
+      queryClient.prefetchQuery({
+        queryKey: [
+          "sessions",
+          { ...sessionsBox.query, page: sessionsBox.query.page - 1 },
+        ],
+        queryFn: async () => {
+          const data = await getSessions({
+            ...sessionsBox.query,
+            page: sessionsBox.query.page - 1,
+          });
+          return data.success;
+        },
+      });
+    }
   }, [isPlaceholderData, data, sessionsBox, queryClient]);
   return (
     <>
       <main className={styles.sessionContent}>
-        {(reload || isDisabled) && <Loader />}
+        {(reload || isDisabled) && <Loader curved={false} />}
         <Top />
         <Body />
         <Footer />

@@ -21,25 +21,19 @@ const Details = () => {
         <div className={styles.sessionDetailsTop}>
           <h4>
             Details
-            <span>({view} of 2)</span>
+            <span>{view} / 2</span>
           </h4>
         </div>
         <div className={styles.sessionDetailsBody}>
-          <div className={styles.sessionDetailsBodyContent}>
-            <div className={styles.detailHeader}>
-              <div
-                onClick={() => setView(1)}
-                className={view === 1 ? styles.activeView : undefined}
-              >
-                1
-              </div>
-              <div
-                onClick={() => setView(2)}
-                className={view === 2 ? styles.activeView : undefined}
-              >
-                2
-              </div>
-            </div>
+          <div className={styles.detailHeader}>
+            <div
+              onClick={() => setView(1)}
+              className={view === 1 ? styles.activeView : undefined}
+            ></div>
+            <div
+              onClick={() => setView(2)}
+              className={view === 2 ? styles.activeView : undefined}
+            ></div>
           </div>
           {view === 1 ? (
             <div className={styles.viewOne}>
@@ -48,8 +42,8 @@ const Details = () => {
                 <div className={styles.courseValues}>
                   {session?.course_names.map((course: string, index) => (
                     <div className={styles.courseValue} key={index}>
-                      <span>{course}</span>
-                      <span>({session?.course_codes[index]})</span>
+                      <span>{course}</span>-
+                      <span>{session?.course_codes[index]}</span>
                     </div>
                   ))}
                 </div>
@@ -77,37 +71,12 @@ const Details = () => {
                 </div>
                 <div className={styles.duration}>
                   <label>Planned Duration</label>
-                  <div className={styles.venueValue}>{session?.duration}</div>
-                </div>
-              </div>
-              {session?.status === "closed" && (
-                <div className={styles.actualValues}>
-                  <div className={styles.actualEndTime}>
-                    <label>Actual End Time</label>
-                    <div className={styles.actualEndTimeValue}>
-                      {session?.actual_end_time ? formatSessionDate(session.actual_end_time) : formatSessionDate(session.end_time)}
-                    </div>
-                  </div>
-                  <div className={styles.actualDuration}>
-                    <label>Actual Duration</label>
-                    <div className={styles.actualDurationValue}>
-                      {session?.actualDuration || session?.duration}
-                    </div>
+                  <div className={styles.durationValue}>
+                    {session?.duration}
                   </div>
                 </div>
-              )}
-              <div className={styles.classes}>
-                <label>
-                  {session?.classes.length > 1 ? "Classes" : "Class"}
-                </label>
-                <div className={styles.classesValues}>
-                  {session?.classes.map((classe: string, index: number) => (
-                    <div key={index} className={styles.classValue}>
-                      {classe}
-                    </div>
-                  ))}
-                </div>
               </div>
+
               <div className={styles.invigilators}>
                 <label>
                   {session?.classes.length > 1 ? "Invigilators" : "Invigilator"}
@@ -122,12 +91,44 @@ const Details = () => {
                   )}
                 </div>
               </div>
+              <div className={styles.classes}>
+                <label>
+                  {session?.classes.length > 1 ? "Classes" : "Class"}
+                </label>
+                <div className={styles.classesValues}>
+                  {session?.classes.map((classe: string, index: number) => (
+                    <div key={index} className={styles.classValue}>
+                      {classe}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : (
             <div className={styles.viewTwo}>
+              {session?.status === "closed" && (
+                <div className={styles.actualValues}>
+                  <div className={styles.actualEndTime}>
+                    <label>Actual End Time</label>
+                    <div className={styles.actualEndTimeValue}>
+                      {session?.actual_end_time
+                        ? formatSessionDate(session.actual_end_time)
+                        : formatSessionDate(session.end_time)}
+                    </div>
+                  </div>
+                  <div className={styles.actualDuration}>
+                    <label>Actual Duration</label>
+                    <div className={styles.actualDurationValue}>
+                      {session?.actualDuration || session?.duration}
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className={styles.comment}>
                 <label>Comments</label>
-                <div className={styles.commentValue}>{session?.comments || 'N/A'}</div>
+                <div className={styles.commentValue}>
+                  {session?.comments || "N/A"}
+                </div>
               </div>
 
               <div className={styles.authors}>
@@ -171,7 +172,7 @@ const Details = () => {
                   Student Count <FiExternalLink />
                 </label>
                 <div className={styles.attendanceValue}>
-                  {session?.attendance?.student_count || 'N/A'}
+                  {session?.attendance?.student_count || "N/A"}
                 </div>
               </div>
             </div>

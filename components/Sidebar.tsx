@@ -20,11 +20,12 @@ import Loader from "./Utils/Loader";
 import { useModal } from "@/utils/context";
 import Modal from "./Modal/Modal";
 import { useGetVenues } from "@/server/hooks/venues";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setVenues } from "@/redux/slices/modalSlice";
+import { setFullView } from "@/redux/slices/sidebarSlice";
 
 const Sidebar = () => {
-  const [fullView, setFullView] = useState(false);
+  const { fullView } = useSelector((state: any) => state.sidebar);
   const pathname = usePathname();
   const { pending } = useFormStatus();
   const [, formAction, isPending] = useFormState(logout, null);
@@ -35,23 +36,28 @@ const Sidebar = () => {
   useEffect(() => {
     if (error) console.error(error);
 
-    if (venues?.length) dispatch(setVenues(venues.map(venue => ({
-      id: venue.id,
-      name: venue.name,
-      created_on: venue.created_on.toISOString(),
-      updated_at: venue.updated_at.toISOString()
-    }))));
+    if (venues?.length)
+      dispatch(
+        setVenues(
+          venues.map((venue) => ({
+            id: venue.id,
+            name: venue.name,
+            created_on: venue.created_on.toISOString(),
+            updated_at: venue.updated_at.toISOString(),
+          }))
+        )
+      );
   }, [venues, error, dispatch]);
 
   return (
     <>
       {modalState.mode > 0 && <Modal />}
       <div
-        className={`${styles.sidebarContainer} ${
-          fullView ? styles.sidebarFullContainer : ""
+        className={`${
+          fullView ? styles.sidebarFullContainer : styles.sidebarContainer
         }`}
-        onMouseEnter={() => setFullView(true)}
-        onMouseLeave={() => setFullView(false)}
+        onMouseEnter={() => dispatch(setFullView(true))}
+        onMouseLeave={() => dispatch(setFullView(false))}
       >
         {(isPending || pending) && <Loader />}
         <div className={styles.logoContainer}>

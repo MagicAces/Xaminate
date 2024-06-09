@@ -213,3 +213,7 @@ interface SessionOutputStudent {
 interface SessionOutputCount {
   reports: number;
 }
+
+export interface SidebarState {
+  fullView: boolean;
+}

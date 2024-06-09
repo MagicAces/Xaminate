@@ -21,12 +21,12 @@ const Reports = () => {
       <div className={styles.sessionReportsTop}>
         <h4>
           Reports
-          <span>({reports.length})</span>
+          <span>{reports.length}</span>
         </h4>
       </div>
       <div className={styles.sessionReportsBody}>
         <div className={styles.sessionReportsBodyTop}>
-          {page} / {Math.ceil(reports.length / 2)}
+          {page} / {reports.length}
         </div>
         <div className={styles.sessionReportsBodyContent}>
           <div
@@ -40,33 +40,45 @@ const Reports = () => {
           <div className={styles.reports}>
             {reports.length > 0 ? (
               reports?.map((report, index) => {
-                if (page * 2 >= index + 1 && (page - 1) * 2 < index + 1) {
+                if (page === index + 1) {
                   return (
-                    <div className={styles.report} key={index}>
+                    <div
+                      className={`${styles.report} ${
+                        styles[`${report.status.toLowerCase()}`]
+                      }`}
+                      key={index}
+                    >
                       <MdCircle />
-                      <h5>Report ${`0${report.id}-0${session?.id}`}</h5>
+                      <h5>Report {`0${report.id}-0${session?.id}`}</h5>
                       <Image
                         src={report.student.image}
                         alt="Student's pic"
-                        width={150}
-                        height={150}
+                        width={120}
+                        height={120}
                         className={styles.reportImage}
+                        priority
                       />
                       <div className={styles.reportBody}>
-                        <div className={styles.leftPart}>
+                        <div className={styles.studentID}>
                           <span>Student ID</span>
-                          <span>Status</span>
-                          <span>Name</span>
-                          <span>Program</span>
-                          <span>Timestamp</span>
-                        </div>
-                        <div className={styles.rightPart}>
                           <span>{report.student.index_number}</span>
+                        </div>
+                        <div className={styles.status}>
+                          <span>Status</span>
                           <span>{report.status}</span>
+                        </div>
+                        <div className={styles.studentName}>
+                          <span>Name</span>
                           <span>
                             {`${report.student?.first_name} ${report.student?.last_name}`}
                           </span>
+                        </div>
+                        <div className={styles.studentID}>
+                          <span>Program</span>
                           <span>{report.student.program}</span>
+                        </div>
+                        <div className={styles.timestamp}>
+                        <span>Timestamp</span>
                           <span>
                             {formatToCCTVTimestamp(report.created_on)}
                           </span>
@@ -89,9 +101,9 @@ const Reports = () => {
             className={styles.forwardNav}
             onClick={() =>
               setPage((prevPage) =>
-                prevPage < Math.ceil(reports.length / 2)
+                prevPage < reports.length
                   ? prevPage + 1
-                  : Math.ceil(reports.length / 2)
+                  : reports.length 
               )
             }
           >

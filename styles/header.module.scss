@@ -14,6 +14,25 @@
     .leftSection {
         font-size: 1.2rem;
         font-weight: 500;
+        @include flexin($justify: flex-start, $align: center, $gap: 1rem);
+
+        .logoContainer {
+            display: none;
+
+            svg {
+                font-size: 18px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            }
+
+            svg:hover {
+                color: $hover-green;
+                cursor: pointer;
+            }
+
+            @media (max-width: 675px) {
+                @include flexin($justify: flex-start, $align: center, $gap: 1rem);
+            }
+        }
     }
 
     .rightSection {

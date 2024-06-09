@@ -12,14 +12,16 @@
         $gap: 0);
 
     .homeContainer {
-        @include flexin(
-            $justify: stretch,
+        @include flexin($justify: stretch,
             $align: stretch,
             $direction: column,
-            $gap: 0
-        );
+            $gap: 0);
         width: calc(100vw - 4rem);
         position: absolute;
         right: 0;
+
+        @media (max-width: 675px) {
+            width: 100vw;
+        }
     }
 }

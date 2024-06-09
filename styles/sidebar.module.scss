@@ -1,7 +1,7 @@
 @import 'config';
 @import 'mixins';
 
-.sidebarContainer {
+.sidebarContainer, .sidebarFullContainer {
     width: 4rem;
     border-right: 1px solid $border-color;
     height: 100vh;
@@ -243,6 +243,11 @@
     }
 }
 
+@media (max-width: 675px) {
+    .sidebarContainer {
+        display: none;
+    }
+}
 @keyframes rotate3d {
     0% {
         transform: rotate3d(0, 1, 0, 0deg);

@@ -52,54 +52,27 @@ const Session = ({ id }: { id: number }) => {
         <div className={styles.sessionPageBody}>
           {!session ? (
             <>
-              <div className={styles.sessionDetails}>
-                <Skeleton
-                  baseColor="#2C2C2C"
-                  highlightColor="#505050"
-                  className={styles.sessionDetailsTop}
-                  width={50}
-                  height={20}
-                  style={{
-                    borderRadius: "0.5rem",
-                    // marginTop: "0.5rem",
-                    padding: "1rem",
-                  }}
-                />
-                <Skeleton
-                  baseColor="#2C2C2C"
-                  highlightColor="#505050"
-                  className={styles.sessionDetailsBody}
-                  style={{
-                    borderRadius: "0.5rem",
-                    // marginTop: "0.5rem",
-                    // padding: "1rem",
-                  }}
-                />
-              </div>
-              <div className={styles.sessionReports}>
-                <Skeleton
-                  baseColor="#2C2C2C"
-                  highlightColor="#505050"
-                  className={styles.sessionReportsTop}
-                  width={50}
-                  height={20}
-                  style={{
-                    borderRadius: "0.5rem",
-                    // marginTop: "0.5rem",
-                    padding: "1rem",
-                  }}
-                />
-                <Skeleton
-                  baseColor="#2C2C2C"
-                  highlightColor="#505050"
-                  className={styles.sessionReportsBody}
-                  style={{
-                    borderRadius: "0.5rem",
-                    // marginTop: "0.5rem",
-                    // padding: "1rem",
-                  }}
-                />
-              </div>
+              <Skeleton
+                baseColor="#2C2C2C"
+                highlightColor="#505050"
+                className={styles.sessionDetails}
+                style={{
+                  borderRadius: "0.5rem",
+                  // marginTop: "0.5rem",
+                  padding: "1rem",
+                }}
+              />
+
+              <Skeleton
+                baseColor="#2C2C2C"
+                highlightColor="#505050"
+                className={styles.sessionReports}
+                style={{
+                  borderRadius: "0.5rem",
+                  // marginTop: "0.5rem",
+                  // padding: "1rem",
+                }}
+              />
             </>
           ) : (
             <>
