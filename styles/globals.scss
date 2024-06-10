@@ -61,6 +61,15 @@ input:-internal-edge-excel-like-autofill-previewed {
   font: inherit;
 }
 
+@media (max-width: 450px) {
+
+  span,
+  a,
+  p button {
+    font-size: 12px !important;
+  }
+
+}
 
 .react-datepicker,
 .react-datepicker__day-name,

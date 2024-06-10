@@ -53,6 +53,26 @@ const Top = () => {
             Edit
           </button>
         </div>
+        <div className={`${styles.sessionPageTopRight} ${styles.mobileMode}`}>
+          {session?.status === "pending" && (
+            <button type="button" className={styles.endButton}>
+              <GiExitDoor />
+            </button>
+          )}
+          {session?.status === "active" && (
+            <button type="button" className={styles.terminateButton}>
+              <MdPinEnd />
+            </button>
+          )}
+          {session?.status === "closed" && (
+            <button type="button" className={styles.closedButton}>
+              <IoMdStats />
+            </button>
+          )}
+          <button type="button" className={styles.editButton}>
+            <FaRegEdit />
+          </button>
+        </div>
       </div>
     </>
   );

@@ -82,7 +82,7 @@
         }
 
         .notificationsMenu {
-            width: 26rem;
+            width: 25rem;
             // height: 22rem;
             padding: 0;
             background-color: $primary-background;
@@ -267,6 +267,10 @@
             .notificationsFooter:hover {
                 background-color: $secondary-background;
                 color: $hover-green;
+            }
+
+            @media (max-width: 450px) {
+                width: 95vw;
             }
         }
 

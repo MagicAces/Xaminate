@@ -6,7 +6,7 @@ import styles from "@/styles/sidebar.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { MdAdd } from "react-icons/md";
 import {
@@ -32,6 +32,7 @@ const Sidebar = () => {
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
   const { data: venues, error, isLoading } = useGetVenues();
+  const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (error) console.error(error);
@@ -49,6 +50,18 @@ const Sidebar = () => {
       );
   }, [venues, error, dispatch]);
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick)
+    }
+  }, []);
+
+  const handleClick = (e: MouseEvent) => {
+    if (divRef?.current && !divRef?.current.contains(e.target as Node) ){
+      dispatch(setFullView(false));
+    }
+  }
   return (
     <>
       {modalState.mode > 0 && <Modal />}
@@ -58,6 +71,7 @@ const Sidebar = () => {
         }`}
         onMouseEnter={() => dispatch(setFullView(true))}
         onMouseLeave={() => dispatch(setFullView(false))}
+        ref={divRef}
       >
         {(isPending || pending) && <Loader />}
         <div className={styles.logoContainer}>
