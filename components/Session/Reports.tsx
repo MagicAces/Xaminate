@@ -109,7 +109,7 @@ const Reports = () => {
           >
             <MdArrowForwardIos
               style={
-                page >= Math.ceil(reports.length / 2)
+                page >= reports.length
                   ? { visibility: "hidden" }
                   : {}
               }
