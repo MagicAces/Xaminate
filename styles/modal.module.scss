@@ -140,6 +140,14 @@
                 }
             }
         }
+
+        @media (max-width: 870px) {
+            width: 85%;
+        }
+
+        @media (max-width: 400px) {
+            width: 95%;
+        }
     }
 
     .notificationContainer {
