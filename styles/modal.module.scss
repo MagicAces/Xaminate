@@ -143,10 +143,28 @@
 
         @media (max-width: 870px) {
             width: 85%;
+
+            .profile {
+                .inputBox {
+                    .nameBox {
+                        width: 100%;
+                    }
+
+                }
+            }
         }
 
         @media (max-width: 400px) {
             width: 95%;
+            
+            .profile {
+                    .inputBox {
+                        .nameBox {
+                            width: 100%;
+                        }
+            
+                    }
+                }
         }
     }
 
