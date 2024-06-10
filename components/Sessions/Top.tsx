@@ -268,6 +268,29 @@ const Top: React.FC = () => {
             <MdFilterAlt />
           </div>
         </div>
+        <div className={`${styles.filterRow} ${styles.filterMobileRow}`}>
+          <div
+            role="button"
+            title="Clear filters"
+            className={styles.clearFilterButton}
+            style={{
+              visibility: sessionsBox.mode === "query" ? "visible" : "hidden",
+            }}
+            onClick={handleReset}
+          >
+            <BiReset />
+          </div>
+          <div
+            role="button"
+            title="Filter"
+            className={`${styles.filterButton} ${
+              reload || isDisabled ? styles.filterButton : ""
+            }`}
+            onClick={handleFilterSubmit}
+          >
+            <MdFilterAlt />
+          </div>
+        </div>
       </div>
     </>
   );

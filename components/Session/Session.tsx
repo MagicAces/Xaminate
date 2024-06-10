@@ -34,12 +34,12 @@ const Session = ({ id }: { id: number }) => {
     <>
       {isLoading && <Loader curved={false} />}
       <div className={styles.sessionPage}>
-        {!session ? (
+        {!session || session?.id !== id ? (
           <Skeleton
             baseColor="#2C2C2C"
             highlightColor="#505050"
             className={styles.sessionPageTop}
-            height={20}
+            height={30}
             style={{
               borderRadius: "0.5rem",
               marginTop: "0.5rem",
@@ -50,12 +50,13 @@ const Session = ({ id }: { id: number }) => {
           <Top />
         )}
         <div className={styles.sessionPageBody}>
-          {!session ? (
+          {!session || session?.id !== id ? (
             <>
               <Skeleton
                 baseColor="#2C2C2C"
                 highlightColor="#505050"
-                className={styles.sessionDetails}
+                containerClassName={styles.skeletonDetails}
+                height={"100%"}
                 style={{
                   borderRadius: "0.5rem",
                   // marginTop: "0.5rem",
@@ -66,7 +67,8 @@ const Session = ({ id }: { id: number }) => {
               <Skeleton
                 baseColor="#2C2C2C"
                 highlightColor="#505050"
-                className={styles.sessionReports}
+                containerClassName={styles.skeletonReports}
+                height={"100%"}
                 style={{
                   borderRadius: "0.5rem",
                   // marginTop: "0.5rem",

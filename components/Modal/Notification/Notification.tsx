@@ -146,14 +146,18 @@ const Notification = () => {
                   </div>
                 )
               )}
+            {notifications?.length === 0 && isUnread && (
+              <div className={styles.noNotifications}>
+                No Unread Notifications
+              </div>
+            )}
+            {error && (
+              <div className={styles.noNotifications}>
+                Something wrong occurred
+              </div>
+            )}
           </div>
         </ColoredScrollbars>
-        {notifications?.length === 0 && isUnread && (
-          <div className={styles.noNotifications}>No Unread Notifications</div>
-        )}
-        {error && (
-          <div className={styles.noNotifications}>Something wrong occurred</div>
-        )}
       </div>
     </>
   );
