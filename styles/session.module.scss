@@ -33,7 +33,7 @@
                 $gap: 0);
 
             &Top {
-                padding: 1rem 2rem;
+                padding: 1rem 2rem 0.5rem;
                 width: 100%;
                 @include flexin($justify: space-between,
                     $align: stretch,
@@ -248,6 +248,17 @@
                     }
 
                 }
+
+                @media (max-width: 1170px) {
+                    .filterRow {
+                        display: none;
+                    }
+
+                    .filterMobileRow {
+                        display: flex;
+                        gap: 1rem;
+                    }
+                }
             }
 
             &Body {
@@ -255,7 +266,7 @@
                 position: relative;
                 transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
                 overscroll-behavior: contain;
-                padding: 0.4rem 2rem;
+                padding: 0.9rem 2rem 0.4rem;
 
                 @include flexin($justify: stretch,
                     $align: stretch,
@@ -449,6 +460,52 @@
                 margin-top: 3rem;
                 @include flexin;
                 color: gray;
+            }
+
+            .sessionFilterValues {
+                width: 100%;
+                @include flexin($justify: center, $align: center,
+                    $direction: row,
+                    $gap: 2rem);
+                flex-wrap: wrap;
+
+                .filterValue {
+                    padding: 0.5rem 1rem;
+                    border-radius: 1rem;
+                    @include flexin($justify: center,
+                        $align: center,
+                        $gap: 1.5rem);
+                    background-color: $secondary-background;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    border: 1px solid transparent;
+
+
+                    &>span {
+                        font-weight: 300;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    &>svg {
+                        font-size: 18px;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    &>svg:hover {
+                        color: $hover-green;
+                        cursor: pointer;
+                    }
+                }
+
+                .filterValue:hover {
+                    border: 1px solid $hover-green;
+                    background-color: transparent;
+
+                    &>svg,
+                    &>span {
+                        color: $hover-green;
+                    }
+                }
             }
 
             &Footer {

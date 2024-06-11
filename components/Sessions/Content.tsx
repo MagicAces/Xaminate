@@ -16,6 +16,7 @@ import Top from "./Top";
 import Loader from "../Utils/Loader";
 import { useQueryClient } from "@tanstack/react-query";
 import { getSessions } from "@/server/actions/sessions";
+import Filters from "./Filters";
 
 const Content = () => {
   const queryClient = useQueryClient();
@@ -81,6 +82,7 @@ const Content = () => {
       <main className={styles.sessionContent}>
         {(reload || isDisabled) && <Loader curved={false} />}
         <Top />
+        <Filters />
         <Body />
         <Footer />
       </main>

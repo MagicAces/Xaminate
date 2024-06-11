@@ -29,6 +29,8 @@ import {
 } from "react";
 import { MdFilterAlt, MdFilterAltOff } from "react-icons/md";
 import { BiReset } from "react-icons/bi";
+import { useModal } from "@/utils/context";
+import Modal from "../Modal/Modal";
 
 const DropdownIndicator = (
   props: DropdownIndicatorProps<SelectOption, true>
@@ -81,6 +83,7 @@ const Top: React.FC = () => {
   );
   const { venues } = useSelector((state: any) => state.modal);
   const [isClient, setIsClient] = useState(false);
+  const { setState, modalState } = useModal();
 
   useEffect(() => {
     setIsClient(true);
@@ -118,7 +121,8 @@ const Top: React.FC = () => {
 
   return (
     <>
-      <div className={styles.sessionContentTop}>
+      {modalState.mode > 0 && <Modal />}
+      <div className={styles.sessionContentTop} onClick={(e) => e.stopPropagation()}>
         <form className={styles.searchBox} onSubmit={handleSearchSubmit}>
           <MdSearch />
           <input
@@ -286,7 +290,7 @@ const Top: React.FC = () => {
             className={`${styles.filterButton} ${
               reload || isDisabled ? styles.filterButton : ""
             }`}
-            onClick={handleFilterSubmit}
+            onClick={() => setState(0, 2, "session")}
           >
             <MdFilterAlt />
           </div>

@@ -12,13 +12,13 @@ import "@szhsin/react-menu/dist/index.css";
 
 import { FaEllipsis } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
-import { useDispatch } from "react-redux";
 import { IoIosEye } from "react-icons/io";
 import { GiExitDoor } from "react-icons/gi";
 import { MdPinEnd } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 const SessionIcon = ({ id, status }: { id: number; status: string }) => {
-  const dispatch = useDispatch();
+  const router = useRouter();
 
   const sessionIconRef = useRef(null);
   const [menuState, toggle] = useMenuState({ transition: true });
@@ -62,6 +62,7 @@ const SessionIcon = ({ id, status }: { id: number; status: string }) => {
 
         <MenuItem
           className={`${styles.sessionIconView} ${styles.sessionIconItem}`}
+          onClick={() => router.push(`/sessions/${id}`)}
         >
           <IoIosEye />
           <span>View Session</span>

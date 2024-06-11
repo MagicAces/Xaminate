@@ -85,6 +85,7 @@ const Filters = () => {
   const handleFilterSubmit = () => {
     dispatch(mergeSessionFilters());
     dispatch(updateSessionControls({ name: "page", value: 1 }));
+    exitModal();
   };
 
   const handleClearDate = (name: string) => {
@@ -96,13 +97,10 @@ const Filters = () => {
   }, []);
   return (
     <>
-      <div>
+      <div className={styles.sessionContainerFilter}>
         <span className={styles.closeIcon}>
           <MdClose onClick={() => exitModal()} />
         </span>
-        <div className={styles.header}>
-          <h2>Session Filters</h2>
-        </div>
         <div className={styles.filterColumn}>
           <Select
             className={styles.venueInput}

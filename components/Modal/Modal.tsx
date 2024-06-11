@@ -11,7 +11,10 @@ const Modal = () => {
 
   return (
     <>
-      <div className={styles.modalContainer} onClick={exitModal}>
+      <div
+        className={styles.modalContainer}
+        // onClick={exitModal}
+      >
         {modalState.type === "profile" && <Profile />}
         {modalState.type === "notification" && <Notification />}
         {modalState.type === "session" && <Session />}

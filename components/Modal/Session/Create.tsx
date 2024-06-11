@@ -287,13 +287,15 @@ const Create: React.FC = () => {
     <>
       <form
         className={styles.sessionContainerCreate}
-        onClick={(e) => e.stopPropagation()}
+        // onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
       >
         {status === "executing" && <Loader />}
-        <span className={styles.closeIcon}>
-          <MdClose onClick={() => exitModal()} />
-        </span>
+        {status !== "executing" && (
+          <span className={styles.closeIcon}>
+            <MdClose onClick={() => exitModal()} />
+          </span>
+        )}
         <div className={styles.header}>
           <h2>Create Session</h2>
         </div>

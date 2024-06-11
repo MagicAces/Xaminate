@@ -156,15 +156,15 @@
 
         @media (max-width: 400px) {
             width: 95%;
-            
+
             .profile {
-                    .inputBox {
-                        .nameBox {
-                            width: 100%;
-                        }
-            
+                .inputBox {
+                    .nameBox {
+                        width: 100%;
                     }
+
                 }
+            }
         }
     }
 
@@ -626,6 +626,112 @@
 
         .errorInput {
             border: 1px solid $rejected-color !important;
+        }
+    }
+
+    .sessionContainerFilter {
+        padding: 1.5rem 2rem;
+        margin: 1.5rem;
+        box-shadow: 0 3px 3px 0 $dark-shadow;
+        background-color: $secondary-background;
+        width: 80%;
+        max-width: 450px;
+        position: relative;
+        border-radius: 0.5rem;
+        @include flexin($justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 2rem);
+
+
+        .filterColumn {
+            @include flexin($justify: flex-end,
+                $align: stretch,
+                $direction: column,
+                $gap: 1.5rem);
+
+            .venueInput,
+            .statusInput {
+                border: 1px solid $border-color;
+                border-radius: 0.6rem;
+            }
+
+            .calendar,
+            .react-datepicker__time-box,
+            .react-datepicker__navigation {
+                background-color: $border-color !important;
+                font-family: inherit !important;
+                color: $text-color !important;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            .day,
+            .time {
+                color: $text-color ;
+                font-family: inherit !important;
+            }
+
+            .filterSessionTime {
+                width: 100%;
+                @include flexin($justify: space-between,
+                    $align: center,
+                    $gap: 2rem);
+
+                background-color: $secondary-background;
+                padding: 0.5rem 1rem;
+                box-shadow: 0 4px 4px 0 $dark-shadow;
+                height: 37px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                border: 1px solid $border-color;
+                white-space: nowrap;
+                border-radius: 0.7rem;
+                // border: 1px solid transparent;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+                .placeholder {
+                    font-size: 13px;
+                    color: gray;
+                }
+
+                svg {
+                    font-size: 16px;
+                }
+
+                span {
+                    font-size: 13px;
+                }
+
+                svg:hover {
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                }
+
+                .timeIcons {
+                    @include flexin($justify: flex-end,
+                        $align: center,
+                        $gap: 0.6rem);
+                }
+            }
+
+            .filterSessionTime:hover {
+
+                svg {
+                    color: $hover-green;
+                }
+            }
+
+        }
+
+        .filterButton {
+            padding: 10px;
+            border-radius: 0.7rem;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            background-color: $accent-green;
+            font-size: 14px;
+
+
+            @include flexin();
         }
     }
 }

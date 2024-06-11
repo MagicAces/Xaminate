@@ -113,3 +113,32 @@ export const formatToCCTVTimestamp = (isoString: string): string => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
+
+export const isSessionFilterEmpty = (filters: {
+  venue: number;
+  status: string;
+  startTime: string;
+  endTime: string;
+}) => {
+  let empty = true;
+
+  if (filters.status.length > 0) empty = false;
+  if (filters.endTime.length > 0) empty = false;
+  if (filters.startTime.length > 0) empty = false;
+  if (filters.venue > 0) empty = false;
+
+  return empty;
+};
+
+export const formatISODateToDDMMYYYY = (isoDateString: string): string => {
+  const date = new Date(isoDateString);
+
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const dayString = day < 10 ? `0${day}` : `${day}`;
+  const monthString = month < 10 ? `0${month}` : `${month}`;
+
+  return `${dayString}/${monthString}/${year}`;
+};
