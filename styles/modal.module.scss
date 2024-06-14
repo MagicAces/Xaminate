@@ -397,6 +397,8 @@
 
         @media (max-width: 400px) {
             width: 95%;
+            margin: 1rem;
+            height: 80%;
         }
 
         .errorBox {
@@ -510,6 +512,7 @@
 
                 }
 
+
                 .venueRow {
                     @include flexin($justify: stretch,
                         $align: stretch,
@@ -532,6 +535,18 @@
                 }
 
                 .timeRow {
+
+                    @media (max-width: 700px) {
+                        flex-direction: column;
+                        gap: 2rem;
+
+
+                        &>div {
+                            flex-basis: 100%;
+
+                            width: 100%;
+                        }
+                    }
 
                     .calendar,
                     .react-datepicker__time-box,
@@ -604,12 +619,29 @@
                     }
                 }
 
+                .courseRow,
+                .lastRow {
+                    @media (max-width: 700px) {
+                        flex-direction: column;
+                        gap: 2rem;
+
+
+                        &>div {
+                            flex-basis: 100%;
+
+                            width: 100%;
+                        }
+                    }
+                }
+
             }
         }
 
         button.submit {
             background-color: $accent-green;
             margin: 0 2rem 1.5rem;
+            font-size: 14px;
+            padding: 0.5rem 2rem;
         }
 
         button.submit:hover {
@@ -618,6 +650,374 @@
 
         button.submit:disabled {
             background-color: $hover-green;
+        }
+
+        .errorLabel {
+            color: $rejected-color;
+        }
+
+        .errorInput {
+            border: 1px solid $rejected-color !important;
+        }
+    }
+
+    .sessionContainerEdit {
+        margin: 1.5rem;
+        height: 75%;
+        box-shadow: 0 4px 4px 0 $dark-shadow;
+        background-color: $secondary-background;
+        position: relative;
+        border-radius: 0.5rem;
+        @include flexin($justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1.7rem);
+
+        width: 650px;
+        min-height: 500px;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+        @media (max-width: 870px) {
+            width: 85%;
+        }
+
+        @media (max-width: 400px) {
+            width: 95%;
+            margin: 1rem;
+            height: 80%;
+        }
+
+        .errorBox {
+            padding: 0.65rem 1rem;
+            margin: 0 1.5rem;
+            background-color: $highlight-color;
+            box-shadow: 0 0 0 1px $lighter-red;
+            color: $rejected-color;
+            border-radius: 0.4rem;
+            opacity: 1;
+            transition: all 1s cubic-bezier(0.6, 0.2, 0.2, 1) 2s;
+
+            @include flexin ($justify: space-between,
+                $gap: 1rem);
+
+            svg {
+                font-size: 1.15rem;
+            }
+
+            svg:hover {
+                cursor: pointer;
+                color: $lighter-red;
+            }
+
+            span {
+                @include flexin($justify: left, $gap: 0.4rem);
+
+                span {
+                    @include flexin();
+                }
+            }
+        }
+
+        .header {
+            padding: 1.5rem 2rem 0;
+            width: 100%;
+
+            @media (max-width: 870px) {
+                padding: 1.2rem 1.4rem 0;
+            }
+
+            @media (max-width: 400px) {
+                width: 95%;
+                padding: 1rem 1rem 0;
+            }
+        }
+
+        .scrollContainer {
+            width: 100%;
+            height: 100%;
+
+            .scrollContent {
+                @include flexin($justify: space-between,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 2rem);
+                padding: 0 2rem;
+                width: 100%;
+
+                &>div {
+                    // width: 100%;
+                    @include flexin($justify: stretch,
+                        $align: flex-start,
+                        $gap: 2rem);
+
+                    &>div {
+                        flex-grow: 1;
+                        flex-basis: 50%;
+                        position: relative;
+                        @include flexin($justify: stretch,
+                            $align: stretch,
+                            $direction: column,
+                            $gap: 0.4rem);
+                    }
+
+                    label {
+                        font-size: 13px;
+                        font-weight: 200;
+                    }
+
+                    input {
+                        background-color: $border-color;
+                        outline: none;
+                        border: 1px solid transparent;
+                        padding: 0.5rem 1rem;
+                        border-radius: 0.5rem;
+                        font-size: 14px;
+                        width: 100%;
+                        color: $text-color;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                        box-shadow: 0 3px 3px 0 $dark-shadow;
+                    }
+
+                    input:focus,
+                    input:active {
+                        box-shadow: 0 0 0 1px $accent-dark-green !important;
+                    }
+
+                    .top {
+                        @include flexin($justify: space-between,
+                            $align: center,
+                            $gap: 2rem);
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+                        svg {
+                            font-size: 20px;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                        }
+
+                        svg:hover {
+                            color: $hover-green;
+                            cursor: pointer;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                        }
+                    }
+
+                    .bottom {
+                        @include flexin($justify: stretch, $align: stretch, $direction: column, $gap: 0.6rem);
+                    }
+
+                }
+
+                .venueRow {
+                    @include flexin($justify: stretch,
+                        $align: stretch,
+                        $gap: 0.4rem,
+                        $direction: column);
+
+                    .venueInput {
+                        background-color: $secondary-background;
+                        height: 35px;
+                        box-shadow: 0 3px 3px 0 $dark-shadow;
+                        border-radius: 0.5rem;
+                        border: 1px solid transparent;
+                    }
+
+                    input:focus,
+                    input:active {
+                        box-shadow: 0 0 0 0 transparent !important;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                    }
+                }
+
+                .timeRow {
+
+                    .calendar,
+                    .react-datepicker__time-box,
+                    .react-datepicker__navigation {
+                        background-color: $border-color !important;
+                        font-family: inherit !important;
+                        color: $text-color !important;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                    }
+
+                    .day,
+                    .time {
+                        color: $text-color ;
+                        font-family: inherit !important;
+                    }
+
+                    @media (max-width: 700px) {
+                        flex-direction: column;
+                        gap: 2rem;
+
+                        &>div {
+                            flex-basis: 100%;
+                            width: 100%;
+                        }
+                    }
+
+                    .sessionTime {
+                        width: 100%;
+                        @include flexin($justify: space-between,
+                            $align: center,
+                            $gap: 2rem);
+
+                        background-color: $border-color;
+                        padding: 0.5rem 1rem;
+                        box-shadow: 0 3px 3px 0 $dark-shadow;
+                        height: 35px;
+                        border-radius: 0.5rem;
+                        border: 1px solid transparent;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+                        .placeholder {
+                            color: gray;
+                        }
+
+                        svg:hover {
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                        }
+                    }
+
+                    .sessionTime:hover {
+
+                        svg {
+                            color: $hover-green;
+                        }
+                    }
+
+                    .sessionTime:active,
+                    .sessionTime:focus {
+                        box-shadow: 0 0 0 1px $accent-dark-green !important;
+                    }
+                }
+
+                .courseRow {
+
+                    @media (max-width: 700px) {
+                        flex-direction: column;
+                        gap: 2rem;
+
+
+                        &>div {
+                            flex-basis: 100%;
+
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .courseName,
+                .courseCodes,
+                .invigilators,
+                .classes {
+                    position: relative;
+
+                    svg {
+                        position: absolute;
+                        right: 1rem;
+                        top: 0.5rem;
+                        font-size: 18px;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                    }
+
+                    svg:hover {
+                        color: $hover-green;
+                        cursor: pointer;
+                    }
+                }
+
+                .commentsBox,
+                .invigilatorsBox {
+                    @include flexin($justify: stretch,
+                        $align: stretch,
+                        $direction: column,
+                        $gap: 0.5rem);
+                }
+
+                .comments {
+
+                    flex-grow: 1;
+                    padding: 0.5rem 1rem;
+                    outline: none;
+                    border: 1px solid transparent;
+                    background-color: $border-color;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    border-radius: 0.5rem;
+                    color: $text-color;
+                    font-family: inherit;
+                }
+
+                @media (max-width: 870px) {
+                    padding: 0 1.4rem;
+                }
+
+                @media (max-width: 400px) {
+                    width: 95%;
+                    padding: 0 1rem;
+                }
+            }
+        }
+
+        .navigateButtons {
+            padding: 0 2rem 1.5rem;
+            @include flexin($justify: stretch,
+                $align: center,
+                $gap: 1.5rem);
+
+            &>button {
+                flex-basis: 50%;
+                font-size: 14px;
+                padding: 0.5rem 1rem;
+            }
+
+
+            @media (max-width: 870px) {
+                padding: 0 1.4rem 1.2rem;
+            }
+
+            @media (max-width: 400px) {
+                width: 95%;
+                padding: 0 1rem 1rem;
+            }
+
+            button.nextButton,
+            button.saveButton {
+                border: 1px solid transparent;
+                background-color: $accent-green;
+            }
+
+            button.nextButton:hover,
+            button.saveButton:hover {
+                background-color: $accent-dark-green;
+                cursor: pointer;
+            }
+
+            button.nextButton:disabled,
+            button.saveButton:disabled {
+                background-color: $border-color;
+                cursor: disabled;
+            }
+
+            button.backButton,
+            button.cancelButton {
+                border: 1px solid $accent-green;
+                background-color: transparent;
+            }
+
+            button.backButton:hover,
+            button.cancelButton:hover {
+                border-color: $hover-green;
+                color: $hover-green;
+                cursor: pointer;
+            }
+
+            button.backButton:disabled,
+            button.cancelButton:disabled {
+                background-color: $border-color;
+                border: 1px solid transparent;
+                cursor: disabled;
+            }
+
         }
 
         .errorLabel {
@@ -733,5 +1133,9 @@
 
             @include flexin();
         }
+    }
+
+    .sessionContainerEnd {
+        
     }
 }

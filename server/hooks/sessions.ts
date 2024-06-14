@@ -1,6 +1,6 @@
 import { SessionQuery } from "@/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getSessions, getSession } from "../actions/sessions";
+import { getSessions, getSession, getSessionForEdit } from "../actions/sessions";
 
 export function useGetSessions(query: SessionQuery) {
   return useQuery({
@@ -23,3 +23,14 @@ export function useGetSession(id: number) {
     // placeholderData: keepPreviousData,
   });
 }
+
+export function useGetSessionForEdit(id: number) {
+  return useQuery({
+    queryFn: async () => {
+      const data = await getSessionForEdit(id);
+      return data;
+    },
+    queryKey: ["sessionForEdit", { id }],
+  });
+}
+

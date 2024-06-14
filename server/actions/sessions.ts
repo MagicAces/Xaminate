@@ -1,12 +1,18 @@
 "use server";
 
 import { authAction } from "./actions";
-import { SessionInput, sessionSchema } from "@/lib/schema";
+import {
+  SessionInput,
+  sessionSchema,
+  sessionEditSchema,
+  SessionEdit,
+  sessionEndSchema,
+} from "@/lib/schema";
 import prisma from "@/prisma/prisma";
 import { revalidatePath } from "next/cache";
 import _ from "lodash";
 import { SessionQuery } from "@/types";
-import { Prisma } from "@prisma/client";
+import { Prisma, TempStatus } from "@prisma/client";
 import { formatDuration, getStatus, getStatusMessage } from "@/utils/functs";
 import { format } from "date-fns";
 
@@ -284,7 +290,7 @@ export const getSession = async (id: number) => {
     const endTime = foundSession.end_time;
 
     const duration = formatDuration(new Date(startTime), new Date(endTime));
-    
+
     const status = getStatusMessage(new Date(startTime), new Date(endTime));
     const formattedReports = foundSession.reports.map((report) => ({
       ...report,
@@ -298,7 +304,12 @@ export const getSession = async (id: number) => {
       created_on: foundSession.created_on.toISOString(),
       updated_at: foundSession.updated_at.toISOString(),
       actual_end_time: foundSession?.actual_end_time?.toISOString(),
-      actualDuration: foundSession?.actual_end_time ? formatDuration(new Date(startTime), new Date(foundSession?.actual_end_time)) : undefined,
+      actualDuration: foundSession?.actual_end_time
+        ? formatDuration(
+            new Date(startTime),
+            new Date(foundSession?.actual_end_time)
+          )
+        : undefined,
       duration,
       status,
       reports: formattedReports,
@@ -309,3 +320,180 @@ export const getSession = async (id: number) => {
     throw error;
   }
 };
+export const getSessionForEdit = async (id: number) => {
+  try {
+    if (!id) return { error: "Id not found" };
+
+    const foundSession = await prisma.session.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        course_names: true,
+        course_codes: true,
+        start_time: true,
+        end_time: true,
+        classes: true,
+        venue: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        comments: true,
+        invigilators: true,
+      },
+    });
+
+    if (!foundSession) return { error: "Session not found" };
+
+    const { start_time, end_time, course_codes, course_names, ...rest } =
+      foundSession;
+
+    const formattedSession = {
+      ...rest,
+      sessionStart: start_time.toISOString(),
+      sessionEnd: end_time.toISOString(),
+      courseCodes: course_codes,
+      courseNames: course_names,
+    };
+
+    return { success: formattedSession };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const editSession = authAction(
+  sessionEditSchema,
+  async (session: SessionEdit, { userId }) => {
+    try {
+      if (!session.sessionStart || !session.sessionEnd)
+        return { error: "Dates cannot be empty" };
+
+      const updateStatus = (startTime: Date, endTime: Date): TempStatus => {
+        const now = new Date();
+        if (endTime < now) return TempStatus.closed;
+        if (startTime > now) return TempStatus.pending;
+        return TempStatus.active;
+      };
+
+      const updatedSession = await prisma.$transaction(async (prisma) => {
+        if (!session.sessionStart || !session.sessionEnd) return null;
+
+        const sessionData = await prisma.session.findUnique({
+          where: { id: session.id },
+        });
+
+        if (!sessionData) return { error: "Session not found" };
+
+        const newTempStatus = updateStatus(
+          new Date(session.sessionStart),
+          new Date(session.sessionEnd)
+        );
+
+        const updatedSession = await prisma.session.update({
+          where: { id: session.id },
+          data: {
+            start_time: session.sessionStart,
+            end_time: session.sessionEnd,
+            created_by: Number(userId),
+            course_names: session.courseNames.map((course) =>
+              _.startCase(_.lowerCase(course))
+            ),
+            course_codes: session.courseCodes.map((code) => _.upperCase(code)),
+            classes: session.classes.map((classe) => _.upperCase(classe)),
+            invigilators: session.invigilators.map((invigilator) =>
+              _.startCase(_.lowerCase(invigilator))
+            ),
+            venue_id: session.venue,
+            comments: session?.comments ? session.comments : "",
+            temp_status: newTempStatus,
+            actual_end_time: newTempStatus !== "closed" ? undefined : sessionData.actual_end_time
+          },
+        });
+
+        await prisma.notification.create({
+          data: {
+            category: "Session",
+            message: `Session #${updatedSession.id} has been updated. It ${
+              newTempStatus === "pending"
+                ? `will start at ${format(
+                    new Date(session.sessionStart),
+                    "h:mm a"
+                  )}`
+                : newTempStatus === "active"
+                ? `started at ${format(
+                    new Date(session.sessionStart),
+                    "h:mm a"
+                  )}`
+                : `ended at ${format(new Date(session.sessionEnd), "h:mm a")}`
+            }`,
+            category_id: updatedSession.id,
+          },
+        });
+
+        return updatedSession;
+      });
+
+      revalidatePath("/");
+
+      if (updatedSession) return { success: "Session Updated" };
+      return { error: "Session could not be updated" };
+    } catch (error) {
+      console.error(error);
+      return { error: "Something wrong occurred" };
+    }
+  }
+);
+
+export const endSession = authAction(
+  sessionEndSchema,
+  async ({ id }: { id: number }, { userId }) => {
+    try {
+      if (!id) return { error: "Id not found" };
+
+      const endTime = new Date();
+
+      const endedSession = await prisma.$transaction(async (prisma) => {
+        const updatedSession = await prisma.session.update({
+          where: { id },
+          data: {
+            actual_end_time: endTime,
+            terminated_by: Number(userId),
+            temp_status: "closed",
+          },
+        });
+
+        const newStatus = getStatusMessage(
+          new Date(updatedSession.start_time),
+          endTime
+        );
+        const notificationMessage =
+          newStatus === "closed"
+            ? `Session #${id} has been terminated. Status is closed.`
+            : `Session #${id} has been terminated. Status changed from ${newStatus} to closed.`;
+
+        await prisma.notification.create({
+          data: {
+            category: "Session",
+            message: notificationMessage,
+            category_id: id,
+          },
+        });
+
+        return updatedSession;
+      });
+
+      revalidatePath("/");
+
+      if (endedSession) return { success: "Session Ended" };
+      return { error: "Session could not be ended" };
+    } catch (error) {
+      console.error(error);
+      return { error: "Something wrong occurred" };
+    }
+  }
+);

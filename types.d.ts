@@ -57,23 +57,25 @@ export interface SelectOption {
   readonly label: string;
 }
 
-export type Session =
-  | {
-      type: "edit" | "create";
-      sessionStart: Date | string | null;
-      sessionEnd: Date | string | null;
-      comments?: string;
-      classes: string[];
-      courseNames: string[];
-      invigilators: string[];
-      courseCodes: string[];
-      venue: number;
-    }
-  | {};
+export type SessionEdit = {
+  id: number;
+  sessionStart: string;
+  sessionEnd: string;
+  comments: string | null;
+  classes: string[];
+  courseNames: string[];
+  invigilators: string[];
+  courseCodes: string[];
+  venue: {
+    id: number;
+    name: string;
+  };
+};
 
 export interface ModalSliceState {
   venues: Venue[];
-  session: Session;
+  session: SessionEdit | {};
+  reload: boolean;
 }
 
 export interface Notification {

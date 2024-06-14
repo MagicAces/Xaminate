@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ModalSliceState, Session, Venue } from "@/types";
+import { ModalSliceState, Venue, SessionEdit } from "@/types";
 
 const initialState: ModalSliceState = {
   venues: [],
   session: {},
+  reload: false,
 };
 
 const modalSlice = createSlice({
@@ -13,15 +14,20 @@ const modalSlice = createSlice({
     setVenues: (state, action: PayloadAction<Venue[]>) => {
       state.venues = action.payload;
     },
-    setSession: (state, action: PayloadAction<Session>) => {
+    setSession: (state, action: PayloadAction<SessionEdit>) => {
       state.session = action.payload;
     },
     closeModal: (state) => {
       state.session = {};
+      state.reload = false;
+    },
+    setReload: (state, action: PayloadAction<boolean>) => {
+      state.reload = action.payload;
     },
   },
 });
 
-export const { setVenues, setSession, closeModal } = modalSlice.actions;
+export const { setVenues, setSession, closeModal, setReload } =
+  modalSlice.actions;
 
 export default modalSlice.reducer;

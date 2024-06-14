@@ -13,12 +13,15 @@ import { setSession } from "@/redux/slices/sessionSlice";
 import Skeleton from "react-loading-skeleton";
 import Reports from "./Reports";
 import Details from "./Details";
+import { useModal } from "@/utils/context";
+import Modal from "../Modal/Modal";
 
 const Session = ({ id }: { id: number }) => {
   const { data, isLoading, error } = useGetSession(id);
   const { session } = useSelector((state: any) => state.session);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { modalState } = useModal();
 
   useEffect(() => {
     if (error || data?.error) {
@@ -33,6 +36,8 @@ const Session = ({ id }: { id: number }) => {
   return (
     <>
       {isLoading && <Loader curved={false} />}
+
+      {modalState.mode > 0 && modalState.id > 0 && <Modal />}
       <div className={styles.sessionPage}>
         {!session || session?.id !== id ? (
           <Skeleton

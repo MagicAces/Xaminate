@@ -16,8 +16,9 @@ import { IoIosEye } from "react-icons/io";
 import { GiExitDoor } from "react-icons/gi";
 import { MdPinEnd } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/utils/context";
 
-const SessionIcon = ({ id, status }: { id: number; status: string }) => {
+const SessionIcon = ({ id, status, openModal }: { id: number; status: string, openModal: (type: string) => void }) => {
   const router = useRouter();
 
   const sessionIconRef = useRef(null);
@@ -55,6 +56,7 @@ const SessionIcon = ({ id, status }: { id: number; status: string }) => {
       >
         <MenuItem
           className={`${styles.sessionIconEdit} ${styles.sessionIconItem}`}
+          onClick={() => openModal("edit")}
         >
           <FaRegEdit />
           <span>Edit Session</span>
@@ -71,6 +73,7 @@ const SessionIcon = ({ id, status }: { id: number; status: string }) => {
         {status === "active" && (
           <MenuItem
             className={`${styles.sessionIconEnd} ${styles.sessionIconItem}`}
+            onClick={() => openModal("end")}
           >
             <MdPinEnd />
             <span>End Session</span>
@@ -79,6 +82,7 @@ const SessionIcon = ({ id, status }: { id: number; status: string }) => {
         {status === "pending" && (
           <MenuItem
             className={`${styles.sessionIconExit} ${styles.sessionIconItem}`}
+            onClick={() => openModal("end")}
           >
             <GiExitDoor />
             <span>Exit Session</span>

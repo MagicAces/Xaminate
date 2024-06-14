@@ -1,6 +1,6 @@
 import styles from "@/styles/session.module.scss";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SessionRow } from "@/types";
 import { formatArray, formatSessionDate } from "@/utils/functs";
 import { capitalize, toUpper } from "lodash";
@@ -8,14 +8,45 @@ import SessionScrollbars from "../Utils/SessionScrollbars";
 import Skeleton from "react-loading-skeleton";
 import SessionIcon from "../Utils/SessionIcon";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/utils/context";
+import Modal from "../Modal/Modal";
+import { setReload, setSession } from "@/redux/slices/modalSlice";
 
 const Body = () => {
   const { data, isDisabled } = useSelector((state: any) => state.session);
+  const { modalState, setState } = useModal();
 
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const showModal = (session: SessionRow, type: string) => {
+    if (type == "edit") {    
+      setState(session.id, 3, "session");
+      dispatch(setReload(true));
+      dispatch(
+        setSession({
+          id: session.id,
+          sessionStart: "",
+          sessionEnd: "",
+          comments: "",
+          classes: [],
+          courseNames: [],
+          courseCodes: session.course_codes,
+          invigilators: [],
+          venue: {
+            id: session.venue_id,
+            name: session.venue_name,
+          },
+        })
+      );
+    } else if (type === "end") {
+      setState(session.id, 4, "session");
+    }
+  };
 
   return (
     <>
+      {modalState.mode > 0 && modalState.id > 0 && <Modal />}
       <ScrollSync>
         <div className={styles.sessionContentBody}>
           <div className={styles.sessionContentBodyHeader}>
@@ -97,6 +128,7 @@ const Body = () => {
                           <SessionIcon
                             id={session.id}
                             status={session.status}
+                            openModal={(type) => showModal(session, type)}
                           />
                         </span>
                       </div>

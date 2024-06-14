@@ -127,6 +127,45 @@ export const sessionSchema = object({
   }
 );
 
+export const sessionEditSchema = object({
+  id: number({ required_error: "Session Id is Required" }).gte(1, {
+    message: "Id should be greater than 1",
+  }),
+  courseNames: arrayNonEmpty("courseNames"),
+  courseCodes: arrayNonEmpty("courseCodes"),
+  classes: arrayNonEmpty("classes"),
+  venue: number({ required_error: "Venue Id is Required" }).gte(1, {
+    message: "Id should be greater than one",
+  }),
+  sessionStart: date({
+    required_error: "Please select a date and time",
+    invalid_type_error: "That's not a date!",
+  }).nullable(),
+  sessionEnd: date({
+    required_error: "Please select a date and time",
+    invalid_type_error: "That's not a date!",
+  }).nullable(),
+  invigilators: arrayNonEmpty("invigilators"),
+  comments: string().optional(),
+}).refine(
+  (data) => {
+    if (data.sessionStart === null || data.sessionEnd === null) {
+      return false;
+    }
+    return data.sessionEnd > data.sessionStart;
+  },
+  {
+    message:
+      "Session end must be a date and time after the start of the session.",
+  }
+);
+
+export const sessionEndSchema = object({
+  id: number({ required_error: "Session Id is Required" }).gte(1, {
+    message: "Id should be greater than 1",
+  }),
+});
+
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type AutheniticateInput = TypeOf<typeof authenticateSchema>;
 export type RegisterInput = TypeOf<typeof registerSchema>;
@@ -134,4 +173,5 @@ export type EmailInput = TypeOf<typeof emailSchema>;
 export type OTPInput = TypeOf<typeof OTPSchema>;
 export type PasswordInput = TypeOf<typeof passwordSchema>;
 export type ProfileInput = TypeOf<typeof profileSchema>;
-export type SessionInput = TypeOf<typeof sessionSchema>
+export type SessionInput = TypeOf<typeof sessionSchema>;
+export type SessionEdit = TypeOf<typeof sessionEditSchema>;
