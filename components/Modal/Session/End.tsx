@@ -1,9 +1,8 @@
 "use client";
 import Button from "@/components/Utils/Button";
 import Loader from "@/components/Utils/Loader";
-import { closeModal } from "@/redux/slices/modalSlice";
 import { endSession } from "@/server/actions/sessions";
-import styles from "@/styles/session.module.scss";
+import styles from "@/styles/modal.module.scss";
 import { useModal } from "@/utils/context";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect } from "react";
@@ -48,8 +47,17 @@ const End = () => {
     <>
       <form className={styles.sessionContainerEnd} onSubmit={handleSubmit}>
         {status === "executing" && <Loader />}
+        {status !== "executing" && (
+          <span className={styles.closeIcon}>
+            <MdClose
+              onClick={() => {
+                exitModal();
+              }}
+            />
+          </span>
+        )}
         <div className={styles.header}>
-          <h2>End Session</h2>
+          <h2>End Session #{modalState.id}</h2>
         </div>
         <div className={styles.body}>
           <p>Are you sure you want to end this session?</p>

@@ -4,6 +4,7 @@ export const venueOptions = (venues: Venue[]): readonly SelectOption[] => {
   return venues.map((venue) => ({
     value: venue?.id,
     label: venue?.name,
+    isDisabled: venue?.occupied
   }));
 };
 

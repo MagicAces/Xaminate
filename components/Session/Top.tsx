@@ -1,15 +1,14 @@
-import { IoMdArrowBack } from "react-icons/io";
-import styles from "@/styles/session.module.scss";
-import { useParams, useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { SessionOutput } from "@/types";
-import { capitalize } from "lodash";
-import { GiExitDoor } from "react-icons/gi";
-import { MdPinEnd } from "react-icons/md";
-import { IoMdStats } from "react-icons/io";
-import { FaRegEdit } from "react-icons/fa";
-import { useModal } from "@/utils/context";
 import { setReload, setSession } from "@/redux/slices/modalSlice";
+import styles from "@/styles/session.module.scss";
+import { SessionOutput } from "@/types";
+import { useModal } from "@/utils/context";
+import { capitalize } from "lodash";
+import { useParams, useRouter } from "next/navigation";
+import { FaRegEdit } from "react-icons/fa";
+import { GiExitDoor } from "react-icons/gi";
+import { IoMdArrowBack, IoMdStats } from "react-icons/io";
+import { MdPinEnd } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 
 const Top = () => {
   const { id }: { id: string } = useParams();
@@ -66,7 +65,7 @@ const Top = () => {
               onClick={() => showModal("end")}
             >
               <GiExitDoor />
-              End
+              Exit
             </button>
           )}
           {session?.status === "active" && (

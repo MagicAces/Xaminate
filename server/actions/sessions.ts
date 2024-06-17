@@ -22,8 +22,20 @@ export const createSession = authAction(
     try {
       if (!session.sessionStart || !session.sessionEnd)
         return { error: "Dates can not be empty" };
+
+      const venue = await prisma.venue.findUnique({
+        where: {
+          id: session.venue,
+        },
+      });
+
+      if (!venue) return { error: "Venue not found" };
+      if (venue?.occupied_from) return { error: "Venue is not available for use" };
+
       const newSession = await prisma.$transaction(async (prisma) => {
         if (!session.sessionStart || !session.sessionEnd) return null;
+        
+        
         const newSession = await prisma.session.create({
           data: {
             start_time: session.sessionStart,
@@ -40,9 +52,16 @@ export const createSession = authAction(
             venue_id: session.venue,
             temp_status:
               session.sessionStart < new Date() ? "pending" : "active",
+            actual_end_time: session.sessionEnd,
           },
         });
 
+        await prisma.venue.update({
+          where: { id: session.venue },
+          data: {
+            occupied: true
+          }
+        });
         await prisma.notification.create({
           data: {
             category: "Session",
@@ -71,8 +90,10 @@ export const createSession = authAction(
         return newSession;
       });
       revalidatePath("/");
+      revalidatePath("/sessions");
 
-      if (newSession) return { success: "Session Created" };
+      if (newSession)
+        return { success: "Session Created" };
       return { error: "Session could not be created" };
     } catch (error) {
       console.error(error);
@@ -138,6 +159,7 @@ export const getSessions = async (query: SessionQuery) => {
             course_codes: true,
             start_time: true,
             end_time: true,
+            actual_end_time: true,
             venue: {
               select: {
                 id: true,
@@ -159,7 +181,11 @@ export const getSessions = async (query: SessionQuery) => {
         prisma.session.count({ where }),
         prisma.session.count({
           where: {
-            AND: [...(where.AND as []), { start_time: { gt: new Date() } }],
+            AND: [
+              ...(where.AND as []),
+              { start_time: { gt: new Date() } },
+              { temp_status: { not: TempStatus.closed}}
+            ],
           },
         }),
         prisma.session.count({
@@ -173,7 +199,11 @@ export const getSessions = async (query: SessionQuery) => {
         }),
         prisma.session.count({
           where: {
-            AND: [...(where.AND as []), { end_time: { lt: new Date() } }],
+            AND: [...(where.AND as []), {
+              OR: [
+                { end_time: { lt: new Date() } },
+                { temp_status: { equals: TempStatus.closed}}
+            ] }],
           },
         }),
       ]);
@@ -182,12 +212,21 @@ export const getSessions = async (query: SessionQuery) => {
       const startTime = session.start_time;
       const endTime = session.end_time;
 
-      const { start_time, end_time, _count, venue, attendance, ...rest } =
+      const { start_time, actual_end_time, end_time, _count, venue, attendance, ...rest } =
         session;
 
-      const duration = formatDuration(new Date(startTime), new Date(endTime));
-      const status = getStatusMessage(new Date(startTime), new Date(endTime));
+      
+    const duration = actual_end_time
+      ? startTime >= actual_end_time
+        ? "Terminated"
+        : formatDuration(new Date(startTime), new Date(endTime))
+      : formatDuration(new Date(startTime), new Date(endTime));
 
+    const status = actual_end_time
+      ? startTime >= actual_end_time
+        ? "closed"
+        : getStatusMessage(new Date(startTime), new Date(endTime))
+      : getStatusMessage(new Date(startTime), new Date(endTime));  
       return {
         ...rest,
         reportsCount: _count.reports,
@@ -289,9 +328,17 @@ export const getSession = async (id: number) => {
     const startTime = foundSession.start_time;
     const endTime = foundSession.end_time;
 
-    const duration = formatDuration(new Date(startTime), new Date(endTime));
+    const duration = foundSession?.actual_end_time
+      ? startTime >= foundSession.actual_end_time
+        ? "Terminated"
+        : formatDuration(new Date(startTime), new Date(endTime))
+      : formatDuration(new Date(startTime), new Date(endTime)); ;
 
-    const status = getStatusMessage(new Date(startTime), new Date(endTime));
+    const status = foundSession?.actual_end_time
+      ? startTime >= foundSession.actual_end_time
+        ? "closed"
+        : getStatusMessage(new Date(startTime), new Date(endTime))
+      : getStatusMessage(new Date(startTime), new Date(endTime));  
     const formattedReports = foundSession.reports.map((report) => ({
       ...report,
       created_on: report.created_on.toISOString(),
@@ -373,6 +420,7 @@ export const editSession = authAction(
       if (!session.sessionStart || !session.sessionEnd)
         return { error: "Dates cannot be empty" };
 
+
       const updateStatus = (startTime: Date, endTime: Date): TempStatus => {
         const now = new Date();
         if (endTime < now) return TempStatus.closed;
@@ -389,10 +437,34 @@ export const editSession = authAction(
 
         if (!sessionData) return { error: "Session not found" };
 
-        const newTempStatus = updateStatus(
-          new Date(session.sessionStart),
-          new Date(session.sessionEnd)
-        );
+        if (sessionData.venue_id !== session.venue) {
+
+      await prisma.venue.update({
+        where: {
+          id: session.venue,
+        },
+        data: {
+          occupied: true
+        }
+      });
+          await prisma.venue.update({
+            where: {
+              id: sessionData.venue_id
+            },
+            data: {
+              occupied: false
+            }
+          });
+
+        }
+        const newTempStatus =
+          session.sessionStart.getTime() !== sessionData.start_time.getTime() ||
+          session.sessionEnd.getTime() !== sessionData.end_time.getTime()
+            ? updateStatus(
+                new Date(session.sessionStart),
+                new Date(session.sessionEnd)
+              )
+            : sessionData.temp_status;
 
         const updatedSession = await prisma.session.update({
           where: { id: session.id },
@@ -411,7 +483,12 @@ export const editSession = authAction(
             venue_id: session.venue,
             comments: session?.comments ? session.comments : "",
             temp_status: newTempStatus,
-            actual_end_time: newTempStatus !== "closed" ? undefined : sessionData.actual_end_time
+            actual_end_time:
+              session.sessionEnd.getTime() !== sessionData.end_time.getTime() ||
+              session.sessionStart.getTime() !==
+                sessionData.start_time.getTime()
+                ? session.sessionEnd
+                : sessionData.actual_end_time,
           },
         });
 

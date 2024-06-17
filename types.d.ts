@@ -48,6 +48,8 @@ export interface ModalProviderProps {
 export interface Venue {
   id: number;
   name: string;
+  occupied_from: string | null;
+  occupied_to: string | null;
   created_on: string;
   updated_at: string;
 }
@@ -55,6 +57,7 @@ export interface Venue {
 export interface SelectOption {
   readonly value: number | string;
   readonly label: string;
+  readonly isDisabled?: boolean;
 }
 
 export type SessionEdit = {

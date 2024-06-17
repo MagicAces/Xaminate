@@ -38,16 +38,7 @@ const Sidebar = () => {
     if (error) console.error(error);
 
     if (venues?.length)
-      dispatch(
-        setVenues(
-          venues.map((venue) => ({
-            id: venue.id,
-            name: venue.name,
-            created_on: venue.created_on.toISOString(),
-            updated_at: venue.updated_at.toISOString(),
-          }))
-        )
-      );
+      dispatch(setVenues(venues));
   }, [venues, error, dispatch]);
 
   useEffect(() => {

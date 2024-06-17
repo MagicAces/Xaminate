@@ -21,16 +21,16 @@ async function main() {
     data: venues
   });
   console.log(res)
-  const user = await prisma.examsOfficer.create({
-    data: {
-      first_name: "Oniti",
-      last_name: "Isaac",
-      email: "acestar@gmail.com",
-      password,
-    },
-  });
+  // const user = await prisma.examsOfficer.create({
+  //   data: {
+  //     first_name: "Oniti",
+  //     last_name: "Isaac",
+  //     email: "acestar@gmail.com",
+  //     password,
+  //   },
+  // });
 
-  console.log(user);
+  // console.log(user);
 }
 
 main()

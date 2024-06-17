@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, setReload, setSession } from "@/redux/slices/modalSlice";
 import { editSession } from "@/server/actions/sessions";
 import { useAction } from "next-safe-action/hooks";
+import { isEqual } from "lodash";
 
 const Edit = () => {
   const [page, setPage] = useState(1);
@@ -38,7 +39,6 @@ const Edit = () => {
     }
   }, [error, data, dispatch]);
 
-
   const { execute, status } = useAction(editSession, {
     onSuccess: (data) => {
       if (data?.success) toast.success(data?.success);
@@ -52,6 +52,13 @@ const Edit = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isEqual(session, sessionValue)) {
+      exitModal();
+      dispatch(closeModal());
+      toast.info("No Changes Made");
+      return;
+    }
+
     const { sessionStart, sessionEnd, comments, venue, ...otherVal } =
       sessionValue;
     execute({
@@ -68,24 +75,24 @@ const Edit = () => {
       exitModal();
       dispatch(closeModal());
     }
-  }, [status, exitModal,dispatch]);
+  }, [status, exitModal, dispatch]);
 
   return (
     <>
       <form className={styles.sessionContainerEdit} onSubmit={handleSubmit}>
         {(reload || status === "executing") && <Loader />}
         {status !== "executing" && (
-        <span className={styles.closeIcon}>
-          <MdClose
-            onClick={() => {
-              exitModal();
-              dispatch(closeModal());
-            }}
-          />
-        </span>
+          <span className={styles.closeIcon}>
+            <MdClose
+              onClick={() => {
+                exitModal();
+                dispatch(closeModal());
+              }}
+            />
+          </span>
         )}
         <div className={styles.header}>
-          <h2>Edit Session</h2>
+          <h2>Edit Session #{modalState.id}</h2>
         </div>
         {page === 1 && (
           <Page1

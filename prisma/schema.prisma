@@ -46,11 +46,13 @@ model Notification {
 
 // Define the data model for Venue
 model Venue {
-  id           Int       @id @default(autoincrement())
-  name         String
-  created_on   DateTime  @default(now()) 
-  updated_at   DateTime  @updatedAt
-  session_id   Session[]
+  id                Int           @id @default(autoincrement())
+  name              String
+  occupied_from     DateTime?
+  occupied_to       DateTime?
+  created_on        DateTime      @default(now()) 
+  updated_at        DateTime      @updatedAt
+  session_id        Session[]
 
   @@map("venues")
 }
