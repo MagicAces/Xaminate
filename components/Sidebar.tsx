@@ -37,22 +37,22 @@ const Sidebar = () => {
   useEffect(() => {
     if (error) console.error(error);
 
-    if (venues?.length)
+    if (venues?.length && typeof venues !== "string")
       dispatch(setVenues(venues));
   }, [venues, error, dispatch]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClick);
     return () => {
-      document.removeEventListener("mousedown", handleClick)
-    }
+      document.removeEventListener("mousedown", handleClick);
+    };
   }, []);
 
   const handleClick = (e: MouseEvent) => {
-    if (divRef?.current && !divRef?.current.contains(e.target as Node) ){
+    if (divRef?.current && !divRef?.current.contains(e.target as Node)) {
       dispatch(setFullView(false));
     }
-  }
+  };
   return (
     <>
       {modalState.mode > 0 && <Modal />}

@@ -83,11 +83,21 @@ const Top: React.FC = () => {
   );
   const { venues } = useSelector((state: any) => state.modal);
   const [isClient, setIsClient] = useState(false);
+  const [options, setOptions] = useState<SelectOption[]>([]);
   const { setState, modalState } = useModal();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    const updateOptions = async () => {
+      const updatedOpts = await venueOptions(venues, null, null);
+      setOptions(updatedOpts);
+    };
+
+    updateOptions();
+  }, [venues]);
 
   const handleSelectChange = (data: any, name: string) => {
     dispatch(updateSessionFilters({ name, value: data?.value ?? 0 }));
@@ -122,7 +132,10 @@ const Top: React.FC = () => {
   return (
     <>
       {modalState.mode > 0 && <Modal />}
-      <div className={styles.sessionContentTop} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.sessionContentTop}
+        onClick={(e) => e.stopPropagation()}
+      >
         <form className={styles.searchBox} onSubmit={handleSearchSubmit}>
           <MdSearch />
           <input
@@ -155,8 +168,8 @@ const Top: React.FC = () => {
               classNamePrefix="filter-select"
               name="venue"
               tabIndex={1}
-              value={venueOptions(venues).filter(
-                (venue) => venue?.value === sessionsBox?.filter?.venue
+              value={options.find(
+                (option) => option?.value === sessionsBox?.filter?.venue
               )}
               components={{ DropdownIndicator }}
               noOptionsMessage={({ inputValue }) => "No Venues Found"}
@@ -171,7 +184,7 @@ const Top: React.FC = () => {
                 }),
                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
               }}
-              options={venueOptions(venues)}
+              options={options}
               placeholder={"Select Venue"}
               menuPortalTarget={isClient ? document.body : null}
             />

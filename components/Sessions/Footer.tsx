@@ -50,7 +50,6 @@ const Footer = () => {
     setPaginationInput(sessionsBox.query.page.toString());
   }, [sessionsBox]);
 
-  console.log(isDisabled);
 
   return (
     <>

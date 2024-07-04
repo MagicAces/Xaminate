@@ -1,3 +1,4 @@
+
 export const formatDuration = (start: Date, end: Date): string => {
   const diffMs = end.getTime() - start.getTime();
   const date = new Date(diffMs);
@@ -143,12 +144,3 @@ export const formatISODateToDDMMYYYY = (isoDateString: string): string => {
   return `${dayString}/${monthString}/${year}`;
 };
 
-export const isVenueAvailable = (occupied_from: Date, occupied_to: Date, sessionStart: Date, sessionEnd: Date): boolean => {
-  if (
-    (sessionStart < occupied_from && sessionEnd <= occupied_from) ||
-    (sessionStart >= occupied_from && sessionEnd > occupied_to)
-  )
-    return true;
-  return false;
-
-}

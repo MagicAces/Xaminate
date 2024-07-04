@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     // Check if the request headers contain a bearer token
     const authorizationHeader = req.headers.get("Authorization");
-    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer")) {
       return NextResponse.json(
         { status: "error", message: "Unauthorized" },
         { status: 401 }

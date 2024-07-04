@@ -39,8 +39,8 @@ const Edit = () => {
     }
   }, [error, data, dispatch]);
 
-  const { execute, status } = useAction(editSession, {
-    onSuccess: (data) => {
+  const { execute, status, result } = useAction(editSession, {
+    onSuccess: (data: any) => {
       if (data?.success) toast.success(data?.success);
       if (data?.error) toast.error(data?.error);
     },
@@ -71,7 +71,7 @@ const Edit = () => {
   };
 
   useEffect(() => {
-    if (status === "hasSucceeded") {
+    if (status === "hasSucceeded" && result?.data?.success) {
       exitModal();
       dispatch(closeModal());
     }

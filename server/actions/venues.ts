@@ -3,18 +3,26 @@ import prisma from "@/prisma/prisma";
 
 export const getVenues = async () => {
   try {
-    const venues = await prisma.venue.findMany();
+    const venues = await prisma.venue.findMany({
+      include: {
+        bookings: true,
+      },
+    });
 
     const formattedVenues = venues.map((venue) => {
-      const { occupied_from, created_on, updated_at, occupied_to, ...rest } =
-        venue;
+      const { created_on, updated_at, bookings,...rest } = venue;
+
+      const newBookings = bookings.map((booking) => ({
+        ...booking,
+        start_time: booking.start_time.toISOString(),
+        end_time: booking.end_time.toISOString(),
+      }));
 
       return {
         ...rest,
-        occupied_to: occupied_to ? occupied_to.toISOString() : null,
-        occupied_from: occupied_from ? occupied_from.toISOString() : null,
         created_on: created_on.toISOString(),
         updated_at: updated_at.toISOString(),
+        bookings: newBookings
       };
     });
     return { success: formattedVenues };

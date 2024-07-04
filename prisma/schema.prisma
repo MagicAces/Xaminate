@@ -44,20 +44,17 @@ model Notification {
   @@map("notifications")
 }
 
-// Define the data model for Venue
 model Venue {
   id                Int           @id @default(autoincrement())
   name              String
-  occupied_from     DateTime?
-  occupied_to       DateTime?
   created_on        DateTime      @default(now()) 
   updated_at        DateTime      @updatedAt
-  session_id        Session[]
+  sessions          Session[]
+  bookings          VenueBooking[]
 
   @@map("venues")
 }
 
-// Define the data model for Session
 model Session {
   id              Int            @id @default(autoincrement())
   start_time      DateTime
@@ -76,12 +73,27 @@ model Session {
   reports         Report[]
   temp_status     TempStatus     @default(pending)
   attendance      Attendance?
+  booking         VenueBooking[]
 
   venue           Venue          @relation(fields: [venue_id], references: [id])
   terminator      ExamsOfficer?  @relation("Terminator", fields: [terminated_by], references: [id])
   creator         ExamsOfficer?  @relation("Creator", fields: [created_by], references: [id])
 
   @@map("sessions")
+}
+
+model VenueBooking {
+  id          Int      @id @default(autoincrement())
+  venue_id    Int
+  session_id  Int      @unique
+  start_time  DateTime
+  end_time    DateTime
+
+  venue       Venue    @relation(fields: [venue_id], references: [id])
+  session     Session  @relation(fields: [session_id], references: [id])
+
+  @@unique([venue_id, start_time, end_time])
+  @@map("venue_bookings")
 }
 
 // Define the data model for Report

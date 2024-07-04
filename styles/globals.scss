@@ -65,7 +65,9 @@ input:-internal-edge-excel-like-autofill-previewed {
 
   span,
   a,
-  p, div, button {
+  p,
+  div,
+  button {
     font-size: 12px !important;
   }
 
@@ -117,6 +119,21 @@ input:-internal-edge-excel-like-autofill-previewed {
 .react-datepicker__time-list-item:hover {
   background-color: $hover-green !important;
   transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+}
+
+.react-datepicker__input-time-container {
+  text-align: center !important;
+  margin-left: 0 !important;
+}
+
+input.react-datepicker-time__input {
+  border-color: $text-color !important;
+  color: $text-color !important;
+
+  &>:only-child {
+    color: $text-color !important;
+    background-color: $text-color !important;
+  }
 }
 
 .session-create__control,

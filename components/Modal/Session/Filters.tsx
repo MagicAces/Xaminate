@@ -78,6 +78,7 @@ const Filters = () => {
   );
   const { venues } = useSelector((state: any) => state.modal);
   const [isClient, setIsClient] = useState(false);
+  const [options, setOptions] = useState<SelectOption[]>([]);
   const handleSelectChange = (data: any, name: string) => {
     dispatch(updateSessionFilters({ name, value: data?.value ?? 0 }));
   };
@@ -95,6 +96,15 @@ const Filters = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    const updateOptions = async () => {
+      const updatedOpts = await venueOptions(venues, null, null);
+      setOptions(updatedOpts);
+    };
+
+    updateOptions();
+  }, [venues]);
   return (
     <>
       <div className={styles.sessionContainerFilter}>
@@ -107,9 +117,7 @@ const Filters = () => {
             classNamePrefix="filter-select"
             name="venue"
             tabIndex={1}
-            value={venueOptions(venues).filter(
-              (venue) => venue?.value === sessionsBox?.filter?.venue
-            )}
+            value={options.find((option) => option.value === sessionsBox?.filter?.venue)}
             components={{ DropdownIndicator }}
             noOptionsMessage={({ inputValue }) => "No Venues Found"}
             isClearable={true}
@@ -123,7 +131,7 @@ const Filters = () => {
               }),
               menuPortal: (base) => ({ ...base, zIndex: 9999 }),
             }}
-            options={venueOptions(venues)}
+            options={options}
             placeholder={"Select Venue"}
             menuPortalTarget={isClient ? document.body : null}
           />

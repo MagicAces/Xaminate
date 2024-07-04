@@ -14,6 +14,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { TbReport, TbTimelineEventExclamation } from "react-icons/tb";
+import { useRouter } from "next/navigation";
 import Loader from "../../Utils/Loader";
 import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
 
@@ -25,7 +26,7 @@ const Notification = () => {
     useMarkNotificationAsSeen();
   const { mutate: markAllAsRead, isPending: allPending } =
     useMarkNotificationsAsSeen();
-
+  const router = useRouter();
   const observer = useRef<IntersectionObserver>();
 
   const {
@@ -63,7 +64,12 @@ const Notification = () => {
 
   const handleNotificationClick = (notification: INotification) => {
     if (notification.read) return;
-    markAsRead(notification.id);
+
+    if (notification?.category_id && notification.category === "Session") {
+      router.push(`/sessions/${notification.category_id}`);
+      markAsRead(notification.id);
+      exitModal();
+    }
   };
 
   return (

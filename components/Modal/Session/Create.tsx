@@ -80,6 +80,7 @@ const Create: React.FC = () => {
   const { exitModal } = useModal();
   const { venues } = useSelector((state: any) => state.modal);
   const [error, setError] = useState("");
+  const [options, setOptions] = useState<SelectOption[]>([]);
   const [values, setValues] = useState<SessionInput>({
     courseNames: [""],
     courseCodes: [""],
@@ -100,7 +101,7 @@ const Create: React.FC = () => {
     invigilators: [],
   });
 
-  const { execute, status } = useAction(createSession, {
+  const { execute, result, status } = useAction(createSession, {
     onSuccess: (data) => {
       if (data?.success) toast.success(data?.success);
       if (data?.error) toast.error(data?.error);
@@ -280,7 +281,20 @@ const Create: React.FC = () => {
   };
 
   useEffect(() => {
-    if (status === "hasSucceeded") exitModal();
+    const updateOptions = async () => {
+      const updatedOpts = await venueOptions(
+        venues, // Replace with your venues array
+        values.sessionStart,
+        values.sessionEnd
+      );
+      setOptions(updatedOpts);
+    };
+
+    updateOptions();
+  }, [venues, values.sessionStart, values.sessionEnd]);
+
+  useEffect(() => {
+    if (status === "hasSucceeded" && result?.data?.success) exitModal();
   }, [status, exitModal]);
 
   return (
@@ -399,41 +413,7 @@ const Create: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className={styles.venueRow}>
-              <label className={warning.venue ? styles.errorLabel : undefined}>
-                Venue
-              </label>
-              <Select
-                className={
-                  warning.venue
-                    ? `${styles.venueInput} ${styles.errorInput}`
-                    : `${styles.venueInput}`
-                }
-                classNamePrefix="session-create"
-                name="venue"
-                tabIndex={1}
-                required={true}
-                value={venueOptions(venues).filter(
-                  (venue) => venue.value === values.venue
-                )}
-                components={{ DropdownIndicator }}
-                noOptionsMessage={({ inputValue }) => "No Venues Found"}
-                isSearchable={true}
-                onChange={(data) => handleSelectChange(data)}
-                styles={{
-                  noOptionsMessage: (base) => ({
-                    ...base,
-                    color: `#FFFFFF`,
-                    backgroundColor: "#4CAF50",
-                  }),
-                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                }}
-                onFocus={() => disableWarning("venue")}
-                options={venueOptions(venues)}
-                placeholder={"Venue"}
-                menuPortalTarget={document.body}
-              />
-            </div>
+
             <div className={styles.timeRow}>
               <div className={styles.sessionStartBox}>
                 <label
@@ -466,10 +446,11 @@ const Create: React.FC = () => {
                   onKeyDown={(e) => e.preventDefault()}
                   fixedHeight
                   showTimeSelect
+                  showTimeInput
                   tabIndex={1}
                   filterTime={isWeekday}
                   filterDate={isWeekday}
-                  timeIntervals={15}
+                  timeIntervals={5}
                   timeCaption="Time"
                   timeFormat="p"
                   // openToDate={new Date()}
@@ -506,6 +487,7 @@ const Create: React.FC = () => {
                   onKeyDown={(e) => e.preventDefault()}
                   fixedHeight
                   showTimeSelect
+                  showTimeInput
                   filterTime={filterPassedTime}
                   filterDate={isWeekday}
                   timeIntervals={15}
@@ -517,6 +499,39 @@ const Create: React.FC = () => {
                   required
                 />
               </div>
+            </div>
+            <div className={styles.venueRow}>
+              <label className={warning.venue ? styles.errorLabel : undefined}>
+                Venue
+              </label>
+              <Select
+                className={
+                  warning.venue
+                    ? `${styles.venueInput} ${styles.errorInput}`
+                    : `${styles.venueInput}`
+                }
+                classNamePrefix="session-create"
+                name="venue"
+                tabIndex={1}
+                required={true}
+                value={options.find((option) => option.value === values.venue)}
+                components={{ DropdownIndicator }}
+                noOptionsMessage={({ inputValue }) => "No Venues Found"}
+                isSearchable={true}
+                onChange={handleSelectChange}
+                styles={{
+                  noOptionsMessage: (base) => ({
+                    ...base,
+                    color: `#FFFFFF`,
+                    backgroundColor: "#4CAF50",
+                  }),
+                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                }}
+                onFocus={() => disableWarning("venue")}
+                options={options}
+                placeholder={"Venue"}
+                menuPortalTarget={document.body}
+              />
             </div>
             <div className={styles.lastRow}>
               <div className={styles.classesBox}>

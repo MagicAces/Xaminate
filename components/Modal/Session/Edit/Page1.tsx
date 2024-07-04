@@ -2,13 +2,15 @@
 
 import styles from "@/styles/modal.module.scss";
 import { useModal } from "@/utils/context";
-import { filterPassedTime, isWeekday } from "@/utils/dates";
+import { isWeekday } from "@/utils/dates";
 
-import { SessionWarn, SelectOption, SessionEdit } from "@/types";
+import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
+import { venueOptions } from "@/data/select";
+import { SelectOption, SessionEdit, SessionWarn } from "@/types";
 import {
+  ReactNode,
   createElement,
   forwardRef,
-  ReactNode,
   useEffect,
   useState,
 } from "react";
@@ -19,22 +21,16 @@ import {
   MdAccessTime,
   MdClose,
   MdDeleteOutline,
-  MdOutlineArrowDropDown,
   MdInfoOutline,
+  MdOutlineArrowDropDown,
 } from "react-icons/md";
-import Select, { components, DropdownIndicatorProps } from "react-select";
-import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
-import Button from "@/components/Utils/Button";
-import { venueOptions } from "@/data/select";
+import Select, { DropdownIndicatorProps, components } from "react-select";
 
+import { SessionInput } from "@/lib/schema";
+import { closeModal } from "@/redux/slices/modalSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useAction } from "next-safe-action/hooks";
-import { createSession } from "@/server/actions/sessions";
-import { SessionInput } from "@/lib/schema";
-import Loader from "@/components/Utils/Loader";
-import { closeModal } from "@/redux/slices/modalSlice";
 
 const DropdownIndicator = (
   props: DropdownIndicatorProps<SelectOption, true>
@@ -90,7 +86,7 @@ const Page1 = ({
   const { exitModal } = useModal();
   const dispatch = useDispatch();
   const [error, setError] = useState("");
-
+  const [options, setOptions] = useState<SelectOption[]>([]);
   const [warning, setWarning] = useState<SessionWarn>({
     courseNames: [],
     courseCodes: [],
@@ -252,7 +248,7 @@ const Page1 = ({
 
     return true;
   };
-  
+
   const handleNext = () => {
     const valid = validateInputs();
 
@@ -270,6 +266,29 @@ const Page1 = ({
 
     setPage(2);
   };
+
+  useEffect(() => {
+    const updateOptions = async () => {
+      const updatedOpts = await venueOptions(
+        venues,
+        session?.sessionStart,
+        session?.sessionEnd
+      );
+      setOptions(updatedOpts);
+
+      // const currentVenue = updatedOpts.find(
+      //   (opt) => opt.value === session?.venue?.id
+      // );
+      // if (currentVenue && currentVenue.isDisabled) {
+      //   setSessionVal((prevValue: SessionEdit) => ({
+      //     ...prevValue,
+      //     venue: { id: 0, name: "" },
+      //   }));
+      // }
+    };
+
+    updateOptions();
+  }, [venues, session?.sessionStart, session?.sessionEnd]);
 
   return (
     <>
@@ -371,40 +390,6 @@ const Page1 = ({
               </div>
             </div>
           </div>
-          <div className={styles.venueRow}>
-            <label className={warning.venue ? styles.errorLabel : undefined}>
-              Venue
-            </label>
-            <Select
-              className={
-                warning.venue
-                  ? `${styles.venueInput} ${styles.errorInput}`
-                  : `${styles.venueInput}`
-              }
-              classNamePrefix="session-create"
-              name="venue"
-              tabIndex={1}
-              required={true}
-              value={venueOptions(venues).filter(
-                (venue) => venue.value === session?.venue?.id
-              )}
-              components={{ DropdownIndicator }}
-              noOptionsMessage={({ inputValue }) => "No Venues Found"}
-              isSearchable={true}
-              onChange={(data) => handleSelectChange(data)}
-              styles={{
-                noOptionsMessage: (base) => ({
-                  ...base,
-                  color: `#FFFFFF`,
-                  backgroundColor: "#4CAF50",
-                }),
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-              }}
-              onFocus={() => disableWarning("venue")}
-              options={venueOptions(venues)}
-              menuPortalTarget={document.body}
-            />
-          </div>
           <div className={styles.timeRow}>
             <div className={styles.sessionStartBox}>
               <label
@@ -413,7 +398,9 @@ const Page1 = ({
                 Session Start
               </label>
               <DatePicker
-                selected={session?.sessionStart ? new Date(session?.sessionStart): null}
+                selected={
+                  session?.sessionStart ? new Date(session?.sessionStart) : null
+                }
                 onChange={(date: Date) => {
                   disableWarning("sessionStart");
                   setSessionVal((prevValue: SessionEdit) => ({
@@ -441,6 +428,7 @@ const Page1 = ({
                 timeIntervals={15}
                 timeCaption="Time"
                 timeFormat="p"
+                showTimeInput
                 // openToDate={new Date()}
                 timeClassName={(date) => `${styles.time}`}
                 required
@@ -453,7 +441,9 @@ const Page1 = ({
                 Session End
               </label>
               <DatePicker
-                selected={session?.sessionEnd ?new Date(session?.sessionEnd): null}
+                selected={
+                  session?.sessionEnd ? new Date(session?.sessionEnd) : null
+                }
                 onChange={(date: Date) => {
                   disableWarning("sessionEnd");
                   setSessionVal((prevValue: SessionEdit) => ({
@@ -481,11 +471,46 @@ const Page1 = ({
                 timeCaption="Time"
                 timeFormat="p"
                 tabIndex={1}
+                showTimeInput
                 // openToDate={new Date()}
                 timeClassName={(date) => `${styles.time}`}
                 required
               />
             </div>
+          </div>
+          <div className={styles.venueRow}>
+            <label className={warning.venue ? styles.errorLabel : undefined}>
+              Venue
+            </label>
+            <Select
+              className={
+                warning.venue
+                  ? `${styles.venueInput} ${styles.errorInput}`
+                  : `${styles.venueInput}`
+              }
+              classNamePrefix="session-create"
+              name="venue"
+              tabIndex={1}
+              required={true}
+              value={options.find(
+                (option) => option.value === session?.venue?.id
+              )}
+              options={options}
+              components={{ DropdownIndicator }}
+              noOptionsMessage={({ inputValue }) => "No Venues Found"}
+              isSearchable={true}
+              onChange={(data) => handleSelectChange(data)}
+              styles={{
+                noOptionsMessage: (base) => ({
+                  ...base,
+                  color: `#FFFFFF`,
+                  backgroundColor: "#4CAF50",
+                }),
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              }}
+              onFocus={() => disableWarning("venue")}
+              menuPortalTarget={document.body}
+            />
           </div>
           <div className={styles.lastRow}>
             <div className={styles.classesBox}>

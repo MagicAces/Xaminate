@@ -3,7 +3,8 @@
 import prisma from "@/prisma/prisma";
 import { Category, TempStatus } from "@prisma/client";
 import { format } from "date-fns";
-
+import { VenueBooking } from "@/types";
+import { revalidatePath } from "next/cache";
 export const checkSessionStatus = async () => {
   const now = new Date();
 
@@ -56,10 +57,72 @@ export const checkSessionStatus = async () => {
       where: {
         id: { in: activeToClosedSessions.map((session) => session.id) },
       },
-      data: { temp_status: "closed", actual_end_time: new Date() },
+      data: {
+        temp_status: "closed",
+        actual_end_time: new Date(),
+      },
+    }),
+    prisma.venueBooking.deleteMany({
+      where: {
+        venue_id: {
+          in: activeToClosedSessions.map((session) => session.venue_id),
+        },
+      },
     }),
     prisma.notification.createMany({
       data: [...pendingToActiveNotifications, ...activeToClosedNotifications],
     }),
   ]);
+};
+
+export const isVenueAvailable = async (
+  venueId: number,
+  sessionStart: Date,
+  sessionEnd: Date,
+  bookings?: VenueBooking[],
+  excludeSessionId?: number
+): Promise<boolean> => {
+  if (bookings) {
+    const conflictingBookings = bookings.filter((booking) => {
+      return (
+        booking.venue_id === venueId &&
+        new Date(booking.start_time) <= sessionEnd &&
+        new Date(booking.end_time) >= sessionStart
+      );
+    });
+
+    return conflictingBookings.length === 0;
+  } else {
+    const conflictingBookings = await prisma.venueBooking.findMany({
+      where: {
+        venue_id: venueId,
+        NOT: excludeSessionId ? { session_id: excludeSessionId } : undefined,
+        // OR: [
+        //   {
+        start_time: { lte: sessionEnd },
+        end_time: { gte: sessionStart },
+        //   },
+        // ],
+      },
+    });
+    console.log(conflictingBookings);
+    return conflictingBookings.length === 0;
+  }
+};
+
+const pathsToRevalidate = [
+  "/", // Root path
+  "/sessions",
+  "/sessions/[id]",
+  // Add more paths here if needed
+];
+
+export const revalidateAllPaths = async () => {
+  try {
+    for (const path of pathsToRevalidate) {
+      await revalidatePath(path);
+    }
+  } catch (error) {
+    console.error("Failed to revalidate paths:", error);
+  }
 };

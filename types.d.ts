@@ -48,10 +48,17 @@ export interface ModalProviderProps {
 export interface Venue {
   id: number;
   name: string;
-  occupied_from: string | null;
-  occupied_to: string | null;
+  bookings: VenueBooking[];
   created_on: string;
   updated_at: string;
+}
+
+export interface VenueBooking {
+  start_time: string;
+  end_time: string;
+  id: number;
+  venue_id: number;
+  session_id: number;
 }
 
 export interface SelectOption {

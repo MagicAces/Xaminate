@@ -5,7 +5,8 @@ export function useGetVenues() {
   return useQuery({
     queryFn: async () => {
       const data = await getVenues();
-      return data.success;
+      if(data.success) return data.success;
+      return data.error;
     },
     queryKey: ["venues"],
   });

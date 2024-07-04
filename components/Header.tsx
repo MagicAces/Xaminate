@@ -31,6 +31,7 @@ import Image from "next/image";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch } from "react-redux";
 import { setFullView } from "@/redux/slices/sidebarSlice";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const pathname = usePathname();
@@ -40,24 +41,30 @@ const Header = () => {
   const { execute: markAsRead } = useAction(markNotificationAsRead);
   const { execute: markAllAsRead } = useAction(markNotificationsAsRead);
   const { data: notifications, error, isLoading } = useGetUnread();
-  const { } = useCheckStatus();
+  const {} = useCheckStatus();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   function updateNotification(notification: Notification): void {
     if (notification.read) return;
-    markAsRead({ id: notification.id });
+
+    if (notification?.category_id && notification.category === "Session") {
+      router.push(`/sessions/${notification.category_id}`);
+      markAsRead({ id: notification.id });
+    }
   }
 
   useEffect(() => {
     if (error) console.error(error);
   }, [notifications, error]);
+
   return (
     <>
       {modalState.mode > 0 && <Modal />}
       <div className={styles.header}>
         <div className={styles.leftSection}>
           <div className={styles.logoContainer}>
-            <GiHamburgerMenu onClick={() => dispatch(setFullView(true))}/>
+            <GiHamburgerMenu onClick={() => dispatch(setFullView(true))} />
             <Image
               src={logo}
               alt="logo.svg"
@@ -186,14 +193,16 @@ const Header = () => {
             name={
               session?.user?.firstName !== null
                 ? `${session?.user?.firstName} ${session?.user?.lastName}`
-                : undefined
+                : "Still Loading"
             }
             size={"40"}
             round={true}
             maxInitials={1}
             textSizeRatio={0.5}
             textMarginRatio={0.05}
-            onClick={() => setState(0, 1, "profile")}
+            onClick={() => {
+              if (session?.user) setState(0, 1, "profile");
+            }}
           />
         </div>
       </div>
