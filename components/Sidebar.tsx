@@ -28,7 +28,9 @@ const Sidebar = () => {
   const { fullView } = useSelector((state: any) => state.sidebar);
   const pathname = usePathname();
   const { pending } = useFormStatus();
-  const [finalState, formAction, isPending] = useFormState(logout, null);
+  const [finalState, formAction, isPending] = useFormState(logout, {
+    success: false,
+  });
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
   const { data: venues, error, isLoading } = useGetVenues();
