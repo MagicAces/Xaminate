@@ -37,7 +37,7 @@ const Sidebar = () => {
   useEffect(() => {
     if (error) console.error(error);
 
-    if (venues?.length && typeof venues !== "string")
+    if (Array.isArray(venues) && venues?.length && typeof venues !== "string")
       dispatch(setVenues(venues));
   }, [venues, error, dispatch]);
 
