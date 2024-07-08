@@ -14,14 +14,14 @@ export const getVenues = async () => {
 
       const newBookings = bookings.map((booking) => ({
         ...booking,
-        start_time: booking.start_time.toISOString(),
-        end_time: booking.end_time.toISOString(),
+        start_time: booking.start_time?.toISOString(),
+        end_time: booking.end_time?.toISOString(),
       }));
 
       return {
         ...rest,
-        created_on: created_on.toISOString(),
-        updated_at: updated_at.toISOString(),
+        created_on: created_on?.toISOString(),
+        updated_at: updated_at?.toISOString(),
         bookings: newBookings
       };
     });
