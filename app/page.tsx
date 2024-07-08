@@ -10,6 +10,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import Content from "@/components/Home/Content";
 
 export const metadata: Metadata = {
   title: "Xaminate | Home",
@@ -27,8 +28,8 @@ export default async function Home() {
         <div className={styles.homeContainer}>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
+            <Content />
           </HydrationBoundary>
-          <main className={styles.homeBody}></main>
         </div>
       </section>
     </>

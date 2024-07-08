@@ -21,11 +21,12 @@ import { useModal } from "@/utils/context";
 import Modal from "./Modal/Modal";
 import { useGetVenues } from "@/server/hooks/venues";
 import { useDispatch, useSelector } from "react-redux";
-import { setVenues } from "@/redux/slices/modalSlice";
+import { setReload, setVenues } from "@/redux/slices/modalSlice";
 import { setFullView } from "@/redux/slices/sidebarSlice";
 
 const Sidebar = () => {
   const { fullView } = useSelector((state: any) => state.sidebar);
+  const { reload } = useSelector((state: any) => state.modal);
   const pathname = usePathname();
   const { pending } = useFormStatus();
   const [, formAction, isPending] = useFormState(logout, null);
@@ -55,6 +56,7 @@ const Sidebar = () => {
   };
   return (
     <>
+      {reload && <Loader />}
       {modalState.mode > 0 && <Modal />}
       <div
         className={`${
@@ -80,6 +82,7 @@ const Sidebar = () => {
           <Link
             href={"/"}
             className={pathname.split("/")[1] === "" ? styles.activeLink : ""}
+            onClick={() => dispatch(setReload(true))}
           >
             <span>
               <TbHome />
@@ -88,6 +91,7 @@ const Sidebar = () => {
           </Link>
           <Link
             href={"/sessions"}
+            onClick={() => dispatch(setReload(true))}
             className={
               pathname.split("/")[1] === "sessions" ? styles.activeLink : ""
             }
@@ -99,6 +103,7 @@ const Sidebar = () => {
           </Link>
           <Link
             href={"/reports"}
+            onClick={() => dispatch(setReload(true))}
             className={
               pathname.split("/")[1] === "reports" ? styles.activeLink : ""
             }
@@ -110,6 +115,7 @@ const Sidebar = () => {
           </Link>
           <Link
             href={"/settings"}
+            onClick={() => dispatch(setReload(true))}
             className={
               pathname.split("/")[1] === "settings" ? styles.activeLink : ""
             }
@@ -131,7 +137,7 @@ const Sidebar = () => {
             <span>Session</span>
           </div>
           <form action={formAction} className={styles.logout}>
-            <button type="submit">
+            <button type="submit" onClick={() => dispatch(setReload(true))}>
               <span>
                 <TbLogout />
               </span>

@@ -10,20 +10,24 @@ import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import Button from "../Utils/Button";
 import Loader from "../Utils/Loader";
+import { setReload } from "@/redux/slices/modalSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Form() {
   const [error, setError] = useState("");
   const [passwordReveal, setPasswordReveal] = useState(false);
+  const { reload } = useSelector((state: any) => state.modal);
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const dispatch = useDispatch();
 
   const {
     reset,
@@ -63,10 +67,14 @@ export default function Form() {
     execute({ ...values, redirectTo: callbackUrl });
   };
 
+  useEffect(() => {
+    dispatch(setReload(false));
+  }, []);
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>
-        {status === "executing" && <Loader />}
+        {(status === "executing" || reload)&& <Loader />}
         <div className={styles.topContainer}>
           <Image
             src={logo}

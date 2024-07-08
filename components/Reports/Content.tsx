@@ -17,12 +17,15 @@ import Loader from "../Utils/Loader";
 import { useQueryClient } from "@tanstack/react-query";
 import { getReportsTest } from "@/server/actions/reports";
 import Filters from "./Filters";
+import { setReload as modalReload } from "@/redux/slices/modalSlice";
+import { useModal } from "@/utils/context";
 
 const Content = () => {
   const queryClient = useQueryClient();
   const { reportsBox, reload, isDisabled } = useSelector(
     (state: any) => state.report
   );
+  const { reload: modalLoad } = useSelector((state: any) => state.modal);
 
   const dispatch = useDispatch();
   const { data, error, isFetching, isLoading, isSuccess, isPlaceholderData } =
@@ -92,10 +95,14 @@ const Content = () => {
     }
   }, [isPlaceholderData, data, reportsBox, queryClient]);
 
+  useEffect(() => {
+    dispatch(modalReload(false));
+  }, []);
+
   return (
     <>
       <main className={styles.reportContent}>
-        {(reload || isDisabled) && <Loader curved={false} />}
+        {(modalLoad || reload || isDisabled) && <Loader curved={false} />}
         <Top />
         <Filters />
         <Body />
