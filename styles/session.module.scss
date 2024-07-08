@@ -463,6 +463,7 @@
             }
 
             .sessionFilterValues {
+                padding: 0 2rem;
                 width: 100%;
                 @include flexin($justify: flex-start, $align: center,
                     $direction: row,

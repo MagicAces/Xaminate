@@ -3,10 +3,7 @@
 import { signIn, signOut } from "@/auth";
 import { AutheniticateInput, authenticateSchema } from "@/lib/schema";
 import { AuthError } from "next-auth";
-import {
-  isRedirectError,
-  RedirectType,
-} from "next/dist/client/components/redirect";
+import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { action } from "./actions";
 
@@ -14,9 +11,12 @@ export const authenticate = action(
   authenticateSchema,
   async (credentials: AutheniticateInput) => {
     try {
-      const data = await signIn("credentials", credentials);
+      const data = await signIn("credentials", {
+        email: credentials.email,
+        password: credentials.password,
+      });
       // console.log(data);
-      // redirect(credentials.redirectTo, RedirectType.push);
+      redirect(credentials.redirectTo);
       return { success: "Welcome back", data };
     } catch (error) {
       if (isRedirectError(error)) throw error;
