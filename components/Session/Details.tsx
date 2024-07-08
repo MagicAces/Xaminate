@@ -8,7 +8,7 @@ import ColoredScrollbars from "../Utils/ColoredScrollbars";
 import { useSelector } from "react-redux";
 import { SessionOutput } from "@/types";
 import { MdAccessTime } from "react-icons/md";
-import { formatSessionDate } from "@/utils/functs";
+import { formatSorRDate } from "@/utils/functs";
 
 const Details = () => {
   const [view, setView] = useState(1);
@@ -52,14 +52,14 @@ const Details = () => {
                 <div className={styles.startTime}>
                   <label>Start Time</label>
                   <div className={styles.startTimeValue}>
-                    {formatSessionDate(session?.start_time)}
+                    {formatSorRDate(session?.start_time)}
                     <MdAccessTime />
                   </div>
                 </div>
                 <div className={styles.endTime}>
                   <label>End Time</label>
                   <div className={styles.endTimeValue}>
-                    {formatSessionDate(session?.end_time)}
+                    {formatSorRDate(session?.end_time)}
                     <MdAccessTime />
                   </div>
                 </div>
@@ -112,8 +112,8 @@ const Details = () => {
                     <label>Actual End Time</label>
                     <div className={styles.actualEndTimeValue}>
                       {session?.actual_end_time
-                        ? formatSessionDate(session.actual_end_time)
-                        : formatSessionDate(session.end_time)}
+                        ? formatSorRDate(session.actual_end_time)
+                        : formatSorRDate(session.end_time)}
                     </div>
                   </div>
                   <div className={styles.actualDuration}>
@@ -156,13 +156,13 @@ const Details = () => {
                 <div className={styles.createdOn}>
                   <label>Created On</label>
                   <div className={styles.createdOnValue}>
-                    {formatSessionDate(session?.created_on)}
+                    {formatSorRDate(session?.created_on)}
                   </div>
                 </div>
                 <div className={styles.updatedAt}>
                   <label>Last Updated</label>
                   <div className={styles.updatedAtValue}>
-                    {formatSessionDate(session?.updated_at)}
+                    {formatSorRDate(session?.updated_at)}
                   </div>
                 </div>
               </div>
