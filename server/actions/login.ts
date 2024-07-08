@@ -14,13 +14,9 @@ export const authenticate = action(
   authenticateSchema,
   async (credentials: AutheniticateInput) => {
     try {
-      const data = await signIn("credentials", {
-        password: credentials.password,
-        email: credentials.email,
-        redirect: false,
-      });
-      console.log(data);
-      redirect(credentials.redirectTo, RedirectType.push);
+      const data = await signIn("credentials", credentials);
+      // console.log(data);
+      // redirect(credentials.redirectTo, RedirectType.push);
       return { success: "Welcome back", data };
     } catch (error) {
       if (isRedirectError(error)) throw error;
