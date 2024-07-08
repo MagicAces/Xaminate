@@ -82,7 +82,6 @@ const Sidebar = () => {
           <Link
             href={"/"}
             className={pathname.split("/")[1] === "" ? styles.activeLink : ""}
-            onClick={() => dispatch(setReload(true))}
           >
             <span>
               <TbHome />
@@ -91,7 +90,6 @@ const Sidebar = () => {
           </Link>
           <Link
             href={"/sessions"}
-            onClick={() => dispatch(setReload(true))}
             className={
               pathname.split("/")[1] === "sessions" ? styles.activeLink : ""
             }
@@ -103,7 +101,6 @@ const Sidebar = () => {
           </Link>
           <Link
             href={"/reports"}
-            onClick={() => dispatch(setReload(true))}
             className={
               pathname.split("/")[1] === "reports" ? styles.activeLink : ""
             }
@@ -115,7 +112,6 @@ const Sidebar = () => {
           </Link>
           <Link
             href={"/settings"}
-            onClick={() => dispatch(setReload(true))}
             className={
               pathname.split("/")[1] === "settings" ? styles.activeLink : ""
             }
