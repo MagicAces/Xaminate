@@ -101,20 +101,17 @@ export const getReports = async ({
         prisma.report.count({ where }),
         prisma.report.count({
           where: {
-            AND: [...(where.AND as []),
-            { status: "Pending" }],
+            AND: [...(where.AND as []), { status: "Pending" }],
           },
         }),
         prisma.report.count({
           where: {
-            AND: [...(where.AND as []),
-            { status: "Approved" }],
+            AND: [...(where.AND as []), { status: "Approved" }],
           },
         }),
         prisma.report.count({
           where: {
-            AND: [...(where.AND as []),
-            { status: "Rejected" }],
+            AND: [...(where.AND as []), { status: "Rejected" }],
           },
         }),
       ]);
@@ -185,7 +182,7 @@ export const getReportsTest = async ({
     } = query;
 
     const offset = (page - 1) * limit;
-s
+
     // Filter reports based on the query parameters
     let filteredReports = reports.filter((report) => report.status === status);
 
