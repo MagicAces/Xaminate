@@ -3,20 +3,22 @@
 import { signIn, signOut } from "@/auth";
 import { AutheniticateInput, authenticateSchema } from "@/lib/schema";
 import { AuthError } from "next-auth";
-import { isRedirectError } from "next/dist/client/components/redirect";
+import {
+  isRedirectError,
+  RedirectType,
+} from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { action } from "./actions";
+import { revalidatePath } from "next/cache";
 
 export const authenticate = action(
   authenticateSchema,
   async (credentials: AutheniticateInput) => {
     try {
-      const data = await signIn("credentials", {
-        email: credentials.email,
-        password: credentials.password,
-      });
+      const data = await signIn("credentials", credentials);
       // console.log(data);
-      redirect(credentials.redirectTo);
+      revalidatePath("/");
+      // redirect(credentials.redirectTo);
       return { success: "Welcome back", data };
     } catch (error) {
       if (isRedirectError(error)) throw error;
@@ -38,8 +40,7 @@ export const authenticate = action(
 
 export const logout = async () => {
   try {
-    await signOut();
-    redirect("/login");
+    await signOut({ redirect: true, redirectTo: "/login" });
   } catch (error) {
     throw error;
   }
