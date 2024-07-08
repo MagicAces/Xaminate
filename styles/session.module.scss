@@ -30,7 +30,7 @@
             @include flexin($justify: stretch,
                 $align: stretch,
                 $direction: column,
-                $gap: 0);
+                $gap: 1rem);
 
             &Top {
                 padding: 1rem 2rem 0.5rem;
@@ -464,7 +464,7 @@
 
             .sessionFilterValues {
                 width: 100%;
-                @include flexin($justify: center, $align: center,
+                @include flexin($justify: flex-start, $align: center,
                     $direction: row,
                     $gap: 2rem);
                 flex-wrap: wrap;

@@ -1,0 +1,299 @@
+@import 'config';
+@import 'mixins';
+
+.reportSection {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-color: $primary-background;
+
+    @include flexin($justify: stretch,
+        $align: stretch,
+        $gap: 0);
+
+    .reportContainer {
+        @include flexin($justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0);
+        width: calc(100vw - 4rem);
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        height: 100%;
+
+        .reportContent {
+            flex-grow: 1;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            overflow: auto;
+
+            @include flexin($justify: stretch,
+                $align: stretch,
+                $direction: column,
+                $gap: 1rem);
+
+            &Top {
+                padding: 1rem 2rem 0.5rem;
+                width: 100%;
+                @include flexin($justify: space-between,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 1rem);
+
+                &Statuses {
+                    width: 100%;
+                    border-bottom: 1px solid $border-color;
+                    position: relative;
+                    @include flexin($justify: stretch,
+                        $align: stretch);
+
+                    .statuses {
+                        position: relative;
+                        bottom: -1px;
+                        width: 100%;
+                        @include flexin($justify: flex-start, $align: center, $gap: 1.3rem);
+
+                        &>div {
+                            padding-bottom: 0.65rem;
+                            padding-top: 0.35rem;
+                            color: rgba($color: $text-color, $alpha: 0.7);
+                            @include flexin($justify: flex-start, $align: center, $gap: 0.8rem);
+                            border: 1px solid transparent;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            &>div {
+                                @include flexin($justify: flex-start, $align: center, $gap: 0.35rem);
+                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                                span {
+                                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                                }
+
+                                svg {
+                                    font-size: 18px;
+                                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                                    position: relative;
+                                    top: -1px;
+                                }
+                            }
+
+                            &>span {
+                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                            }
+                        }
+
+                        &>div:hover:not(.activeStatus) {
+                            cursor: pointer;
+                            border-bottom: 1px solid white;
+                            color: $text-color;
+                        }
+
+                        .activeStatus:hover {
+                            cursor: pointer;
+                        }
+
+                        .activeStatus.pendingStatus {
+                            border-bottom: 1px solid $pending-color;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            &>div {
+
+                                span,
+                                svg {
+                                    color: $pending-color;
+                                }
+                            }
+
+                            &>span {
+                                // color: $text-color;
+                                color: $pending-color;
+                            }
+                        }
+
+                        .activeStatus.approvedStatus {
+                            border-bottom: 1px solid $approved-color;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            &>div {
+
+                                span,
+                                svg {
+                                    color: $approved-color;
+                                }
+                            }
+
+                            &>span {
+                                // color: $text-color;
+                                color: $approved-color;
+                            }
+                        }
+
+                        .activeStatus.rejectedStatus {
+                            border-bottom: 1px solid $rejected-color;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            &>div {
+
+                                span,
+                                svg {
+                                    color: $rejected-color;
+                                }
+                            }
+
+                            &>span {
+                                // color: $text-color;
+                                color: $rejected-color;
+                            }
+                        }
+                    }
+
+                }
+
+                &Actions {
+
+                    width: 100%;
+                    @include flexin($justify: space-between,
+                        $align: stretch,
+                        $gap: 1.5rem);
+
+                    .searchBox {
+                        position: relative;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+
+                        svg {
+                            position: absolute;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                            font-size: 18px;
+                            top: 10px;
+                        }
+
+                        svg:hover {
+                            color: $hover-green;
+                        }
+
+                        svg:first-of-type {
+                            left: 11px;
+                        }
+
+                        svg:last-of-type {
+                            right: 10px;
+                        }
+
+                        input {
+                            font-size: 13px !important;
+                            all: unset;
+                            background-color: $secondary-background;
+                            color: $text-color;
+                            outline: none;
+                            border-radius: 0.7rem;
+                            height: 37px;
+                            box-shadow: 0 4px 4px 0 $dark-shadow;
+                            max-width: 180px;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                            padding: 0 2rem 0 2.2rem;
+                        }
+
+                        ::placeholder {
+                            font-size: 13px;
+                        }
+                    }
+
+                    .searchBox:hover,
+                    .searchBox:active,
+                    .searchBox:focus {
+                        svg {
+                            color: $accent-green;
+                        }
+                    }
+
+                    .filterAndSort {
+                        @include flexin($justify: flex-end,
+                            $align: stretch,
+                            $gap: 1.5rem);
+
+                        .clearFilterButton {
+                            padding: 10px;
+                            border-radius: 0.7rem;
+                            box-shadow: 0 4px 4px 0 $dark-shadow;
+                            border: 1px inset transparent;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                            background-color: $rejected-color;
+
+                            @include flexin();
+
+                            svg {
+                                font-size: 17px;
+                                color: $text-color;
+                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            }
+                        }
+
+                        .clearFilterButton:hover {
+                            cursor: pointer;
+                            background-color: transparent;
+                            border: 1px inset $rejected-color;
+
+                            svg {
+                                color: $rejected-color;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            .reportFilterValues {
+                padding: 0 2rem;
+                width: 100%;
+                @include flexin($justify: flex-start, $align: center,
+                    $gap: 2rem);
+                flex-wrap: wrap;
+
+                .filterText {
+                    color: rgba($color: $text-color, $alpha: 0.7);
+                    font-weight: 300;
+                }
+
+                .filterValue {
+                    padding: 0.5rem 1rem;
+                    border-radius: 1rem;
+                    @include flexin($justify: center,
+                        $align: center,
+                        $gap: 1.5rem);
+                    background-color: $secondary-background;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    border: 1px solid transparent;
+
+
+                    &>span {
+                        font-weight: 300;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    &>svg {
+                        font-size: 18px;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    }
+
+                    &>svg:hover {
+                        color: $hover-green;
+                        cursor: pointer;
+                    }
+                }
+
+                .filterValue:hover {
+                    border: 1px solid $hover-green;
+                    background-color: transparent;
+
+                    &>svg,
+                    &>span {
+                        color: $hover-green;
+                    }
+                }
+            }
+        }
+    }
+}

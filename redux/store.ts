@@ -3,7 +3,7 @@ import resetReducer from "@/redux/slices/resetSlice";
 import { apiSlice } from "@/redux/slices/apiSlice";
 import modalReducer from "@/redux/slices/modalSlice";
 import sessionReducer from "@/redux/slices/sessionSlice";
-
+import reportReducer from "@/redux/slices/reportSlice";
 import sidebarReducer from "@/redux/slices/sidebarSlice";
 
 export const store = configureStore({
@@ -11,6 +11,7 @@ export const store = configureStore({
     reset: resetReducer,
     modal: modalReducer,
     session: sessionReducer,
+    report: reportReducer,
     sidebar: sidebarReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },

@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "email": "email dev -p 3001",
+    "fast": "next dev --turbo",
     "postinstall": "prisma generate"
   },
   "prisma": {

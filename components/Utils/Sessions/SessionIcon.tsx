@@ -16,7 +16,6 @@ import { IoIosEye } from "react-icons/io";
 import { GiExitDoor } from "react-icons/gi";
 import { MdPinEnd } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { useModal } from "@/utils/context";
 
 const SessionIcon = ({ id, status, openModal }: { id: number; status: string, openModal: (type: string) => void }) => {
   const router = useRouter();

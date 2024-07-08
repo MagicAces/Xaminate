@@ -1,5 +1,5 @@
 import { DefaultSession } from "next-auth";
-import { Category } from "@prisma/client";
+import { Category, Report } from "@prisma/client";
 import { SessionInput } from "./lib/schema";
 
 export interface IEmailProps {
@@ -97,6 +97,12 @@ export interface Notification {
   updated_at: Date;
   category: Category;
 }
+
+export interface SidebarState {
+  fullView: boolean;
+}
+
+// ---------  Session ---------------
 
 export interface SessionWarn {
   courseNames: number[];
@@ -226,6 +232,100 @@ interface SessionOutputCount {
   reports: number;
 }
 
-export interface SidebarState {
-  fullView: boolean;
+// -------- Reports --------------
+export interface ReportSlice {
+  data: ReportDisplay | undefined;
+  reportsBox: ReportBox;
+  report: ReportOutput | undefined;
+  reload: boolean;
+  isDisabled: boolean;
+}
+
+export interface ReportDisplay {
+  reports: ReportRow[];
+  totalCount: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  pageNumber: number;
+  pendingCount: number;
+  approvedCount: number;
+  rejectedCount: number;
+}
+
+export interface ReportRow {
+  id: number;
+  student: {
+    id: number | string;
+    fullName: string;
+    photo: string;
+    index_number: number | string;
+  };
+  session_id: number;
+  status: string;
+  timestamp: string;
+}
+
+interface ReportBox {
+  query: ReportQuery;
+  filter: {
+    startTime: string;
+    endTime: string;
+  };
+  sort: {
+    field: string;
+    order: string;
+  };
+  status: string;
+  search: string;
+  mode: "none" | "query";
+}
+
+export interface ReportQuery {
+  page: number;
+  limit: number;
+  sort: {
+    field: SortableReportFields;
+    order: string;
+  };
+  startTime: string;
+  endTime: string;
+  search: string;
+}
+
+type SortableReportFields = "id" | "status" | "timestamp" | "session_id";
+
+export interface ReportOutput {
+  id: number;
+  student: {
+    id: number;
+    level: string;
+    last_name: string;
+    first_name: string;
+    reference_no: number;
+    index_number: number;
+    program: string;
+  };
+  status: string;
+  description: string;
+  comments: string | null;
+  snapshot_url: string;
+  timestamp: string;
+  session_id: number;
+  status_changed: string | undefined;
+  editor:
+    | {
+        id: number;
+        first_name: string;
+        last_name: string;
+      }
+    | undefined;
+  created_on: string;
+  updated_at: string;
+  valid_reports: number;
+  total_reports: number;
+  last_seven: {
+    session_id: number;
+    report_count: number;
+  }[];
 }

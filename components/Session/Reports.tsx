@@ -80,7 +80,7 @@ const Reports = () => {
                         <div className={styles.timestamp}>
                         <span>Timestamp</span>
                           <span>
-                            {formatToCCTVTimestamp(report.created_on)}
+                            {formatToCCTVTimestamp(report.timestamp)}
                           </span>
                         </div>
                       </div>

@@ -18,7 +18,6 @@ import Select, { components, DropdownIndicatorProps } from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoCalendarNumber } from "react-icons/io5";
-import Loader from "@/components/Utils/Loader";
 import { SelectOption } from "@/types";
 import {
   createElement,

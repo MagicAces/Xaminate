@@ -11,7 +11,7 @@ interface Student {
 interface Report {
   id: number;
   status: string;
-  created_on: string;
+  timestamp: string;
   student: Student;
 }
 
@@ -23,7 +23,7 @@ function generateReports(count: number): Report[] {
     const report: Report = {
       id: faker.number.int({ min: 1, max: 100 }),
       status: faker.helpers.arrayElement(["Approved", "Pending", "Rejected"]),
-      created_on: faker.date.recent().toISOString(),
+      timestamp: faker.date.recent().toISOString(),
       student: {
         index_number: faker.string.numeric(7),
         first_name: faker.person.firstName(),

@@ -29,6 +29,7 @@ const Filters = () => {
   return (
     <>
       <div className={styles.sessionFilterValues}>
+        {/* <span>Filters:</span> */}
         {sessionsBox.query.venue > 0 &&
           venues.filter((venue) => venue.id === sessionsBox.query.venue)
             .length > 0 && (

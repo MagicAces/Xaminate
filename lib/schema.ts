@@ -166,6 +166,33 @@ export const sessionEndSchema = object({
   }),
 });
 
+export const newReportSchema = object({
+  id: number({ required_error: "An ID is required" }).min(
+    0,
+    "ID cannot be less than 0"
+  ),
+  student_id: number({ required_error: "Student ID is required" }).min(
+    0,
+    "ID cannot be less than 0"
+  ),
+  description: string({ required_error: "Brief description is needed"}).min(
+    1,
+    "Brief description is required"
+  ),
+  comments: string()
+    .optional(),
+  password: string({ required_error: "Password is required" })
+    .min(1, "Password is required")
+    .min(8, "Password must be more than 8 characters")
+    .max(32, "Password must be less than 32 characters"),
+  passwordConfirm: string({
+    required_error: "Please confirm your password",
+  }).min(1, "Please confirm your password"),
+}).refine((data) => data.password === data.passwordConfirm, {
+  path: ["passwordConfirm"],
+  message: "Passwords do not match",
+});
+
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type AutheniticateInput = TypeOf<typeof authenticateSchema>;
 export type RegisterInput = TypeOf<typeof registerSchema>;

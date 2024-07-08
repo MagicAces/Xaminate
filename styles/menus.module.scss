@@ -109,3 +109,252 @@
         }
     }
 }
+
+.reportFilterIcon,
+.reportSortIcon {
+    @include flexin($justify: center, $align: center, $gap: 0.4rem);
+    padding: 0.6rem 1rem;
+    background-color: $secondary-background;
+    color: $text-color;
+    font-size: 13px;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    position: relative;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+    svg {
+        font-size: 17px;
+        position: relative;
+        color: $accent-green;
+    }
+
+}
+
+.reportFilterIcon:hover,
+.reportSortIcon:hover,
+.reportFilterIcon:active,
+.reportSortIcon:active,
+.reportFilterOpen,
+.reportSortOpen {
+    background-color: $border-color;
+    cursor: pointer;
+}
+
+.reportFilterIconMenu {
+    background-color: $secondary-background;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    padding: 0;
+    border-radius: 0.4rem;
+    color: $text-color;
+
+    &Header {
+        text-transform: capitalize;
+        color: $text-color;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid $border-color;
+    }
+
+    &Fields {
+        padding: 0.8rem 1rem;
+        text-transform: capitalize;
+        @include flexin($justify: space-between, $align: stretch, $gap: 1rem);
+        border-bottom: 1px solid $border-color;
+
+        &>div {
+            @include flexin($justify: flex-start, $align: stretch, $direction: column, $gap: 0.3rem);
+            color: $text-color;
+
+            &>span {
+                color: rgba($color: $text-color, $alpha: 0.7);
+                font-size: 12px;
+            }
+
+            .calendar,
+            .react-datepicker__time-box,
+            .react-datepicker__navigation {
+                background-color: $border-color !important;
+                font-family: inherit !important;
+                color: $text-color !important;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            .day,
+            .time {
+                color: $text-color ;
+                font-family: inherit !important;
+            }
+
+            .filterReportTime {
+                width: 100%;
+                @include flexin($justify: space-between,
+                    $align: center,
+                    $gap: 2rem);
+
+                background-color: transparent;
+                padding: 0.5rem 1rem;
+                border: 1px solid $border-color;
+                // box-shadow: 0 4px 4px 0 $dark-shadow;
+                height: 37px;
+                width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                border-radius: 0.7rem;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+                .placeholder {
+                    font-size: 13px;
+                    color: gray;
+                }
+
+                svg {
+                    font-size: 16px;
+                }
+
+                span {
+                    font-size: 13px;
+                }
+
+                svg:hover {
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                }
+
+                .timeIcons {
+                    @include flexin($justify: flex-end,
+                        $align: center,
+                        $gap: 0.6rem);
+                }
+            }
+
+            .filterReportTime:hover,
+            .filterReportTime:active,
+            .filterReportTime:focus {
+                border: 1px solid $hover-green;
+                cursor: pointer;
+                color: $hover-green;
+
+                svg {
+                    color: $hover-green;
+                }
+            }
+        }
+    }
+
+    &Footer {
+        padding: 0.8rem 1rem;
+        @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+        &>button {
+            font-size: 13px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+        }
+
+        button.applyButton {
+            background-color: $accent-green;
+        }
+
+        button.applyButton:hover {
+            background-color: $accent-dark-green;
+        }
+
+        button.resetButton {
+            background-color: transparent;
+            border-color: $rejected-color;
+        }
+
+        button.resetButton:hover {
+            color: $rejected-color;
+        }
+    }
+
+}
+
+.reportSortIconMenu {
+    background-color: $secondary-background;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    padding: 0;
+    border-radius: 0.4rem;
+    color: $text-color;
+
+    &Fields {
+        @include flexin($justify: space-between, $align: stretch,
+            $direction: column, $gap: 0);
+        padding: 0.3rem 0;
+        color: $text-color;
+        text-transform: capitalize;
+
+        &>.label {
+            @include flexin($justify: stretch, $align: center, $gap: 0.5rem);
+            padding: 0.5rem 1rem;
+            font-size: 13px;
+
+            .radioInput {
+                appearance: none;
+                border: 1px solid $text-color;
+                height: 10px;
+                width: 10px;
+                border-radius: 50%;
+            }
+
+            .radioInput:checked {
+                border: 1px solid transparent;
+                background-color: $accent-green;
+            }
+
+        }
+
+        .selected {
+            color: $accent-green;
+        }
+
+        &>.label:hover {
+            background-color: $border-color;
+            cursor: pointer
+        }
+
+        .selected:hover {
+            color: $hover-green;
+
+            input {
+                background-color: $hover-green;
+            }
+        }
+    }
+
+    &Footer {
+        padding: 0.3rem 1rem 0.8rem;
+        color: $text-color;
+        text-transform: capitalize;
+        font-size: 13px;
+
+        &>div {
+            padding: 0.4rem 0.7rem;
+            border: 1px solid $border-color;
+            border-radius: 0.4rem;
+            @include flexin($justify: center, $align: center, $gap: 0.5rem);
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+            span {
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            svg {
+                color: $accent-green;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+                font-size: 17px;
+            }
+        }
+
+        &>div:hover {
+            border: 1px solid $hover-green;
+            cursor: pointer;
+
+            span,
+            svg {
+                color: $hover-green;
+            }
+        }
+    }
+}

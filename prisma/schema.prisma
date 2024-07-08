@@ -107,6 +107,7 @@ model Report {
   snapshot_url          String?
   status_changed        DateTime?
   session_id            Int
+  timestamp             DateTime      
   created_on            DateTime       @default(now()) 
   updated_at            DateTime       @updatedAt
 
