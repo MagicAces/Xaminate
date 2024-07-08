@@ -244,6 +244,207 @@
 
             }
 
+            &Body {
+                flex-grow: 1;
+                position: relative;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                overscroll-behavior: contain;
+                padding: 0.9rem 2rem 0.4rem;
+
+                @include flexin($justify: stretch,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 0rem);
+
+                &Header {
+                    background-color: $secondary-background;
+                    position: sticky;
+                    z-index: 1;
+                    position: -webkit-sticky;
+                    top: 0;
+                    border-radius: 0.7rem;
+                    width: 100%;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                    .headerContent {
+                        box-shadow: 0 4px 4px 0 $dark-shadow;
+                        padding: 0.8rem 1.4rem;
+                        width: 100%;
+                        overflow: auto;
+                        -webkit-overflow-scrolling: touch;
+                        border-radius: 0.7rem;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                        @include flexin($justify: flex-start,
+                            $align: center,
+                            $direction: row,
+                            $gap: 1.7rem);
+
+                        &>span {
+                            color: $text-color;
+                            font-weight: 300;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            flex-grow: 1;
+                            font-size: 13px;
+                        }
+
+                        .actions {
+                            visibility: hidden;
+                        }
+                    }
+                }
+
+                .bodyContainer {
+                    width: 100%;
+
+                    .reportRows {
+                        @include flexin($justify: flex-start,
+                            $align: stretch,
+                            $direction: column,
+                            $gap: 0);
+                        padding: 0;
+                        width: 100%;
+                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                        .reportRowOuter {
+                            @include flexin($justify: stretch,
+                                $align: stretch, $gap: 0);
+                            width: 100%;
+                            padding: 0.2rem 0;
+                            border-bottom: 1px solid $highlight-color;
+                            flex-grow: 1;
+                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                            &>div {
+                                padding: 0.25rem 1.4rem;
+                                @include flexin($justify: flex-start,
+                                    $align: center,
+                                    $gap: 1.7rem);
+                                -webkit-overflow-scrolling: touch;
+                                scroll-snap-type: x mandatory;
+                                overflow-x: auto;
+                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                                width: 100%;
+
+                                &>span {
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    font-size: 13px;
+                                    font-weight: 300;
+                                }
+
+                                .id {
+                                    color: $accent-dark-green;
+                                }
+
+                                .id:hover {
+                                    color: $hover-green;
+                                    cursor: pointer;
+                                }
+
+                                .pending {
+                                    color: $pending-color;
+                                }
+
+                                .active {
+                                    color: $hover-green;
+                                }
+
+                                .closed {
+                                    color: $border-color;
+
+                                }
+
+                                .attendance {
+                                    color: $attendance-color;
+                                }
+
+                                .attendance:hover {
+                                    color: $attendance-color-hover;
+                                }
+
+                                .courseCodes {
+                                    @include flexin($justify: flex-start,
+                                        $align: center,
+                                        $gap: 0.5rem);
+
+                                    .extraBadge {
+                                        color: gray;
+                                        font-weight: 200;
+                                    }
+                                }
+                            }
+                        }
+
+                        .reportRowOuter:hover {
+                            background-color: rgba($color: $text-color, $alpha: 0.1);
+                        }
+                    }
+                }
+
+                .dateCreated {
+                    flex-basis: 16%;
+                    min-width: 140px;
+                }
+
+                .id {
+                    flex-basis: 8%;
+                    min-width: 30px;
+                }
+
+                .courseCodes {
+                    flex-basis: 14%;
+                    min-width: 100px;
+                }
+
+                .venue {
+                    flex-basis: 12%;
+                    min-width: 65px;
+                }
+
+                .attendance {
+                    flex-basis: 10%;
+                    min-width: 75px;
+                }
+
+                .status {
+                    flex-basis: 12%;
+                    min-width: 50px;
+                }
+
+                .reports {
+                    flex-basis: 9%;
+                    min-width: 60px;
+                }
+
+                .duration {
+                    flex-basis: 15%;
+                    min-width: 120px;
+                }
+
+                .actions {
+                    flex-basis: 4%;
+                    min-width: 30px;
+                }
+
+                @media (max-width: 675px) {
+                    padding: 0.5rem 1rem;
+                }
+
+            }
+
+            .noReports {
+                flex-grow: 1;
+                height: 100%;
+                width: 100%;
+                margin-top: 3rem;
+                @include flexin;
+                color: gray;
+            }
+
             .reportFilterValues {
                 padding: 0 2rem;
                 width: 100%;

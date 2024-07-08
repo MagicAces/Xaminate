@@ -3,7 +3,10 @@
 import { signIn, signOut } from "@/auth";
 import { AutheniticateInput, authenticateSchema } from "@/lib/schema";
 import { AuthError } from "next-auth";
-import { isRedirectError } from "next/dist/client/components/redirect";
+import {
+  isRedirectError,
+  RedirectType,
+} from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { action } from "./actions";
 
@@ -17,7 +20,7 @@ export const authenticate = action(
         redirect: false,
       });
       console.log(data);
-      redirect(credentials.redirectTo);
+      redirect(credentials.redirectTo, RedirectType.push);
       return { success: "Welcome back", data };
     } catch (error) {
       if (isRedirectError(error)) throw error;

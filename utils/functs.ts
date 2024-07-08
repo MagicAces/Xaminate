@@ -1,4 +1,3 @@
-
 export const formatDuration = (start: Date, end: Date): string => {
   const diffMs = end.getTime() - start.getTime();
   const date = new Date(diffMs);
@@ -49,7 +48,7 @@ export const getStatusMessage = (startTime: Date, endTime: Date) => {
   else return "closed";
 };
 
-export const formatSessionDate = (isoString: string): string => {
+export const formatSorRDate = (isoString: string): string => {
   const date = new Date(isoString);
 
   const monthNames = [
@@ -143,4 +142,3 @@ export const formatISODateToDDMMYYYY = (isoDateString: string): string => {
 
   return `${dayString}/${monthString}/${year}`;
 };
-

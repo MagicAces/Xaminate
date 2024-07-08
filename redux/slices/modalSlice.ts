@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ModalSliceState, Venue, SessionEdit } from "@/types";
+import {
+  ModalSliceState,
+  Venue,
+  SessionEdit,
+  ReportDisplay,
+  StudentDisplay,
+} from "@/types";
 
 const initialState: ModalSliceState = {
   venues: [],
   session: {},
+  report: {},
+  student: {},
   reload: false,
 };
 
@@ -17,6 +25,12 @@ const modalSlice = createSlice({
     setSession: (state, action: PayloadAction<SessionEdit>) => {
       state.session = action.payload;
     },
+    setReport: (state, action: PayloadAction<ReportDisplay>) => {
+      state.report = action.payload;
+    },
+    setStudent: (state, action: PayloadAction<StudentDisplay>) => {
+      state.student = action.payload;
+    },
     closeModal: (state) => {
       state.session = {};
       state.reload = false;
@@ -27,7 +41,13 @@ const modalSlice = createSlice({
   },
 });
 
-export const { setVenues, setSession, closeModal, setReload } =
-  modalSlice.actions;
+export const {
+  setVenues,
+  setSession,
+  setReport,
+  setStudent,
+  closeModal,
+  setReload,
+} = modalSlice.actions;
 
 export default modalSlice.reducer;

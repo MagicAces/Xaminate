@@ -2,7 +2,7 @@ import styles from "@/styles/session.module.scss";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 import { useDispatch, useSelector } from "react-redux";
 import { SessionRow } from "@/types";
-import { formatArray, formatSessionDate } from "@/utils/functs";
+import { formatArray, formatSorRDate } from "@/utils/functs";
 import { capitalize, toUpper } from "lodash";
 import SessionScrollbars from "../Utils/Sessions/SessionScrollbars";
 import Skeleton from "react-loading-skeleton";
@@ -89,7 +89,7 @@ const Body = () => {
                         className={`${styles.sessionRowInner} hide-scrollbar`}
                       >
                         <span className={styles.dateCreated}>
-                          {formatSessionDate(session.created_on)}
+                          {formatSorRDate(session.created_on)}
                         </span>
                         <span
                           className={styles.id}

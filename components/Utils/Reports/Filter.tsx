@@ -71,6 +71,8 @@ const Filter = () => {
   };
 
   const handleFilterReset = () => {
+    if (reportsBox.filter.startTime === "" && reportsBox.filter.endTime === "")
+      return;
     dispatch(setReload(true));
     dispatch(updateReportFilters({ name: "startTime", value: "" }));
     dispatch(updateReportFilters({ name: "endTime", value: "" }));
