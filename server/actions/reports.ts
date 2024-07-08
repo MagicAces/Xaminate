@@ -173,11 +173,11 @@ export const getReportsTest = async ({
 }): Promise<{ success: ReportDisplay }> => {
   try {
     const {
-      page = 1,
-      limit = 15,
       startTime,
       endTime,
       search,
+      page = 1,
+      limit = 15,
       sort: { field, order } = { field: "timestamp", order: "desc" },
     } = query;
 

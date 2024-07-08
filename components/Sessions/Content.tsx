@@ -17,12 +17,10 @@ import Loader from "../Utils/Loader";
 import { useQueryClient } from "@tanstack/react-query";
 import { getSessions } from "@/server/actions/sessions";
 import Filters from "./Filters";
-import { setReload as modalReload } from "@/redux/slices/modalSlice";
 
 const Content = () => {
   const queryClient = useQueryClient();
   const { sessionsBox, reload, isDisabled } = useSelector((state: any) => state.session);
-  const { reload: modalLoad } = useSelector((state: any) => state.modal);
 
   const dispatch = useDispatch();
   const { data, error, isFetching, isLoading, isSuccess, isPlaceholderData } =
@@ -80,15 +78,11 @@ const Content = () => {
       });
     }
   }, [isPlaceholderData, data, sessionsBox, queryClient]);
-
-  useEffect(() => {
-    dispatch(modalReload(false));
-  }, []);
   
   return (
     <>
       <main className={styles.sessionContent}>
-        {(modalLoad || reload || isDisabled) && <Loader curved={false} />}
+        {(reload || isDisabled) && <Loader curved={false} />}
         <Top />
         <Filters />
         <Body />
