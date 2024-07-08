@@ -5,6 +5,7 @@ import {
   SessionEdit,
   ReportDisplay,
   StudentDisplay,
+  ReportPhase,
 } from "@/types";
 
 const initialState: ModalSliceState = {
@@ -25,7 +26,7 @@ const modalSlice = createSlice({
     setSession: (state, action: PayloadAction<SessionEdit>) => {
       state.session = action.payload;
     },
-    setReport: (state, action: PayloadAction<ReportDisplay>) => {
+    setReport: (state, action: PayloadAction<ReportPhase>) => {
       state.report = action.payload;
     },
     setStudent: (state, action: PayloadAction<StudentDisplay>) => {

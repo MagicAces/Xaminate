@@ -333,7 +333,7 @@ export interface ReportOutput {
   }[];
 }
 
-export interface ReportDisplay {
+export interface ReportPhase {
   id: number;
   student: {
     id: number;
