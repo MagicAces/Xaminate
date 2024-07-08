@@ -98,7 +98,7 @@ const Content = () => {
       <main className={styles.reportContent}>
         {(reload || isDisabled) && <Loader curved={false} />}
         <Top />
-        <Filters />
+        {(reportsBox.query.startTime !== "" || reportsBox.query.endTime !== "") && <Filters />}
         <Body />
         <Footer />
       </main>

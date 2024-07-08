@@ -20,7 +20,9 @@ import Filters from "./Filters";
 
 const Content = () => {
   const queryClient = useQueryClient();
-  const { sessionsBox, reload, isDisabled } = useSelector((state: any) => state.session);
+  const { sessionsBox, reload, isDisabled } = useSelector(
+    (state: any) => state.session
+  );
 
   const dispatch = useDispatch();
   const { data, error, isFetching, isLoading, isSuccess, isPlaceholderData } =
@@ -78,13 +80,21 @@ const Content = () => {
       });
     }
   }, [isPlaceholderData, data, sessionsBox, queryClient]);
-  
+
+  const isFilterEmpty = () => {
+    if (sessionsBox.query.venue > 0) return false;
+    if (sessionsBox.query.status !== "") return false;
+    if (sessionsBox.query.startTime !== "") return false;
+    if (sessionsBox.query.endTime !== "") return false;
+
+    return true;
+  };
   return (
     <>
       <main className={styles.sessionContent}>
         {(reload || isDisabled) && <Loader curved={false} />}
         <Top />
-        <Filters />
+        {!isFilterEmpty() && <Filters />}
         <Body />
         <Footer />
       </main>

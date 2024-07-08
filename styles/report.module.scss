@@ -30,7 +30,7 @@
             @include flexin($justify: stretch,
                 $align: stretch,
                 $direction: column,
-                $gap: 1rem);
+                $gap: 0rem);
 
             &Top {
                 padding: 1rem 2rem 0.5rem;
@@ -446,7 +446,7 @@
             }
 
             .reportFilterValues {
-                padding: 0 2rem;
+                padding: 0.5rem 2rem;
                 width: 100%;
                 @include flexin($justify: flex-start, $align: center,
                     $gap: 2rem);
