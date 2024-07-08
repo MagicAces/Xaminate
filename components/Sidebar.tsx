@@ -28,9 +28,7 @@ const Sidebar = () => {
   const { fullView } = useSelector((state: any) => state.sidebar);
   const pathname = usePathname();
   const { pending } = useFormStatus();
-  const [finalState, formAction, isPending] = useFormState(logout, {
-    success: false,
-  });
+  const [, formAction, isPending] = useFormState(logout, null);
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
   const { data: venues, error, isLoading } = useGetVenues();
@@ -66,7 +64,7 @@ const Sidebar = () => {
         onMouseLeave={() => dispatch(setFullView(false))}
         ref={divRef}
       >
-        {(isPending || pending || finalState?.success) && <Loader />}
+        {(isPending || pending) && <Loader />}
         <div className={styles.logoContainer}>
           <Image
             src={logo}

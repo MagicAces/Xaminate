@@ -9,17 +9,15 @@ import {
 } from "next/dist/client/components/redirect";
 import { action } from "./actions";
 
-
 export const authenticate = action(
   authenticateSchema,
   async (credentials: AutheniticateInput) => {
     try {
       const data = await signIn("credentials", credentials);
-      
+
       return { success: "Welcome back", data };
     } catch (error) {
-      if (isRedirectError(error))
-        throw error;
+      if (isRedirectError(error)) throw error;
 
       if (error instanceof AuthError) {
         switch (error.type) {
@@ -39,9 +37,7 @@ export const authenticate = action(
 export const logout = async () => {
   try {
     await signOut({ redirect: true, redirectTo: "/login" });
-    return {success: true}
   } catch (error) {
-    // throw error;
-    return { success: false };
+    throw error;
   }
-}
+};
