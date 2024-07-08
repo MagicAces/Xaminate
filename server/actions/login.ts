@@ -38,8 +38,10 @@ export const authenticate = action(
 
 export const logout = async () => {
   try {
-    await signOut({ redirect: true, redirectTo: "/login"});
+    await signOut({ redirect: true, redirectTo: "/login" });
+    return {success: true}
   } catch (error) {
-    throw error;
+    // throw error;
+    return { success: false };
   }
 }
