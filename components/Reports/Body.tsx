@@ -1,8 +1,10 @@
+"use client";
+
 import styles from "@/styles/report.module.scss";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 import { useDispatch, useSelector } from "react-redux";
 import { ReportRow } from "@/types";
-import { formatArray, formatSorRDate } from "@/utils/functs";
+import { formatArray, formatSorRDate, shimmer, toBase64 } from "@/utils/functs";
 import { capitalize, toUpper } from "lodash";
 import ReportScrollbars from "../Utils/Reports/ReportScrollbars";
 import Skeleton from "react-loading-skeleton";
@@ -37,6 +39,8 @@ const Body = () => {
     }
   };
 
+  console.log(data);
+
   return (
     <>
       {modalState.mode > 0 && modalState.id > 0 && <Modal />}
@@ -70,11 +74,11 @@ const Body = () => {
                   <div
                     className={styles.reportRowOuter}
                     key={index}
-                    style={{
-                      opacity: 0,
-                      animation: `slideIn 0.5s ease-out forwards`,
-                      animationDelay: `${index * 0.2}s`,
-                    }}
+                    // style={{
+                    //   opacity: 0,
+                    //   animation: `slideIn 0.5s ease-out forwards`,
+                    //   animationDelay: `${index * 0.2}s`,
+                    // }}
                   >
                     <ScrollSyncPane>
                       <div
@@ -94,6 +98,10 @@ const Body = () => {
                             height={35}
                             className={styles.reportImage}
                             priority
+                            placeholder="blur"
+                            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                              shimmer(700, 475)
+                            )}`}
                           />
                         </span>
                         <span className={styles.name}>
@@ -114,11 +122,13 @@ const Body = () => {
                           {formatSorRDate(report.timestamp)}
                         </span>
                         <span
-                          className={`${styles.status} ${
-                            styles[`${report.status}`]
-                          }`}
+                          className={`${styles.status}`}
                         >
-                          {capitalize(report.status)}
+                          <span
+                            className={styles[`${report.status.toLowerCase()}`]}
+                          >
+                            {capitalize(report.status)}
+                          </span>
                         </span>
                         <span className={styles.actions}>
                           <div
