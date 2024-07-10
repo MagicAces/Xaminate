@@ -59,7 +59,10 @@ const Top = () => {
               className={`${styles.pendingStatus} ${
                 reportsBox.status === "Pending" ? styles.activeStatus : ""
               }`}
-              onClick={() => dispatch(setStatus("Pending"))}
+              onClick={() => {
+                dispatch(setStatus("Pending"));
+                dispatch(updateReportControls({ name: "page", value: 1 }));
+              }}
             >
               <div className={styles.pendingText}>
                 <MdCircle />
@@ -84,7 +87,10 @@ const Top = () => {
               className={`${styles.approvedStatus} ${
                 reportsBox.status === "Approved" ? styles.activeStatus : ""
               }`}
-              onClick={() => dispatch(setStatus("Approved"))}
+              onClick={() => {
+                dispatch(setStatus("Approved"));
+                dispatch(updateReportControls({ name: "page", value: 1 }));
+              }}
             >
               <div className={styles.approvedText}>
                 <MdCircle />
@@ -109,7 +115,10 @@ const Top = () => {
               className={`${styles.rejectedStatus} ${
                 reportsBox.status === "Rejected" ? styles.activeStatus : ""
               }`}
-              onClick={() => dispatch(setStatus("Rejected"))}
+              onClick={() => {
+                dispatch(setStatus("Rejected"));
+                dispatch(updateReportControls({ name: "page", value: 1 }));
+              }}
             >
               <div className={styles.rejectedText}>
                 <MdCircle />

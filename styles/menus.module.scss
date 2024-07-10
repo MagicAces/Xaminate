@@ -1,133 +1,144 @@
-@import 'config';
-@import 'mixins';
+@import "config";
+@import "mixins";
 
 .tooltip {
-    @include flexin;
+  @include flexin;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+  svg {
     transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    font-size: 17px;
+  }
+
+  &:hover {
+    cursor: pointer;
 
     svg {
-        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-        font-size: 17px;
+      color: $hover-green;
     }
-
-    &:hover {
-        cursor: pointer;
-
-        svg {
-            color: $hover-green;
-        }
-    }
+  }
 }
 
 .tooltipMenu {
-    background-color: $secondary-background;
-    border: 1px solid $border-color;
-    padding: 0.5rem 1rem;
+  background-color: $secondary-background;
+  border: 1px solid $border-color;
+  padding: 0.5rem 1rem;
 
-    &Content {
-        text-transform: none;
-        font-family: inherit !important;
-        color: $text-color;
-        font-size: 14px;
-        padding: 0;
-    }
+  &Content {
+    text-transform: none;
+    font-family: inherit !important;
+    color: $text-color;
+    font-size: 14px;
+    padding: 0;
+  }
 }
 
-
 .sessionIcon {
-    @include flexin;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+  @include flexin;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 
-    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-    svg {
-        font-size: 18px;
-    }
+  svg {
+    font-size: 18px;
+  }
 }
 
 .sessionIcon:hover,
 .sessionIcon:active,
 .sessionOpen {
-    background-color: $border-color;
-    cursor: pointer;
+  background-color: $border-color;
+  cursor: pointer;
 }
 
 .sessionIconMenu {
-    background-color: $secondary-background;
-    box-shadow: 0 4px 4px 0 $dark-shadow;
-    padding: 0;
-    border-radius: 0.7rem;
+  background-color: $secondary-background;
+  box-shadow: 0 4px 4px 0 $dark-shadow;
+  padding: 0;
+  border-radius: 0.7rem;
 
-    .sessionIconItem {
-        font-size: 14px;
-        padding: 0.8rem 1rem;
-        color: $text-color;
-        border-bottom: 1px solid $border-color;
-        @include flexin($justify: flex-start, $align: center,
-            $gap: 0.5rem);
+  .sessionIconItem {
+    font-size: 14px;
+    padding: 0.8rem 1rem;
+    color: $text-color;
+    border-bottom: 1px solid $border-color;
+    @include flexin($justify: flex-start, $align: center, $gap: 0.5rem);
 
-        svg {
-            font-size: 20px;
-        }
+    svg {
+      font-size: 20px;
     }
+  }
 
-    .sessionIconEdit {
-        border-top-left-radius: 0.7rem;
-        border-top-right-radius: 0.7rem;
+  .sessionIconEdit {
+    border-top-left-radius: 0.7rem;
+    border-top-right-radius: 0.7rem;
+  }
+
+  .sessionIconItem:last-of-type {
+    border-bottom: 0;
+    border-bottom-left-radius: 0.7rem;
+    border-bottom-right-radius: 0.7rem;
+  }
+
+  .sessionIconItem:hover {
+    background-color: rgba($color: $text-color, $alpha: 0.1);
+    cursor: pointer;
+    color: $hover-green;
+
+    svg {
+      color: $hover-green;
     }
+  }
 
-    .sessionIconItem:last-of-type {
-        border-bottom: 0;
-        border-bottom-left-radius: 0.7rem;
-        border-bottom-right-radius: 0.7rem;
+  .sessionIconEnd,
+  .sessionIconExit {
+    color: $rejected-color;
+  }
+
+  .sessionIconEnd:hover,
+  .sessionIconExit:hover {
+    color: $lighter-red;
+
+    svg {
+      color: $lighter-red;
     }
-
-    .sessionIconItem:hover {
-        background-color: rgba($color: $text-color, $alpha: 0.1);
-        cursor: pointer;
-        color: $hover-green;
-
-        svg {
-            color: $hover-green;
-        }
-    }
-
-    .sessionIconEnd,
-    .sessionIconExit {
-        color: $rejected-color;
-
-    }
-
-    .sessionIconEnd:hover,
-    .sessionIconExit:hover {
-        color: $lighter-red;
-
-        svg {
-            color: $lighter-red;
-        }
-    }
+  }
 }
 
 .reportFilterIcon,
 .reportSortIcon {
-    @include flexin($justify: center, $align: center, $gap: 0.4rem);
-    padding: 0.6rem 1rem;
-    background-color: $secondary-background;
-    color: $text-color;
-    font-size: 13px;
-    border-radius: 0.6rem;
-    box-shadow: 0 4px 4px 0 $dark-shadow;
-    position: relative;
-    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  @include flexin($justify: center, $align: center, $gap: 0.4rem);
+  padding: 0.6rem 1rem;
+  background-color: $secondary-background;
+  color: $text-color;
+  font-size: 13px;
+  border-radius: 0.6rem;
+  box-shadow: 0 4px 4px 0 $dark-shadow;
+  position: relative;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
+  svg {
+    font-size: 17px;
+    position: relative;
+    color: $accent-green;
+  }
+
+  @media (max-width: 675px) {
+    span {
+      display: none;
+    }
+  }
+
+  @media (max-width: 400px) {
     svg {
-        font-size: 17px;
-        position: relative;
-        color: $accent-green;
+      font-size: 14px;
     }
 
+    padding: 0.4rem 0.7rem;
+    
+  }
 }
 
 .reportFilterIcon:hover,
@@ -136,225 +147,228 @@
 .reportSortIcon:active,
 .reportFilterOpen,
 .reportSortOpen {
-    background-color: $border-color;
-    cursor: pointer;
+  background-color: $border-color;
+  cursor: pointer;
 }
 
 .reportFilterIconMenu {
-    background-color: $secondary-background;
-    box-shadow: 0 4px 4px 0 $dark-shadow;
-    padding: 0;
-    border-radius: 0.4rem;
+  background-color: $secondary-background;
+  box-shadow: 0 4px 4px 0 $dark-shadow;
+  padding: 0;
+  border-radius: 0.4rem;
+  color: $text-color;
+
+  &Header {
+    text-transform: capitalize;
     color: $text-color;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid $border-color;
+  }
 
-    &Header {
-        text-transform: capitalize;
+  &Fields {
+    padding: 0.8rem 1rem;
+    text-transform: capitalize;
+    @include flexin($justify: space-between, $align: stretch, $gap: 1rem);
+    border-bottom: 1px solid $border-color;
+
+    & > div {
+      @include flexin(
+        $justify: flex-start,
+        $align: stretch,
+        $direction: column,
+        $gap: 0.3rem
+      );
+      color: $text-color;
+
+      & > span {
+        color: rgba($color: $text-color, $alpha: 0.7);
+        font-size: 12px;
+      }
+
+      .calendar,
+      .react-datepicker__time-box,
+      .react-datepicker__navigation {
+        background-color: $border-color !important;
+        font-family: inherit !important;
+        color: $text-color !important;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+      }
+
+      .day,
+      .time {
         color: $text-color;
-        padding: 0.8rem 1rem;
-        border-bottom: 1px solid $border-color;
+        font-family: inherit !important;
+      }
+
+      .filterReportTime {
+        width: 100%;
+        @include flexin($justify: space-between, $align: center, $gap: 2rem);
+
+        background-color: transparent;
+        padding: 0.5rem 1rem;
+        border: 1px solid $border-color;
+        // box-shadow: 0 4px 4px 0 $dark-shadow;
+        height: 37px;
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-radius: 0.7rem;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+        .placeholder {
+          font-size: 13px;
+          color: gray;
+        }
+
+        svg {
+          font-size: 16px;
+        }
+
+        span {
+          font-size: 13px;
+        }
+
+        svg:hover {
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+        }
+
+        .timeIcons {
+          @include flexin($justify: flex-end, $align: center, $gap: 0.6rem);
+        }
+      }
+
+      .filterReportTime:hover,
+      .filterReportTime:active,
+      .filterReportTime:focus {
+        border: 1px solid $hover-green;
+        cursor: pointer;
+        color: $hover-green;
+
+        svg {
+          color: $hover-green;
+        }
+      }
+    }
+  }
+
+  &Footer {
+    padding: 0.8rem 1rem;
+    @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+    & > button {
+      font-size: 13px;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid transparent;
     }
 
-    &Fields {
-        padding: 0.8rem 1rem;
-        text-transform: capitalize;
-        @include flexin($justify: space-between, $align: stretch, $gap: 1rem);
-        border-bottom: 1px solid $border-color;
-
-        &>div {
-            @include flexin($justify: flex-start, $align: stretch, $direction: column, $gap: 0.3rem);
-            color: $text-color;
-
-            &>span {
-                color: rgba($color: $text-color, $alpha: 0.7);
-                font-size: 12px;
-            }
-
-            .calendar,
-            .react-datepicker__time-box,
-            .react-datepicker__navigation {
-                background-color: $border-color !important;
-                font-family: inherit !important;
-                color: $text-color !important;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-            }
-
-            .day,
-            .time {
-                color: $text-color ;
-                font-family: inherit !important;
-            }
-
-            .filterReportTime {
-                width: 100%;
-                @include flexin($justify: space-between,
-                    $align: center,
-                    $gap: 2rem);
-
-                background-color: transparent;
-                padding: 0.5rem 1rem;
-                border: 1px solid $border-color;
-                // box-shadow: 0 4px 4px 0 $dark-shadow;
-                height: 37px;
-                width: 150px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                border-radius: 0.7rem;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                .placeholder {
-                    font-size: 13px;
-                    color: gray;
-                }
-
-                svg {
-                    font-size: 16px;
-                }
-
-                span {
-                    font-size: 13px;
-                }
-
-                svg:hover {
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                }
-
-                .timeIcons {
-                    @include flexin($justify: flex-end,
-                        $align: center,
-                        $gap: 0.6rem);
-                }
-            }
-
-            .filterReportTime:hover,
-            .filterReportTime:active,
-            .filterReportTime:focus {
-                border: 1px solid $hover-green;
-                cursor: pointer;
-                color: $hover-green;
-
-                svg {
-                    color: $hover-green;
-                }
-            }
-        }
+    button.applyButton {
+      background-color: $accent-green;
     }
 
-    &Footer {
-        padding: 0.8rem 1rem;
-        @include flexin($justify: space-between, $align: center, $gap: 3rem);
-
-        &>button {
-            font-size: 13px;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid transparent;
-        }
-
-        button.applyButton {
-            background-color: $accent-green;
-        }
-
-        button.applyButton:hover {
-            background-color: $accent-dark-green;
-        }
-
-        button.resetButton {
-            background-color: transparent;
-            border-color: $rejected-color;
-        }
-
-        button.resetButton:hover {
-            color: $rejected-color;
-        }
+    button.applyButton:hover {
+      background-color: $accent-dark-green;
     }
 
+    button.resetButton {
+      background-color: transparent;
+      border-color: $rejected-color;
+    }
+
+    button.resetButton:hover {
+      color: $rejected-color;
+    }
+  }
 }
 
 .reportSortIconMenu {
-    background-color: $secondary-background;
-    box-shadow: 0 4px 4px 0 $dark-shadow;
-    padding: 0;
-    border-radius: 0.4rem;
+  background-color: $secondary-background;
+  box-shadow: 0 4px 4px 0 $dark-shadow;
+  padding: 0;
+  border-radius: 0.4rem;
+  color: $text-color;
+
+  &Fields {
+    @include flexin(
+      $justify: space-between,
+      $align: stretch,
+      $direction: column,
+      $gap: 0
+    );
+    padding: 0.3rem 0;
     color: $text-color;
+    text-transform: capitalize;
 
-    &Fields {
-        @include flexin($justify: space-between, $align: stretch,
-            $direction: column, $gap: 0);
-        padding: 0.3rem 0;
-        color: $text-color;
-        text-transform: capitalize;
+    & > .label {
+      @include flexin($justify: stretch, $align: center, $gap: 0.5rem);
+      padding: 0.5rem 1rem;
+      font-size: 13px;
 
-        &>.label {
-            @include flexin($justify: stretch, $align: center, $gap: 0.5rem);
-            padding: 0.5rem 1rem;
-            font-size: 13px;
+      .radioInput {
+        appearance: none;
+        border: 1px solid $text-color;
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+      }
 
-            .radioInput {
-                appearance: none;
-                border: 1px solid $text-color;
-                height: 10px;
-                width: 10px;
-                border-radius: 50%;
-            }
-
-            .radioInput:checked {
-                border: 1px solid transparent;
-                background-color: $accent-green;
-            }
-
-        }
-
-        .selected {
-            color: $accent-green;
-        }
-
-        &>.label:hover {
-            background-color: $border-color;
-            cursor: pointer
-        }
-
-        .selected:hover {
-            color: $hover-green;
-
-            input {
-                background-color: $hover-green;
-            }
-        }
+      .radioInput:checked {
+        border: 1px solid transparent;
+        background-color: $accent-green;
+      }
     }
 
-    &Footer {
-        padding: 0.3rem 1rem 0.8rem;
-        color: $text-color;
-        text-transform: capitalize;
-        font-size: 13px;
-
-        &>div {
-            padding: 0.4rem 0.7rem;
-            border: 1px solid $border-color;
-            border-radius: 0.4rem;
-            @include flexin($justify: center, $align: center, $gap: 0.5rem);
-            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-            span {
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-            }
-
-            svg {
-                color: $accent-green;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                font-size: 17px;
-            }
-        }
-
-        &>div:hover {
-            border: 1px solid $hover-green;
-            cursor: pointer;
-
-            span,
-            svg {
-                color: $hover-green;
-            }
-        }
+    .selected {
+      color: $accent-green;
     }
+
+    & > .label:hover {
+      background-color: $border-color;
+      cursor: pointer;
+    }
+
+    .selected:hover {
+      color: $hover-green;
+
+      input {
+        background-color: $hover-green;
+      }
+    }
+  }
+
+  &Footer {
+    padding: 0.3rem 1rem 0.8rem;
+    color: $text-color;
+    text-transform: capitalize;
+    font-size: 13px;
+
+    & > div {
+      padding: 0.4rem 0.7rem;
+      border: 1px solid $border-color;
+      border-radius: 0.4rem;
+      @include flexin($justify: center, $align: center, $gap: 0.5rem);
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+      span {
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+      }
+
+      svg {
+        color: $accent-green;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+        font-size: 17px;
+      }
+    }
+
+    & > div:hover {
+      border: 1px solid $hover-green;
+      cursor: pointer;
+
+      span,
+      svg {
+        color: $hover-green;
+      }
+    }
+  }
 }

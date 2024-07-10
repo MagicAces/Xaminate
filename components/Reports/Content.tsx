@@ -18,7 +18,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getReportsTest } from "@/server/actions/reports";
 import Filters from "./Filters";
 
-
 const Content = () => {
   const queryClient = useQueryClient();
   const { reportsBox, reload, isDisabled } = useSelector(
@@ -28,7 +27,7 @@ const Content = () => {
   const dispatch = useDispatch();
   const { data, error, isFetching, isLoading, isSuccess, isPlaceholderData } =
     useGetTestReports({ query: reportsBox.query, status: reportsBox.status });
-  
+
   useEffect(() => {
     dispatch(setIsDisabled(isPlaceholderData || isLoading));
 
@@ -48,57 +47,58 @@ const Content = () => {
     isPlaceholderData,
   ]);
 
-  useEffect(() => {
-    if (!isPlaceholderData && data?.hasNextPage) {
-      queryClient.prefetchQuery({
-        queryKey: [
-          "reports",
-          {
-            ...reportsBox.query,
-            page: reportsBox.query.page + 1,
-            status: reportsBox.status,
-          },
-        ],
-        queryFn: async () => {
-          const data = await getReportsTest({
-            ...reportsBox.query,
-            page: reportsBox.query.page + 1,
-            status: reportsBox.status,
-          });
-          return data.success;
-        },
-      });
-    }
+  // useEffect(() => {
+  //   if (!isPlaceholderData && data?.hasNextPage) {
+  //     queryClient.prefetchQuery({
+  //       queryKey: [
+  //         "reports",
+  //         {
+  //           ...reportsBox.query,
+  //           page: reportsBox.query.page + 1,
+  //           status: reportsBox.status,
+  //         },
+  //       ],
+  //       queryFn: async () => {
+  //         const data = await getReportsTest({
+  //           ...reportsBox.query,
+  //           page: reportsBox.query.page + 1,
+  //           status: reportsBox.status,
+  //         });
+  //         return data.success;
+  //       },
+  //     });
+  //   }
 
-    if (!isPlaceholderData && data?.hasPrevPage) {
-      queryClient.prefetchQuery({
-        queryKey: [
-          "reports",
-          {
-            ...reportsBox.query,
-            page: reportsBox.query.page - 1,
-            status: reportsBox.status,
-          },
-        ],
-        queryFn: async () => {
-          const data = await getReportsTest({
-            ...reportsBox.query,
-            page: reportsBox.query.page - 1,
+  //   if (!isPlaceholderData && data?.hasPrevPage) {
+  //     queryClient.prefetchQuery({
+  //       queryKey: [
+  //         "reports",
+  //         {
+  //           ...reportsBox.query,
+  //           page: reportsBox.query.page - 1,
+  //           status: reportsBox.status,
+  //         },
+  //       ],
+  //       queryFn: async () => {
+  //         const data = await getReportsTest({
+  //           ...reportsBox.query,
+  //           page: reportsBox.query.page - 1,
 
-            status: reportsBox.status,
-          });
-          return data.success;
-        },
-      });
-    }
-  }, [isPlaceholderData, data, reportsBox, queryClient]);
+  //           status: reportsBox.status,
+  //         });
+  //         return data.success;
+  //       },
+  //     });
+  //   }
+  // }, [isPlaceholderData, data, reportsBox, queryClient]);
 
   return (
     <>
       <main className={styles.reportContent}>
         {(reload || isDisabled) && <Loader curved={false} />}
         <Top />
-        {(reportsBox.query.startTime !== "" || reportsBox.query.endTime !== "") && <Filters />}
+        {(reportsBox.query.startTime !== "" ||
+          reportsBox.query.endTime !== "") && <Filters />}
         <Body />
         <Footer />
       </main>

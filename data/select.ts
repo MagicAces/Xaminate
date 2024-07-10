@@ -53,3 +53,28 @@ export const statusOptions = (): readonly SelectOption[] => {
     },
   ];
 };
+
+export const limitOptions = (): readonly SelectOption[] => {
+  return [
+    {
+      value: 7,
+      label: "7 per page",
+    },
+    {
+      value: 10,
+      label: "10 per page",
+    },
+    {
+      value: 15,
+      label: "15 per page",
+    },
+    {
+      value: 20,
+      label: "20 per page",
+    },
+    {
+      value: 50,
+      label: "50 per page",
+    },
+  ];
+};

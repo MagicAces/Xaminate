@@ -1,4 +1,4 @@
-@import 'config';
+@import "config";
 
 * {
   box-sizing: border-box;
@@ -62,7 +62,6 @@ input:-internal-edge-excel-like-autofill-previewed {
 }
 
 @media (max-width: 450px) {
-
   span,
   a,
   p,
@@ -70,7 +69,6 @@ input:-internal-edge-excel-like-autofill-previewed {
   button {
     font-size: 12px !important;
   }
-
 }
 
 .react-datepicker,
@@ -130,7 +128,7 @@ input.react-datepicker-time__input {
   border-color: $text-color !important;
   color: $text-color !important;
 
-  &>:only-child {
+  & > :only-child {
     color: $text-color !important;
     background-color: $text-color !important;
   }
@@ -177,13 +175,98 @@ input.react-datepicker-time__input {
     .session-create__indicator,
     .filter-select__indicator {
       padding: 0 !important;
-
     }
 
     svg:hover {
       color: $hover-green !important;
       cursor: pointer;
       transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    }
+  }
+}
+
+.report-limit__control {
+  height: 35px !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid transparent !important;
+  background-color: $secondary-background !important;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+  .report-limit__value-container {
+    background-color: $secondary-background !important;
+    border: 0 !important;
+    font-family: inherit !important;
+    margin: 0 0.5rem;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+    .report-limit__single-value {
+      color: $text-color !important;
+      font-family: inherit !important;
+      font-size: 13px;
+    }
+
+    .report-limit__placeholder {
+      color: gray !important;
+      font-size: 13px !important;
+    }
+
+    input.report-limit__input {
+      color: $text-color !important;
+      box-shadow: 0 0 0 0 transparent !important;
+    }
+  }
+
+  .report-limit__indicators {
+    background-color: $secondary-background !important;
+    margin-right: 0.65rem !important;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+    .report-limit__indicator-separator {
+      width: 0 !important;
+      margin: 0 !important;
+    }
+
+    .report-limit__indicator {
+      padding: 0 !important;
+    }
+
+    svg:hover {
+      color: $hover-green !important;
+      cursor: pointer;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    }
+  }
+}
+
+.report-limit__menu {
+  background-color: $border-color !important;
+  box-shadow: 0 4px 4px 0 $dark-shadow !important;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  // border: 1px solid $border-color !important;
+  color: $text-color !important;
+
+  &-list {
+    color: $text-color !important;
+    border-radius: 0.5rem !important;
+    background-color: $secondary-background !important;
+
+    .report-limit__option {
+      font-family: inherit !important;
+      font-size: 13px !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .report-limit__option--is-focused {
+      background-color: $hover-green !important;
+    }
+
+    .report-limit__option--is-selected {
+      background-color: $accent-green !important;
+    }
+
+    .report-limit__menu-notice--no-options {
+      font-family: inherit !important;
+      font-size: 13px;
     }
   }
 }
@@ -198,7 +281,6 @@ input.react-datepicker-time__input {
     color: $text-color !important;
     border-radius: 0.5rem !important;
     background-color: $border-color !important;
-
 
     .session-create__option {
       font-family: inherit !important;
@@ -223,6 +305,19 @@ input.react-datepicker-time__input {
 
 .session-create__control--is-focused {
   box-shadow: 0 0 0 1px $accent-dark-green !important;
+}
+
+.report-limit__control--is-focused {
+  box-shadow: none !important;
+  background-color: $border-color !important;
+
+  .report-limit__value-container {
+    background-color: $border-color !important;
+  }
+
+  .report-limit__indicators {
+    background-color: $border-color !important;
+  }
 }
 
 .filter-select__control {
@@ -280,11 +375,9 @@ input.react-datepicker-time__input {
 
   .filter-select__indicator {
     padding: 0 !important;
-
   }
 
   .filter-select__clear-indicator {
-
     svg {
       color: $text-color !important;
       transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
@@ -311,7 +404,6 @@ input.react-datepicker-time__input {
     color: $text-color !important;
     border-radius: 0.5rem !important;
     background-color: $secondary-background !important;
-
 
     .filter-select__option {
       font-family: inherit !important;

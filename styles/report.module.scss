@@ -1,525 +1,634 @@
-@import 'config';
-@import 'mixins';
+@import "config";
+@import "mixins";
 
 .reportSection {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    background-color: $primary-background;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: $primary-background;
 
-    @include flexin($justify: stretch,
+  @include flexin($justify: stretch, $align: stretch, $gap: 0);
+
+  .reportContainer {
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 0
+    );
+    width: calc(100vw - 4rem);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    height: 100%;
+
+    .reportContent {
+      flex-grow: 1;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      overflow: auto;
+
+      @include flexin(
+        $justify: stretch,
         $align: stretch,
-        $gap: 0);
+        $direction: column,
+        $gap: 0rem
+      );
 
-    .reportContainer {
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 0);
-        width: calc(100vw - 4rem);
-        overflow: hidden;
-        position: absolute;
-        right: 0;
-        height: 100%;
+      &Top {
+        padding: 1rem 2rem 0.5rem;
+        width: 100%;
+        @include flexin(
+          $justify: space-between,
+          $align: stretch,
+          $direction: column,
+          $gap: 1rem
+        );
 
-        .reportContent {
-            flex-grow: 1;
-            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-            overflow: auto;
+        &Statuses {
+          width: 100%;
+          border-bottom: 1px solid $border-color;
+          position: relative;
+          @include flexin($justify: stretch, $align: stretch);
 
-            @include flexin($justify: stretch,
-                $align: stretch,
-                $direction: column,
-                $gap: 0rem);
+          .statuses {
+            position: relative;
+            bottom: -1px;
+            width: 100%;
+            @include flexin($justify: flex-start, $align: center, $gap: 1.3rem);
 
-            &Top {
-                padding: 1rem 2rem 0.5rem;
-                width: 100%;
-                @include flexin($justify: space-between,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 1rem);
+            & > div {
+              padding-bottom: 0.65rem;
+              padding-top: 0.35rem;
+              color: rgba($color: $text-color, $alpha: 0.7);
+              @include flexin(
+                $justify: flex-start,
+                $align: center,
+                $gap: 0.8rem
+              );
+              border: 1px solid transparent;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                &Statuses {
-                    width: 100%;
-                    border-bottom: 1px solid $border-color;
-                    position: relative;
-                    @include flexin($justify: stretch,
-                        $align: stretch);
+              & > div {
+                @include flexin(
+                  $justify: flex-start,
+                  $align: center,
+                  $gap: 0.35rem
+                );
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                    .statuses {
-                        position: relative;
-                        bottom: -1px;
-                        width: 100%;
-                        @include flexin($justify: flex-start, $align: center, $gap: 1.3rem);
-
-                        &>div {
-                            padding-bottom: 0.65rem;
-                            padding-top: 0.35rem;
-                            color: rgba($color: $text-color, $alpha: 0.7);
-                            @include flexin($justify: flex-start, $align: center, $gap: 0.8rem);
-                            border: 1px solid transparent;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                            &>div {
-                                @include flexin($justify: flex-start, $align: center, $gap: 0.35rem);
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                                span {
-                                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                                }
-
-                                svg {
-                                    font-size: 18px;
-                                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                                    position: relative;
-                                    top: -1px;
-                                }
-                            }
-
-                            &>span {
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                            }
-                        }
-
-                        &>div:hover:not(.activeStatus) {
-                            cursor: pointer;
-                            border-bottom: 1px solid white;
-                            color: $text-color;
-                        }
-
-                        .activeStatus:hover {
-                            cursor: pointer;
-                        }
-
-                        .activeStatus.pendingStatus {
-                            border-bottom: 1px solid $pending-color;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                            &>div {
-
-                                span,
-                                svg {
-                                    color: $pending-color;
-                                }
-                            }
-
-                            &>span {
-                                // color: $text-color;
-                                color: $pending-color;
-                            }
-                        }
-
-                        .activeStatus.approvedStatus {
-                            border-bottom: 1px solid $approved-color;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                            &>div {
-
-                                span,
-                                svg {
-                                    color: $approved-color;
-                                }
-                            }
-
-                            &>span {
-                                // color: $text-color;
-                                color: $approved-color;
-                            }
-                        }
-
-                        .activeStatus.rejectedStatus {
-                            border-bottom: 1px solid $rejected-color;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                            &>div {
-
-                                span,
-                                svg {
-                                    color: $rejected-color;
-                                }
-                            }
-
-                            &>span {
-                                // color: $text-color;
-                                color: $rejected-color;
-                            }
-                        }
-                    }
-
+                span {
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
                 }
 
-                &Actions {
-
-                    width: 100%;
-                    @include flexin($justify: space-between,
-                        $align: stretch,
-                        $gap: 1.5rem);
-
-                    .searchBox {
-                        position: relative;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-
-                        svg {
-                            position: absolute;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                            font-size: 18px;
-                            top: 10px;
-                        }
-
-                        svg:hover {
-                            color: $hover-green;
-                        }
-
-                        svg:first-of-type {
-                            left: 11px;
-                        }
-
-                        svg:last-of-type {
-                            right: 10px;
-                        }
-
-                        input {
-                            font-size: 13px !important;
-                            all: unset;
-                            background-color: $secondary-background;
-                            color: $text-color;
-                            outline: none;
-                            border-radius: 0.7rem;
-                            height: 37px;
-                            box-shadow: 0 4px 4px 0 $dark-shadow;
-                            max-width: 180px;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                            padding: 0 2rem 0 2.2rem;
-                        }
-
-                        ::placeholder {
-                            font-size: 13px;
-                        }
-                    }
-
-                    .searchBox:hover,
-                    .searchBox:active,
-                    .searchBox:focus {
-                        svg {
-                            color: $accent-green;
-                        }
-                    }
-
-                    .filterAndSort {
-                        @include flexin($justify: flex-end,
-                            $align: stretch,
-                            $gap: 1.5rem);
-
-                        .clearFilterButton {
-                            padding: 10px;
-                            border-radius: 0.7rem;
-                            box-shadow: 0 4px 4px 0 $dark-shadow;
-                            border: 1px inset transparent;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                            background-color: $rejected-color;
-
-                            @include flexin();
-
-                            svg {
-                                font-size: 17px;
-                                color: $text-color;
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                            }
-                        }
-
-                        .clearFilterButton:hover {
-                            cursor: pointer;
-                            background-color: transparent;
-                            border: 1px inset $rejected-color;
-
-                            svg {
-                                color: $rejected-color;
-                            }
-                        }
-                    }
+                svg {
+                  font-size: 18px;
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                  position: relative;
+                  top: -1px;
                 }
+              }
 
+              & > span {
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
             }
 
-            &Body {
-                flex-grow: 1;
-                position: relative;
+            & > div:hover:not(.activeStatus) {
+              cursor: pointer;
+              border-bottom: 1px solid white;
+              color: $text-color;
+            }
+
+            .activeStatus:hover {
+              cursor: pointer;
+            }
+
+            .activeStatus.pendingStatus {
+              border-bottom: 1px solid $pending-color;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              & > div {
+                span,
+                svg {
+                  color: $pending-color;
+                }
+              }
+
+              & > span {
+                // color: $text-color;
+                color: $pending-color;
+              }
+            }
+
+            .activeStatus.approvedStatus {
+              border-bottom: 1px solid $approved-color;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              & > div {
+                span,
+                svg {
+                  color: $approved-color;
+                }
+              }
+
+              & > span {
+                // color: $text-color;
+                color: $approved-color;
+              }
+            }
+
+            .activeStatus.rejectedStatus {
+              border-bottom: 1px solid $rejected-color;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              & > div {
+                span,
+                svg {
+                  color: $rejected-color;
+                }
+              }
+
+              & > span {
+                // color: $text-color;
+                color: $rejected-color;
+              }
+            }
+          }
+        }
+
+        &Actions {
+          width: 100%;
+          @include flexin(
+            $justify: space-between,
+            $align: stretch,
+            $gap: 1.5rem
+          );
+
+          .searchBox {
+            position: relative;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+            svg {
+              position: absolute;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              font-size: 18px;
+              top: 10px;
+            }
+
+            svg:hover {
+              color: $hover-green;
+            }
+
+            svg:first-of-type {
+              left: 11px;
+            }
+
+            svg:last-of-type {
+              right: 10px;
+            }
+
+            input {
+              font-size: 13px !important;
+              all: unset;
+              background-color: $secondary-background;
+              color: $text-color;
+              outline: none;
+              border-radius: 0.7rem;
+              height: 37px;
+              box-shadow: 0 4px 4px 0 $dark-shadow;
+              max-width: 180px;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              padding: 0 2rem 0 2.2rem;
+            }
+
+            ::placeholder {
+              font-size: 13px;
+            }
+          }
+
+          .searchBox:hover,
+          .searchBox:active,
+          .searchBox:focus {
+            svg {
+              color: $accent-green;
+            }
+          }
+
+          .filterAndSort {
+            @include flexin($justify: flex-end, $align: stretch, $gap: 1.5rem);
+
+            .clearFilterButton {
+              padding: 10px;
+              border-radius: 0.7rem;
+              box-shadow: 0 4px 4px 0 $dark-shadow;
+              border: 1px inset transparent;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              background-color: $rejected-color;
+
+              @include flexin();
+
+              svg {
+                font-size: 17px;
+                color: $text-color;
                 transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                overscroll-behavior: contain;
-                margin: 0.5rem 2rem 0.4rem;
-                padding: 0;
-                border: 1px solid $border-color;
-                border-radius: 0.8rem;
+              }
+            }
 
-                @include flexin($justify: stretch,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 0rem);
+            .clearFilterButton:hover {
+              cursor: pointer;
+              background-color: transparent;
+              border: 1px inset $rejected-color;
 
-                &Header {
-                    background-color: $secondary-background;
-                    position: sticky;
-                    z-index: 1;
-                    position: -webkit-sticky;
-                    top: 0;
-                    border-top-right-radius: 0.7rem;
-                    border-top-left-radius: 0.7rem;
-                    width: 100%;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              svg {
+                color: $rejected-color;
+              }
+            }
 
-                    .headerContent {
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        padding: 0.8rem 1.7rem;
-                        width: 100%;
-                        overflow: auto;
-                        -webkit-overflow-scrolling: touch;
-                        border-top-right-radius: 0.7rem;
-                        border-top-left-radius: 0.7rem;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            @media (max-width: 400px) {
+              gap: 0.7rem;
+            }
+          }
 
-                        @include flexin($justify: flex-start,
-                            $align: center,
-                            $direction: row,
-                            $gap: 1.7rem);
+          @media (max-width: 675px) {
+            gap: 0.7rem;
 
-                        &>span {
-                            color: $text-color;
-                            font-weight: 500;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            flex-grow: 1;
-                            font-size: 13px;
-                        }
+            .searchBox {
+              input {
+                max-width: 120px;
+              }
+            }
+          }
+        }
 
-                        // .actions {
-                        //     visibility: hidden;
-                        // }
-                    }
-                }
+        @media (max-width: 675px) {
+          padding: 1rem;
+        }
+      }
 
-                .bodyContainer {
-                    width: 100%;
+      &Body {
+        flex-grow: 1;
+        position: relative;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        overscroll-behavior: contain;
+        margin: 0.5rem 2rem 0.4rem;
+        padding: 0;
+        border: 1px solid $border-color;
+        border-radius: 0.8rem;
 
-                    .reportRows {
-                        @include flexin($justify: flex-start,
-                            $align: stretch,
-                            $direction: column,
-                            $gap: 0);
-                        padding: 0;
-                        width: 100%;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        @include flexin(
+          $justify: stretch,
+          $align: stretch,
+          $direction: column,
+          $gap: 0rem
+        );
 
-                        .reportRowOuter {
-                            @include flexin($justify: stretch,
-                                $align: stretch, $gap: 0);
-                            width: 100%;
-                            // padding: 0.2rem 0;
-                            border-bottom: 1px solid $highlight-color;
-                            flex-grow: 1;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        &Header {
+          background-color: $secondary-background;
+          position: sticky;
+          z-index: 1;
+          position: -webkit-sticky;
+          top: 0;
+          border-top-right-radius: 0.7rem;
+          border-top-left-radius: 0.7rem;
+          width: 100%;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                            &>div {
-                                padding: 0.25rem 1.4rem;
-                                @include flexin($justify: flex-start,
-                                    $align: center,
-                                    $gap: 1.7rem);
-                                -webkit-overflow-scrolling: touch;
-                                scroll-snap-type: x mandatory;
-                                overflow-x: auto;
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                                width: 100%;
+          .headerContent {
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            padding: 0.8rem 1.7rem;
+            width: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            border-top-right-radius: 0.7rem;
+            border-top-left-radius: 0.7rem;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                                &>span {
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                    white-space: nowrap;
-                                    font-size: 13px;
-                                    font-weight: 300;
-                                }
+            @include flexin(
+              $justify: flex-start,
+              $align: center,
+              $direction: row,
+              $gap: 1.7rem
+            );
 
+            & > span {
+              color: $text-color;
+              font-weight: 500;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              flex-grow: 1;
+              font-size: 13px;
+            }
 
+            // .actions {
+            //     visibility: hidden;
+            // }
+          }
+        }
 
-                                .sessionID {
-                                    color: $accent-dark-green;
-                                }
+        .bodyContainer {
+          width: 100%;
 
-                                .sessionID:hover {
-                                    color: $hover-green;
-                                    cursor: pointer;
-                                }
+          .reportRows {
+            @include flexin(
+              $justify: flex-start,
+              $align: stretch,
+              $direction: column,
+              $gap: 0
+            );
+            padding: 0;
+            width: 100%;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                                .status {
-                                    overflow: visible;
+            .reportRowOuter {
+              @include flexin($justify: stretch, $align: stretch, $gap: 0);
+              width: 100%;
+              // padding: 0.2rem 0;
+              border-bottom: 1px solid $highlight-color;
+              flex-grow: 1;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-                                    .pending {
-                                        color: $pending-color;
-                                        padding: 0.35rem 0.5rem;
-                                        border: 1px solid $pending-color;
-                                        border-radius: 0.35rem;
-                                    }
+              & > div {
+                padding: 0.25rem 1.4rem;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: center,
+                  $gap: 1.7rem
+                );
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                overflow-x: auto;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                width: 100%;
 
-                                    .approved {
-                                        color: $approved-color;
-                                        padding: 0.35rem 0.5rem;
-                                        border: 1px solid $approved-color;
-                                        border-radius: 0.35rem;
-                                    }
-
-                                    .rejected {
-                                        color: $rejected-color;
-                                        padding: 0.35rem 0.5rem;
-                                        border: 1px solid $rejected-color;
-                                        border-radius: 0.35rem;
-                                    }
-                                }
-
-
-
-                                .photo {
-                                    img {
-                                        border-radius: 50%;
-                                    }
-                                }
-
-                                .actions {
-                                    @include flexin($justify: stretch, $align: center, $gap: 1rem);
-                                    overflow: visible;
-
-                                    &>div {
-                                        font-size: 18px;
-                                        color: $accent-green;
-                                        padding: 0.4rem 0.6rem;
-                                        border-radius: 0.4rem;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        background-color: $secondary-background;
-                                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                                    }
-
-                                    &>div:hover {
-                                        background-color: $border-color;
-                                        color: $hover-green;
-                                    }
-                                }
-                            }
-                        }
-
-                        .reportRowOuter:hover {
-                            background-color: rgba($color: $text-color, $alpha: 0.1);
-                        }
-                    }
-                }
-
-                .id {
-                    flex-basis: 5%;
-                    min-width: 30px;
-                }
-
-                .photo {
-                    flex-basis: 9%;
-                    min-width: 60px;
-                }
-
-                .name {
-                    flex-basis: 16%;
-                    min-width: 120px;
-                }
-
-                .indexNo {
-                    flex-basis: 11%;
-                    min-width: 70px;
+                & > span {
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-size: 13px;
+                  font-weight: 300;
                 }
 
                 .sessionID {
-                    flex-basis: 11%;
-                    min-width: 70px;
+                  color: $accent-dark-green;
+                }
+
+                .sessionID:hover {
+                  color: $hover-green;
+                  cursor: pointer;
                 }
 
                 .status {
-                    flex-basis: 13%;
-                    min-width: 85px;
+                  overflow: visible;
+
+                  .pending {
+                    color: $pending-color;
+                    padding: 0.35rem 0.5rem;
+                    border: 1px solid $pending-color;
+                    border-radius: 0.35rem;
+                  }
+
+                  .approved {
+                    color: $approved-color;
+                    padding: 0.35rem 0.5rem;
+                    border: 1px solid $approved-color;
+                    border-radius: 0.35rem;
+                  }
+
+                  .rejected {
+                    color: $rejected-color;
+                    padding: 0.35rem 0.5rem;
+                    border: 1px solid $rejected-color;
+                    border-radius: 0.35rem;
+                  }
                 }
 
-                .timestamp {
-                    flex-basis: 12%;
-                    min-width: 150px;
+                .photo {
+                  img {
+                    border-radius: 50%;
+                  }
                 }
 
                 .actions {
-                    flex-basis: 24%;
-                    min-width: 200px;
-                }
+                  @include flexin(
+                    $justify: stretch,
+                    $align: center,
+                    $gap: 1rem
+                  );
+                  overflow: visible;
 
-                @media (max-width: 675px) {
-                    padding: 0.5rem 1rem;
-                }
-
-            }
-
-            .noReports {
-                flex-grow: 1;
-                height: 100%;
-                width: 100%;
-                margin-top: 3rem;
-                font-size: 13px;
-                @include flexin;
-                color: gray;
-            }
-
-            .reportFilterValues {
-                padding: 0.5rem 2rem;
-                width: 100%;
-                @include flexin($justify: flex-start, $align: center,
-                    $gap: 2rem);
-                flex-wrap: wrap;
-
-                .filterText {
-                    color: rgba($color: $text-color, $alpha: 0.7);
-                    font-weight: 300;
-                }
-
-                .filterValue {
-                    padding: 0.5rem 1rem;
-                    border-radius: 1rem;
-                    @include flexin($justify: center,
-                        $align: center,
-                        $gap: 1.5rem);
-                    background-color: $secondary-background;
+                  & > div {
+                    font-size: 18px;
+                    color: $accent-green;
+                    padding: 0.4rem 0.6rem;
+                    border-radius: 0.4rem;
                     box-shadow: 0 3px 3px 0 $dark-shadow;
+                    background-color: $secondary-background;
                     transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    border: 1px solid transparent;
+                  }
 
-
-                    &>span {
-                        font-weight: 300;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    }
-
-                    &>svg {
-                        font-size: 18px;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    }
-
-                    &>svg:hover {
-                        color: $hover-green;
-                        cursor: pointer;
-                    }
+                  & > div:hover {
+                    background-color: $border-color;
+                    color: $hover-green;
+                    cursor: pointer;
+                  }
                 }
-
-                .filterValue:hover {
-                    border: 1px solid $hover-green;
-                    background-color: transparent;
-
-                    &>svg,
-                    &>span {
-                        color: $hover-green;
-                    }
-                }
+              }
             }
+
+            .reportRowOuter:hover {
+              background-color: rgba($color: $text-color, $alpha: 0.1);
+            }
+
+            .reportRowOuter:last-of-type {
+              border-bottom: 1px solid transparent !important;
+              border-bottom-left-radius: 0.5rem;
+              border-bottom-right-radius: 0.5rem;
+            }
+          }
         }
+
+        .id {
+          flex-basis: 5%;
+          min-width: 30px;
+        }
+
+        .photo {
+          flex-basis: 9%;
+          min-width: 60px;
+        }
+
+        .name {
+          flex-basis: 16%;
+          min-width: 120px;
+        }
+
+        .indexNo {
+          flex-basis: 11%;
+          min-width: 70px;
+        }
+
+        .sessionID {
+          flex-basis: 11%;
+          min-width: 70px;
+        }
+
+        .status {
+          flex-basis: 13%;
+          min-width: 85px;
+        }
+
+        .timestamp {
+          flex-basis: 12%;
+          min-width: 150px;
+        }
+
+        .actions {
+          flex-basis: 24%;
+          min-width: 200px;
+        }
+
+        @media (max-width: 675px) {
+          margin: 0.5rem 1rem;
+        }
+      }
+
+      .noReports {
+        flex-grow: 1;
+        height: 100%;
+        width: 100%;
+        margin-top: 3rem;
+        font-size: 13px;
+        @include flexin;
+        color: gray;
+      }
+
+      .reportFilterValues {
+        padding: 0.5rem 2rem;
+        width: 100%;
+        @include flexin($justify: flex-start, $align: center, $gap: 2rem);
+        flex-wrap: wrap;
+
+        .filterText {
+          color: rgba($color: $text-color, $alpha: 0.7);
+          font-weight: 300;
+        }
+
+        .filterValue {
+          padding: 0.5rem 1rem;
+          border-radius: 1rem;
+          @include flexin($justify: center, $align: center, $gap: 1.5rem);
+          background-color: $secondary-background;
+          box-shadow: 0 3px 3px 0 $dark-shadow;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          border: 1px solid transparent;
+
+          & > span {
+            font-weight: 300;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          }
+
+          & > svg {
+            font-size: 18px;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          }
+
+          & > svg:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+        }
+
+        .filterValue:hover {
+          border: 1px solid $hover-green;
+          background-color: transparent;
+
+          & > svg,
+          & > span {
+            color: $hover-green;
+          }
+        }
+
+        @media (max-width: 675px) {
+          padding: 0.5rem 1rem;
+        }
+      }
+
+      &Footer {
+        padding: 1rem 2rem;
+        width: 100%;
+        @include flexin($justify: space-between, $align: stretch, $gap: 1.5rem);
+
+        &Navigation {
+          background-color: $secondary-background;
+          border-radius: 0.5rem;
+          @include flexin($justify: center, $align: center, $gap: 0.8rem);
+          padding: 0.4rem 0.8rem;
+
+          span {
+            font-size: 13px;
+          }
+
+          .navText {
+            @include flexin($justify: center, $align: center, $gap: 0.3rem);
+
+            .navRows {
+              font-weight: 500;
+
+              @include flexin($justify: center, $align: center, $gap: 0.2rem);
+            }
+
+            .totalCount {
+              font-weight: 300;
+            }
+          }
+
+          .navButtons {
+            @include flexin($justify: center, $align: center, $gap: 0.4rem);
+
+            & > span:hover {
+              cursor: pointer;
+              color: $hover-green;
+            }
+
+            & > span {
+              svg {
+                position: relative;
+                top: 2px;
+                color: $accent-green;
+              }
+            }
+
+            .disabledButton {
+              cursor: not-allowed;
+
+              svg {
+                color: $border-color;
+              }
+              svg:hover {
+                color: $border-color;
+              }
+            }
+          }
+        }
+
+        @media (max-width: 675px) {
+          padding: 1rem;
+        }
+
+        @media (max-width: 400px) {
+          .limitInput {
+            display: none;
+          }
+
+          justify-content: center;
+          align-items: center;
+        }
+      }
     }
+
+    @media (max-width: 675px) {
+      width: 100vw;
+    }
+  }
 }

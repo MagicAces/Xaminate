@@ -16,6 +16,7 @@ import Image from "next/image";
 import { FiExternalLink } from "react-icons/fi";
 import { PiStudent } from "react-icons/pi";
 import { FaRegEdit } from "react-icons/fa";
+import unknown from "@/public/images/unknown_user.png";
 
 const Body = () => {
   const { data, isDisabled } = useSelector((state: any) => state.report);
@@ -38,8 +39,6 @@ const Body = () => {
       setState(report.id, 4, "report");
     }
   };
-
-  console.log(data);
 
   return (
     <>
@@ -92,16 +91,20 @@ const Body = () => {
                         </span>
                         <span className={styles.photo}>
                           <Image
-                            src={report.student.photo}
+                            src={
+                              report.student.photo
+                                ? report.student.photo
+                                : unknown
+                            }
                             alt="Student's pic"
                             width={35}
                             height={35}
                             className={styles.reportImage}
                             priority
-                            placeholder="blur"
-                            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                              shimmer(700, 475)
-                            )}`}
+                            // placeholder="blur"
+                            // blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                            //   shimmer(700, 475)
+                            // )}`}
                           />
                         </span>
                         <span className={styles.name}>
@@ -121,9 +124,7 @@ const Body = () => {
                         <span className={styles.timestamp}>
                           {formatSorRDate(report.timestamp)}
                         </span>
-                        <span
-                          className={`${styles.status}`}
-                        >
+                        <span className={`${styles.status}`}>
                           <span
                             className={styles[`${report.status.toLowerCase()}`]}
                           >
@@ -154,7 +155,7 @@ const Body = () => {
                     </ScrollSyncPane>
                   </div>
                 ))
-              ) : isDisabled ? (
+              ) : !data ? (
                 new Array(8).fill("").map((_, index) => (
                   <Skeleton
                     key={index}

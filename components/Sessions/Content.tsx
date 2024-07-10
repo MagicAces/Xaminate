@@ -32,7 +32,9 @@ const Content = () => {
     dispatch(setIsDisabled(isPlaceholderData || isLoading));
 
     if (error) {
-      toast.error(error.message || "Error Fetching Sessions");
+      toast.error(error.message || "Error Fetching Sessions", {
+        toastId: "E2",
+      });
     }
 
     if (!isFetching) dispatch(setReload(false));

@@ -12,7 +12,7 @@ export function useGetReports({
   return useQuery({
     queryFn: async () => {
       const data = await getReports({ query, status });
-      return data?.success;
+      return data.success;
     },
     queryKey: ["reports", { ...query, status }],
     placeholderData: keepPreviousData,

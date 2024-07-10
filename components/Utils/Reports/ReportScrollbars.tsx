@@ -7,7 +7,7 @@ const ReportScrollbars: React.FC<ReportScrollbarsProps> = (props) => {
   const renderView = useCallback(
     ({ style, ...props }: React.HTMLProps<HTMLDivElement>) => {
       const viewStyle: React.CSSProperties = {
-        padding: "0.3rem 0",
+        padding: " 0",
         backgroundColor: "transparent",
       };
       return (
