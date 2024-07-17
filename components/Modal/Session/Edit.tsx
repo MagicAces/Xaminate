@@ -27,7 +27,9 @@ const Edit = () => {
   useEffect(() => {
     if (error || data?.error) {
       console.log(error);
-      toast.error(data?.error || "Could not fetch session details");
+      toast.error(data?.error || "Could not fetch session details", {
+        toastId: "E5",
+      });
       exitModal();
       dispatch(closeModal());
     }

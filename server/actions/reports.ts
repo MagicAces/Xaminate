@@ -1,6 +1,6 @@
 "use server";
 
-import { ReportDisplay, ReportQuery, ReportRow } from "@/types";
+import { ReportDisplay, ReportPhase, ReportQuery, ReportRow } from "@/types";
 import { Prisma, Status } from "@prisma/client";
 import prisma from "@/prisma/prisma";
 import { reports } from "@/data/reports.test";
@@ -71,6 +71,8 @@ export const getReports = async ({
       AND: andConditions,
       status: status as Status,
     };
+    console.log(field);
+    console.log(order);
 
     const [reports, totalCount, pendingCount, approvedCount, rejectedCount] =
       await Promise.all([
@@ -164,136 +166,190 @@ export const getReports = async ({
 };
 
 // Function to get reports for testing
-export const getReportsTest = async ({
-  query,
-  status,
-}: {
-  query: ReportQuery;
-  status: "Pending" | "Approved" | "Rejected";
-}): Promise<{ success: ReportDisplay }> => {
+// export const getReportsTest = async ({
+//   query,
+//   status,
+// }: {
+//   query: ReportQuery;
+//   status: "Pending" | "Approved" | "Rejected";
+// }): Promise<{ success: ReportDisplay }> => {
+//   try {
+//     const {
+//       startTime,
+//       endTime,
+//       search,
+//       page = 1,
+//       limit = 15,
+//       sort: { field, order } = { field: "timestamp", order: "desc" },
+//     } = query;
+
+//     const offset = (page - 1) * limit;
+
+//     // Filter reports based on the query parameters
+//     let filteredReports = reports.filter((report) => report.status === status);
+
+//     if (startTime) {
+//       filteredReports = filteredReports.filter(
+//         (report) => new Date(report.timestamp) >= new Date(startTime)
+//       );
+//     }
+
+//     if (endTime) {
+//       filteredReports = filteredReports.filter(
+//         (report) => new Date(report.timestamp) <= new Date(endTime)
+//       );
+//     }
+
+//     if (search) {
+//       if (search.startsWith("#")) {
+//         const idOrSessionId = parseInt(search.replace("#", ""), 10);
+//         filteredReports = filteredReports.filter(
+//           (report) =>
+//             report.id === idOrSessionId || report.session_id === idOrSessionId
+//         );
+//       } else {
+//         filteredReports = filteredReports.filter((report) => {
+//           const student = report.student;
+//           if (student) {
+//             return (
+//               student.first_name.toLowerCase().includes(search.toLowerCase()) ||
+//               student.last_name.toLowerCase().includes(search.toLowerCase()) ||
+//               (student.other_name &&
+//                 student.other_name
+//                   .toLowerCase()
+//                   .includes(search.toLowerCase())) ||
+//               student.index_number.includes(search)
+//             );
+//           }
+//           return false;
+//         });
+//       }
+//     }
+
+//     // Sort the filtered reports
+//     filteredReports.sort((a, b) => {
+//       const aValue = a[field as keyof Report];
+//       const bValue = b[field as keyof Report];
+
+//       if (typeof aValue === "string" && typeof bValue === "string") {
+//         return order === "asc"
+//           ? aValue.localeCompare(bValue)
+//           : bValue.localeCompare(aValue);
+//       } else if (typeof aValue === "number" && typeof bValue === "number") {
+//         return order === "asc" ? aValue - bValue : bValue - aValue;
+//       } else if (aValue instanceof Date && bValue instanceof Date) {
+//         return order === "asc"
+//           ? aValue.getTime() - bValue.getTime()
+//           : bValue.getTime() - aValue.getTime();
+//       } else {
+//         return 0;
+//       }
+//     });
+
+//     const paginatedReports = filteredReports.slice(offset, offset + limit);
+
+//     const formattedReports: ReportRow[] = paginatedReports.map((report) => {
+//       const { id, timestamp, session_id, status, student } = report;
+
+//       const fullName = student
+//         ? [student.first_name, student.last_name, student.other_name]
+//             .filter(Boolean)
+//             .join(" ")
+//         : "-";
+
+//       return {
+//         id,
+//         session_id,
+//         status,
+//         timestamp,
+//         student: {
+//           id: student ? student.id : "-",
+//           fullName: student ? fullName : "-",
+//           photo: student ? student.image_url || "" : "",
+//           index_number: student ? student.index_number : "-",
+//         },
+//       };
+//     });
+
+//     const totalCount = filteredReports.length;
+//     const totalPages = Math.ceil(totalCount / limit);
+//     const hasNextPage = page < totalPages;
+//     const hasPrevPage = page > 1;
+
+//     const pendingCount = reports.filter((r) => r.status === "Pending").length;
+//     const approvedCount = reports.filter((r) => r.status === "Approved").length;
+//     const rejectedCount = reports.filter((r) => r.status === "Rejected").length;
+
+//     return {
+//       success: {
+//         reports: formattedReports,
+//         totalCount,
+//         totalPages,
+//         hasNextPage,
+//         hasPrevPage,
+//         pageNumber: page,
+//         pendingCount,
+//         approvedCount,
+//         rejectedCount,
+//       },
+//     };
+//   } catch (error) {
+//     console.error(error);
+//     // return { error: "Something went wrong" };
+//     throw error;
+//   }
+// };
+
+export const getReport = async (id: number) => {
   try {
-    const {
-      startTime,
-      endTime,
-      search,
-      page = 1,
-      limit = 15,
-      sort: { field, order } = { field: "timestamp", order: "desc" },
-    } = query;
-
-    const offset = (page - 1) * limit;
-
-    // Filter reports based on the query parameters
-    let filteredReports = reports.filter((report) => report.status === status);
-
-    if (startTime) {
-      filteredReports = filteredReports.filter(
-        (report) => new Date(report.timestamp) >= new Date(startTime)
-      );
-    }
-
-    if (endTime) {
-      filteredReports = filteredReports.filter(
-        (report) => new Date(report.timestamp) <= new Date(endTime)
-      );
-    }
-
-    if (search) {
-      if (search.startsWith("#")) {
-        const idOrSessionId = parseInt(search.replace("#", ""), 10);
-        filteredReports = filteredReports.filter(
-          (report) =>
-            report.id === idOrSessionId || report.session_id === idOrSessionId
-        );
-      } else {
-        filteredReports = filteredReports.filter((report) => {
-          const student = report.student;
-          if (student) {
-            return (
-              student.first_name.toLowerCase().includes(search.toLowerCase()) ||
-              student.last_name.toLowerCase().includes(search.toLowerCase()) ||
-              (student.other_name &&
-                student.other_name
-                  .toLowerCase()
-                  .includes(search.toLowerCase())) ||
-              student.index_number.includes(search)
-            );
-          }
-          return false;
-        });
-      }
-    }
-
-    // Sort the filtered reports
-    filteredReports.sort((a, b) => {
-      const aValue: any = a[field];
-      const bValue: any = b[field];
-
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return order === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      } else if (typeof aValue === "number" && typeof bValue === "number") {
-        return order === "asc" ? aValue - bValue : bValue - aValue;
-      } else if (aValue instanceof Date && bValue instanceof Date) {
-        return order === "asc"
-          ? aValue.getTime() - bValue.getTime()
-          : bValue.getTime() - aValue.getTime();
-      } else {
-        return 0;
-      }
-    });
-
-    const paginatedReports = filteredReports.slice(offset, offset + limit);
-
-    const formattedReports: ReportRow[] = paginatedReports.map((report) => {
-      const { id, timestamp, session_id, status, student } = report;
-
-      const fullName = student
-        ? [student.first_name, student.last_name, student.other_name]
-            .filter(Boolean)
-            .join(" ")
-        : "-";
-
-      return {
+    if (!id) return { error: "Id not found" };
+    const foundReport = await prisma.report.findUnique({
+      where: {
         id,
-        session_id,
-        status,
-        timestamp,
+      },
+      select: {
+        id: true,
+        timestamp: true,
+        session_id: true,
+        description: true,
         student: {
-          id: student ? student.id : "-",
-          fullName: student ? fullName : "-",
-          photo: student ? student.image_url || "" : "",
-          index_number: student ? student.index_number : "-",
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            other_name: true,
+            image_url: true,
+            index_number: true,
+            reference_no: true,
+            program: true,
+          },
         },
-      };
+      },
     });
 
-    const totalCount = filteredReports.length;
-    const totalPages = Math.ceil(totalCount / limit);
-    const hasNextPage = page < totalPages;
-    const hasPrevPage = page > 1;
+    if (!foundReport) return { error: "Report not found" };
 
-    const pendingCount = reports.filter((r) => r.status === "Pending").length;
-    const approvedCount = reports.filter((r) => r.status === "Approved").length;
-    const rejectedCount = reports.filter((r) => r.status === "Rejected").length;
+    const { student } = foundReport;
+    const fullName = student
+      ? [student.first_name, student.last_name].filter(Boolean).join(" ")
+      : "-";
 
-    return {
-      success: {
-        reports: formattedReports,
-        totalCount,
-        totalPages,
-        hasNextPage,
-        hasPrevPage,
-        pageNumber: page,
-        pendingCount,
-        approvedCount,
-        rejectedCount,
+    const formattedReport = {
+      ...foundReport,
+      student: {
+        id: student ? student.id : 0,
+        fullName: student ? fullName : "-",
+        photo: student ? student.image_url || "" : "",
+        index_number: student ? student.index_number : 0,
+        reference_no: student ? student.reference_no : 0,
+        program: student ? student.program : "",
       },
+      timestamp: foundReport.timestamp.toISOString(),
     };
+
+    return { success: formattedReport };
   } catch (error) {
     console.error(error);
-    // return { error: "Something went wrong" };
     throw error;
   }
 };

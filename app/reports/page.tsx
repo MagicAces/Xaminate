@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Reports",
 };
 
-export default async function REports() {
+export default async function Reports() {
   const queryClient = new QueryClient();
 
   await usePrefetchQueries(queryClient);

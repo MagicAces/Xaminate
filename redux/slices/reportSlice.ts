@@ -103,8 +103,11 @@ const reportSlice = createSlice({
     mergeReportSort: (state) => {
       state.reportsBox.query = {
         ...state.reportsBox.query,
-        ...state.reportsBox.sort,
+        sort: {
+          ...state.reportsBox.sort,
+        },
       };
+      console.log(state.reportsBox);
     },
     updateReportControls: (state, action) => {
       const { name, value } = action.payload;

@@ -5,7 +5,7 @@ import {
   setReload,
   setReports,
 } from "@/redux/slices/reportSlice";
-import { useGetReports, useGetTestReports } from "@/server/hooks/reports";
+import { useGetReports } from "@/server/hooks/reports";
 import styles from "@/styles/report.module.scss";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ import Footer from "./Footer";
 import Top from "./Top";
 import Loader from "../Utils/Loader";
 import { useQueryClient } from "@tanstack/react-query";
-import { getReportsTest } from "@/server/actions/reports";
+// import { getReportsTest } from "@/server/actions/reports";
 import Filters from "./Filters";
 
 const Content = () => {
@@ -26,7 +26,7 @@ const Content = () => {
 
   const dispatch = useDispatch();
   const { data, error, isFetching, isLoading, isSuccess, isPlaceholderData } =
-    useGetTestReports({ query: reportsBox.query, status: reportsBox.status });
+    useGetReports({ query: reportsBox.query, status: reportsBox.status });
 
   useEffect(() => {
     dispatch(setIsDisabled(isPlaceholderData || isLoading));

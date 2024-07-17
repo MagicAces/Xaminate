@@ -45,12 +45,13 @@ model Notification {
 }
 
 model Venue {
-  id                Int           @id @default(autoincrement())
+  id                Int            @id @default(autoincrement())
   name              String
-  created_on        DateTime      @default(now()) 
-  updated_at        DateTime      @updatedAt
+  created_on        DateTime       @default(now()) 
+  updated_at        DateTime       @updatedAt
   sessions          Session[]
   bookings          VenueBooking[]
+  cameras           Camera[]
 
   @@map("venues")
 }
@@ -96,6 +97,21 @@ model VenueBooking {
   @@map("venue_bookings")
 }
 
+
+model Camera {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  venue_id    Int
+  status      CameraStatus  @default(Active)
+  created_on  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  reports     Report[]
+
+  venue       Venue         @relation(fields: [venue_id], references: [id])
+
+  @@map("cameras")
+}
+
 // Define the data model for Report
 model Report {
   id                    Int            @id @default(autoincrement())
@@ -110,10 +126,12 @@ model Report {
   timestamp             DateTime      
   created_on            DateTime       @default(now()) 
   updated_at            DateTime       @updatedAt
+  camera_id             Int?
 
   student               Student?       @relation(fields: [student_id], references: [id])
   editor                ExamsOfficer?  @relation(fields: [last_edited_by], references: [id])
   session               Session        @relation(fields: [session_id], references: [id])
+  camera          Camera?        @relation(fields: [camera_id], references: [id])
 
   @@map("reports")
 }
@@ -127,6 +145,7 @@ model Student {
   program        String
   level          Int
   index_number   Int       @unique
+  reference_no   Int       @unique
   image_url      String?   
   report         Report[]
   attendances    StudentAttendance[]
@@ -200,4 +219,10 @@ enum TempStatus {
   closed
   
   @@map("session_statuses")
+}
+
+enum CameraStatus {
+  Active
+  Inactive
+  Maintenance
 }

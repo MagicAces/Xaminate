@@ -1,1255 +1,1268 @@
-@import 'config';
-@import 'mixins';
+@import "config";
+@import "mixins";
 
 .modalContainer {
-    position: fixed;
-    inset: 0;
-    @include flexin();
-    z-index: 20;
-    background-color: transparent;
+  position: fixed;
+  inset: 0;
+  @include flexin();
+  z-index: 20;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: transparent;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+  .closeIcon {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    padding: 10px;
+    background-color: $primary-background;
+    border-radius: 50%;
+    z-index: 201;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    @include flexin;
+
+    svg {
+      font-size: 20px;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    }
+
+    svg:hover {
+      color: $hover-green;
+      cursor: pointer;
+    }
+  }
+
+  .profileContainer {
+    padding: 2rem;
+    margin: 1.5rem;
+    padding-top: 0;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 2rem
+    );
+
+    .avatarContainer {
+      width: 100%;
+      margin: 0 auto 3rem;
+      @include flexin;
+
+      .avatar {
+        box-shadow: 0 4px 4px 0 $dark-shadow;
+        position: absolute;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        font-family: inherit !important;
+
+        span {
+          font-size: 40px !important;
+        }
+      }
+    }
+
+    .profile {
+      width: 100%;
+      @include flexin(
+        $justify: stretch,
+        $align: stretch,
+        $direction: column,
+        $gap: 2rem
+      );
+
+      .inputBox {
+        width: 100%;
+        @include flexin(
+          $justify: stretch,
+          $align: stretch,
+          $direction: column,
+          $gap: 1.5rem
+        );
+
+        label {
+          font-weight: 200;
+          font-size: 12px;
+        }
+
+        input:read-only {
+          outline: none;
+          background-color: $border-color;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid transparent;
+          box-shadow: 0 3px 3px 0 $dark-shadow;
+          color: $text-color;
+        }
+
+        input {
+          outline: none;
+          background-color: transparent;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          border: 1px solid $border-color;
+          color: $text-color;
+          width: 100%;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+          &:hover,
+          &:active,
+          &:focus {
+            border: 1px solid $accent-green;
+          }
+        }
+
+        input:read-only:hover,
+        input:read-only:active,
+        input:read-only:focus {
+          border: 1px solid transparent !important;
+        }
+
+        .nameBox {
+          width: 340px;
+          @include flexin(
+            $justify: space-between,
+            $align: center,
+            $direction: column,
+            $gap: 1.5rem
+          );
+
+          & > div {
+            width: 100%;
+            @include flexin(
+              $justify: stretch,
+              $align: flex-start,
+              $direction: column,
+              $gap: 0.3rem
+            );
+          }
+        }
+
+        .emailBox {
+          width: 100%;
+          @include flexin(
+            $justify: stretch,
+            $align: flex-start,
+            $direction: column,
+            $gap: 0.3rem
+          );
+        }
+      }
+    }
+
+    @media (max-width: 870px) {
+      width: 85%;
+
+      .profile {
+        .inputBox {
+          .nameBox {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+
+      .profile {
+        .inputBox {
+          .nameBox {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .notificationContainer {
+    margin: 1.5rem;
+    height: 85%;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 1rem
+    );
+
+    width: 700px;
+
+    @media (max-width: 870px) {
+      width: 85%;
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+    }
+
+    .header {
+      padding: 1.5rem;
+      padding-bottom: 0;
+      width: 100%;
+      @include flexin($justify: space-between, $gap: 2rem);
+
+      .headerLeft {
+        @include flexin($justify: stretch, $gap: 0.5rem);
+
+        h3 {
+          font-size: 1.2rem;
+        }
+      }
+
+      .headerRight {
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+        @include flexin($justify: flex-start, $gap: 0.3rem);
+
+        &:hover {
+          color: $hover-green;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .tabs {
+      margin: 0 1.5rem;
+      border-bottom: 1px solid $border-color;
+
+      @include flexin($justify: space-between, $align: center, $gap: 2rem);
+
+      &Left {
+        @include flexin($align: stretch, $gap: 0);
+
+        & > div {
+          text-align: center;
+          padding: 0.5rem 1.5rem;
+          flex-grow: 1;
+          border-bottom: 1px solid transparent;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          @include flexin($gap: 0.5rem);
+
+          .badge {
+            background-color: $border-color;
+            padding: 0.15rem 0.3rem;
+            border-radius: 0.3rem;
+            text-align: center;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            color: $text-color;
+          }
+        }
+
+        & > div:hover {
+          background-color: $border-color;
+          border-top-left-radius: 0.4rem;
+          border-top-right-radius: 0.4rem;
+          cursor: pointer;
+        }
+
+        .active {
+          border-bottom: 1px solid $accent-green;
+          color: $accent-green;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+          .badge {
+            background-color: $accent-green;
+          }
+        }
+      }
+
+      .tooltipBox {
+        padding: 0 1.5rem;
+      }
+    }
+
+    .scrollbar {
+      border-radius: 0.5rem;
+      background-color: $border-color !important;
+    }
+
+    .scrollContainer {
+      width: 100%;
+      height: 100%;
+
+      .scrollContent {
+        @include flexin(
+          $justify: flex-start,
+          $align: stretch,
+          $direction: column,
+          $gap: 0.7rem
+        );
+        padding: 0 1.5rem 1rem;
+        width: 100%;
+
+        .item {
+          @include flexin($justify: stretch, $align: stretch, $gap: 1rem);
+          padding: 1rem;
+          border-radius: 0.5rem;
+          background-color: $highlight-color;
+          box-shadow: 0 4px 4px 0 $primary-background;
+          border: 1px solid transparent;
+          width: 100%;
+          position: relative;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+          .greenCircle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 10px;
+            height: 10px;
+            background-color: $accent-green;
+            border-radius: 50%;
+          }
+
+          & > span {
+            padding: 10px;
+            background-color: $border-color;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            border-radius: 0.3rem;
+            border: 1px solid transparent;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            @include flexin;
+
+            svg {
+              font-size: 20px !important;
+              color: $accent-green;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            }
+          }
+
+          .text {
+            @include flexin(
+              $justify: space-between,
+              $align: stretch,
+              $direction: column,
+              $gap: 0.4rem
+            );
+
+            span:last-of-type {
+              font-weight: 200;
+              font-size: 12px;
+            }
+          }
+        }
+
+        .item:last-of-type {
+          margin-bottom: 0.5rem;
+        }
+
+        .item:hover {
+          background-color: transparent;
+          border: 1px solid $accent-dark-green;
+          cursor: pointer;
+
+          & > span {
+            border: 1px solid $border-color;
+            background-color: transparent;
+
+            svg {
+              color: $accent-dark-green;
+            }
+          }
+        }
+      }
+    }
+
+    .noNotifications {
+      height: 100%;
+      flex-grow: 1;
+      margin: 1.5rem;
+      color: $border-color;
+      @include flexin;
+      // background: $highlight-color;
+      // box-shadow: 0 4px 4px 0 $dark-shadow;
+      // border-radius: 0.5rem;
+    }
+  }
+
+  .sessionContainerCreate {
+    margin: 1.5rem;
+    // height: 80%;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 2.2rem
+    );
+
+    width: 650px;
+    // min-height: 500px;
+    height: 530px;
     transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
 
-    .closeIcon {
-        position: absolute;
-        top: -15px;
-        right: -10px;
-        padding: 10px;
-        background-color: $primary-background;
-        border-radius: 50%;
-        z-index: 201;
+    @media (max-width: 870px) {
+      width: 85%;
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+      margin: 1rem;
+      height: 80%;
+    }
+
+    .errorBox {
+      padding: 0.65rem 1rem;
+      margin: 0 1.5rem;
+      background-color: $highlight-color;
+      box-shadow: 0 0 0 1px $lighter-red;
+      color: $rejected-color;
+      border-radius: 0.4rem;
+      opacity: 1;
+      transition: all 1s cubic-bezier(0.6, 0.2, 0.2, 1) 2s;
+
+      @include flexin($justify: space-between, $gap: 1rem);
+
+      svg {
+        font-size: 1.15rem;
+      }
+
+      svg:hover {
+        cursor: pointer;
+        color: $lighter-red;
+      }
+
+      span {
+        @include flexin($justify: left, $gap: 0.4rem);
+
+        span {
+          @include flexin();
+        }
+      }
+    }
+
+    .header {
+      padding: 1.5rem 2rem 0;
+      width: 100%;
+    }
+
+    .scrollContainer {
+      width: 100%;
+      height: 100%;
+
+      .scrollContent {
+        @include flexin(
+          $justify: space-evenly,
+          $align: stretch,
+          $direction: column,
+          $gap: 2rem
+        );
+        padding: 0 2rem;
+        width: 100%;
+
+        & > div {
+          // width: 100%;
+          @include flexin($justify: stretch, $align: flex-start, $gap: 2rem);
+
+          & > div {
+            flex-grow: 1;
+            flex-basis: 50%;
+            position: relative;
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 0.4rem
+            );
+          }
+
+          label {
+            font-size: 13px;
+            font-weight: 200;
+          }
+
+          input {
+            background-color: $border-color;
+            outline: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 14px;
+            width: 100%;
+            color: $text-color;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+          }
+
+          input:focus,
+          input:active {
+            box-shadow: 0 0 0 1px $accent-dark-green !important;
+          }
+
+          .top {
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 2rem
+            );
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+            svg {
+              font-size: 20px;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            svg:hover {
+              color: $hover-green;
+              cursor: pointer;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+          }
+
+          .bottom {
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 0.6rem
+            );
+          }
+        }
+
+        .venueRow {
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $gap: 0.4rem,
+            $direction: column
+          );
+
+          .venueInput {
+            background-color: $secondary-background;
+            height: 35px;
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+          }
+
+          input:focus,
+          input:active {
+            box-shadow: 0 0 0 0 transparent !important;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          }
+        }
+
+        .timeRow {
+          @media (max-width: 700px) {
+            flex-direction: column;
+            gap: 2rem;
+
+            & > div {
+              flex-basis: 100%;
+
+              width: 100%;
+            }
+          }
+
+          .calendar,
+          .react-datepicker__time-box,
+          .react-datepicker__navigation {
+            background-color: $border-color !important;
+            font-family: inherit !important;
+            color: $text-color !important;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          }
+
+          .day,
+          .time {
+            color: $text-color;
+            font-family: inherit !important;
+          }
+
+          .sessionTime {
+            width: 100%;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 2rem
+            );
+
+            background-color: $border-color;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+            height: 35px;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+            .placeholder {
+              color: gray;
+            }
+
+            svg:hover {
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+          }
+
+          .sessionTime:hover {
+            svg {
+              color: $hover-green;
+            }
+          }
+
+          .sessionTime:active,
+          .sessionTime:focus {
+            box-shadow: 0 0 0 1px $accent-dark-green !important;
+          }
+        }
+
+        .courseName,
+        .courseCodes,
+        .invigilators,
+        .classes {
+          position: relative;
+
+          svg {
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+            font-size: 18px;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          }
+
+          svg:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+        }
+
+        .courseRow,
+        .lastRow {
+          @media (max-width: 700px) {
+            flex-direction: column;
+            gap: 2rem;
+
+            & > div {
+              flex-basis: 100%;
+
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    button.submit {
+      background-color: $accent-green;
+      margin: 0 2rem 1.5rem;
+      font-size: 14px;
+      padding: 0.5rem 2rem;
+    }
+
+    button.submit:hover {
+      background-color: $accent-dark-green;
+    }
+
+    button.submit:disabled {
+      background-color: $hover-green;
+    }
+
+    .errorLabel {
+      color: $rejected-color;
+    }
+
+    .errorInput {
+      border: 1px solid $rejected-color !important;
+    }
+  }
+
+  .sessionContainerEdit {
+    margin: 1.5rem;
+    // height: 75%;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 1.7rem
+    );
+
+    width: 650px;
+    // min-height: 500px;
+    height: 530px;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    @media (max-width: 870px) {
+      width: 85%;
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+      margin: 1rem;
+      height: 80%;
+    }
+
+    .errorBox {
+      padding: 0.65rem 1rem;
+      margin: 0 1.5rem;
+      background-color: $highlight-color;
+      box-shadow: 0 0 0 1px $lighter-red;
+      color: $rejected-color;
+      border-radius: 0.4rem;
+      opacity: 1;
+      transition: all 1s cubic-bezier(0.6, 0.2, 0.2, 1) 2s;
+
+      @include flexin($justify: space-between, $gap: 1rem);
+
+      svg {
+        font-size: 1.15rem;
+      }
+
+      svg:hover {
+        cursor: pointer;
+        color: $lighter-red;
+      }
+
+      span {
+        @include flexin($justify: left, $gap: 0.4rem);
+
+        span {
+          @include flexin();
+        }
+      }
+    }
+
+    .header {
+      padding: 1.5rem 2rem 0;
+      width: 100%;
+
+      @media (max-width: 870px) {
+        padding: 1.2rem 1.4rem 0;
+      }
+
+      @media (max-width: 400px) {
+        width: 95%;
+        padding: 1rem 1rem 0;
+      }
+    }
+
+    .scrollContainer {
+      width: 100%;
+      height: 100%;
+
+      .scrollContent {
+        @include flexin(
+          $justify: space-between,
+          $align: stretch,
+          $direction: column,
+          $gap: 2rem
+        );
+        padding: 0 2rem;
+        width: 100%;
+
+        & > div {
+          // width: 100%;
+          @include flexin($justify: stretch, $align: flex-start, $gap: 2rem);
+
+          & > div {
+            flex-grow: 1;
+            flex-basis: 50%;
+            position: relative;
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 0.4rem
+            );
+          }
+
+          label {
+            font-size: 13px;
+            font-weight: 200;
+          }
+
+          input {
+            background-color: $border-color;
+            outline: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 14px;
+            width: 100%;
+            color: $text-color;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+          }
+
+          input:focus,
+          input:active {
+            box-shadow: 0 0 0 1px $accent-dark-green !important;
+          }
+
+          .top {
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 2rem
+            );
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+            svg {
+              font-size: 20px;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            svg:hover {
+              color: $hover-green;
+              cursor: pointer;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+          }
+
+          .bottom {
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 0.6rem
+            );
+          }
+        }
+
+        .venueRow {
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $gap: 0.4rem,
+            $direction: column
+          );
+
+          .venueInput {
+            background-color: $secondary-background;
+            height: 35px;
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+          }
+
+          input:focus,
+          input:active {
+            box-shadow: 0 0 0 0 transparent !important;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          }
+        }
+
+        .timeRow {
+          .calendar,
+          .react-datepicker__time-box,
+          .react-datepicker__navigation {
+            background-color: $border-color !important;
+            font-family: inherit !important;
+            color: $text-color !important;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          }
+
+          .day,
+          .time {
+            color: $text-color;
+            font-family: inherit !important;
+          }
+
+          @media (max-width: 700px) {
+            flex-direction: column;
+            gap: 2rem;
+
+            & > div {
+              flex-basis: 100%;
+              width: 100%;
+            }
+          }
+
+          .sessionTime {
+            width: 100%;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 2rem
+            );
+
+            background-color: $border-color;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+            height: 35px;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+            .placeholder {
+              color: gray;
+            }
+
+            svg:hover {
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+          }
+
+          .sessionTime:hover {
+            svg {
+              color: $hover-green;
+            }
+          }
+
+          .sessionTime:active,
+          .sessionTime:focus {
+            box-shadow: 0 0 0 1px $accent-dark-green !important;
+          }
+        }
+
+        .courseRow {
+          @media (max-width: 700px) {
+            flex-direction: column;
+            gap: 2rem;
+
+            & > div {
+              flex-basis: 100%;
+
+              width: 100%;
+            }
+          }
+        }
+
+        .courseName,
+        .courseCodes,
+        .invigilators,
+        .classes {
+          position: relative;
+
+          svg {
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+            font-size: 18px;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          }
+
+          svg:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+        }
+
+        .commentsBox,
+        .invigilatorsBox {
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0.5rem
+          );
+        }
+
+        .comments {
+          flex-grow: 1;
+          padding: 0.5rem 1rem;
+          outline: none;
+          border: 1px solid transparent;
+          background-color: $border-color;
+          box-shadow: 0 3px 3px 0 $dark-shadow;
+          border-radius: 0.5rem;
+          color: $text-color;
+          font-family: inherit;
+        }
+
+        @media (max-width: 870px) {
+          padding: 0 1.4rem;
+        }
+
+        @media (max-width: 400px) {
+          width: 95%;
+          padding: 0 1rem;
+        }
+      }
+    }
+
+    .navigateButtons {
+      padding: 0 2rem 1.5rem;
+      @include flexin($justify: stretch, $align: center, $gap: 1.5rem);
+
+      & > button {
+        flex-basis: 50%;
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+      }
+
+      @media (max-width: 870px) {
+        padding: 0 1.4rem 1.2rem;
+      }
+
+      @media (max-width: 400px) {
+        width: 95%;
+        padding: 0 1rem 1rem;
+      }
+
+      button.nextButton,
+      button.saveButton {
+        border: 1px solid transparent;
+        background-color: $accent-green;
+      }
+
+      button.nextButton:hover,
+      button.saveButton:hover {
+        background-color: $accent-dark-green;
+        cursor: pointer;
+      }
+
+      button.nextButton:disabled,
+      button.saveButton:disabled {
+        background-color: $border-color;
+        cursor: disabled;
+      }
+
+      button.backButton,
+      button.cancelButton {
+        border: 1px solid $accent-green;
+        background-color: transparent;
+      }
+
+      button.backButton:hover,
+      button.cancelButton:hover {
+        border-color: $hover-green;
+        color: $hover-green;
+        cursor: pointer;
+      }
+
+      button.backButton:disabled,
+      button.cancelButton:disabled {
+        background-color: $border-color;
+        border: 1px solid transparent;
+        cursor: disabled;
+      }
+    }
+
+    .errorLabel {
+      color: $rejected-color;
+    }
+
+    .errorInput {
+      border: 1px solid $rejected-color !important;
+    }
+  }
+
+  .sessionContainerFilter {
+    padding: 1.5rem 2rem;
+    margin: 1.5rem;
+    box-shadow: 0 3px 3px 0 $dark-shadow;
+    background-color: $secondary-background;
+    width: 80%;
+    max-width: 450px;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 2rem
+    );
+
+    .filterColumn {
+      @include flexin(
+        $justify: flex-end,
+        $align: stretch,
+        $direction: column,
+        $gap: 1.5rem
+      );
+
+      .venueInput,
+      .statusInput {
+        border: 1px solid $border-color;
+        border-radius: 0.6rem;
+      }
+
+      .calendar,
+      .react-datepicker__time-box,
+      .react-datepicker__navigation {
+        background-color: $border-color !important;
+        font-family: inherit !important;
+        color: $text-color !important;
         transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-        @include flexin;
+      }
+
+      .day,
+      .time {
+        color: $text-color;
+        font-family: inherit !important;
+      }
+
+      .filterSessionTime {
+        width: 100%;
+        @include flexin($justify: space-between, $align: center, $gap: 2rem);
+
+        background-color: $secondary-background;
+        padding: 0.5rem 1rem;
+        box-shadow: 0 4px 4px 0 $dark-shadow;
+        height: 37px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border: 1px solid $border-color;
+        white-space: nowrap;
+        border-radius: 0.7rem;
+        // border: 1px solid transparent;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+        .placeholder {
+          font-size: 13px;
+          color: gray;
+        }
 
         svg {
-            font-size: 20px;
-            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+          font-size: 16px;
+        }
+
+        span {
+          font-size: 13px;
         }
 
         svg:hover {
-            color: $hover-green;
-            cursor: pointer;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
         }
+
+        .timeIcons {
+          @include flexin($justify: flex-end, $align: center, $gap: 0.6rem);
+        }
+      }
+
+      .filterSessionTime:hover {
+        svg {
+          color: $hover-green;
+        }
+      }
     }
 
-    .profileContainer {
-        padding: 2rem;
-        margin: 1.5rem;
-        padding-top: 0;
-        box-shadow: 0 4px 4px 0 $dark-shadow;
-        background-color: $secondary-background;
-        position: relative;
-        border-radius: 0.5rem;
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 2rem);
+    .filterButton {
+      padding: 10px;
+      border-radius: 0.7rem;
+      box-shadow: 0 4px 4px 0 $dark-shadow;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      background-color: $accent-green;
+      font-size: 14px;
 
-        .avatarContainer {
-            width: 100%;
-            margin: 0 auto 3rem;
-            @include flexin;
+      @include flexin();
+    }
+  }
 
-            .avatar {
-                box-shadow: 0 4px 4px 0 $dark-shadow;
-                position: absolute;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                font-family: inherit !important;
+  .sessionContainerEnd {
+    margin: 1.5rem;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 1rem
+    );
 
-                span {
-                    font-size: 40px !important;
-                }
-            }
-        }
+    width: 380px;
+    min-height: fit-content;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
 
-        .profile {
-            width: 100%;
-            @include flexin($justify: stretch,
-                $align: stretch,
-                $direction: column,
-                $gap: 2rem);
-
-
-            .inputBox {
-                width: 100%;
-                @include flexin($justify: stretch,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 1.5rem);
-
-                label {
-                    font-weight: 200;
-                    font-size: 12px;
-                }
-
-                input:read-only {
-                    outline: none;
-                    background-color: $border-color;
-                    padding: 0.5rem 1rem;
-                    border-radius: 0.5rem;
-                    border: 1px solid transparent;
-                    box-shadow: 0 3px 3px 0 $dark-shadow;
-                    color: $text-color;
-                }
-
-                input {
-                    outline: none;
-                    background-color: transparent;
-                    padding: 0.5rem 1rem;
-                    border-radius: 0.5rem;
-                    border: 1px solid $border-color;
-                    color: $text-color;
-                    width: 100%;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                    &:hover,
-                    &:active,
-                    &:focus {
-                        border: 1px solid $accent-green;
-
-                    }
-                }
-
-                input:read-only:hover,
-                input:read-only:active,
-                input:read-only:focus {
-                    border: 1px solid transparent !important;
-                }
-
-                .nameBox {
-                    width: 340px;
-                    @include flexin($justify: space-between,
-                        $align: center,
-                        $direction: column,
-                        $gap: 1.5rem);
-
-                    &>div {
-                        width: 100%;
-                        @include flexin($justify: stretch,
-                            $align: flex-start,
-                            $direction: column,
-                            $gap: 0.3rem);
-                    }
-                }
-
-                .emailBox {
-                    width: 100%;
-                    @include flexin($justify: stretch,
-                        $align: flex-start,
-                        $direction: column,
-                        $gap: 0.3rem);
-                }
-            }
-        }
-
-        @media (max-width: 870px) {
-            width: 85%;
-
-            .profile {
-                .inputBox {
-                    .nameBox {
-                        width: 100%;
-                    }
-
-                }
-            }
-        }
-
-        @media (max-width: 400px) {
-            width: 95%;
-
-            .profile {
-                .inputBox {
-                    .nameBox {
-                        width: 100%;
-                    }
-
-                }
-            }
-        }
+    @media (max-width: 400px) {
+      margin: 1rem;
+      width: 100%;
     }
 
-    .notificationContainer {
-        margin: 1.5rem;
-        height: 85%;
-        box-shadow: 0 4px 4px 0 $dark-shadow;
-        background-color: $secondary-background;
-        position: relative;
-        border-radius: 0.5rem;
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 1rem);
+    .header {
+      padding: 0.7rem 1.2rem;
+      background-color: $border-color;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+      width: 100%;
 
-        width: 700px;
+      h2 {
+        font-size: 21px;
+      }
 
-        @media (max-width: 870px) {
-            width: 85%;
-        }
+      @include flexin($justify: stretch, $align: center);
 
-        @media (max-width: 400px) {
-            width: 95%;
-        }
+      @media (max-width: 870px) {
+        padding: 0.7rem 1.4rem;
+      }
 
-        .header {
-            padding: 1.5rem;
-            padding-bottom: 0;
-            width: 100%;
-            @include flexin($justify: space-between,
-                $gap: 2rem,
-            );
-
-            .headerLeft {
-                @include flexin($justify: stretch,
-                    $gap: 0.5rem);
-
-                h3 {
-                    font-size: 1.2rem;
-                }
-            }
-
-            .headerRight {
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                @include flexin($justify: flex-start,
-                    $gap: 0.3rem);
-
-                &:hover {
-                    color: $hover-green;
-                    cursor: pointer;
-                }
-            }
-        }
-
-        .tabs {
-            margin: 0 1.5rem;
-            border-bottom: 1px solid $border-color;
-
-            @include flexin($justify: space-between,
-                $align: center,
-                $gap: 2rem);
-
-            &Left {
-                @include flexin($align: stretch, $gap: 0);
-
-                &>div {
-                    text-align: center;
-                    padding: 0.5rem 1.5rem;
-                    flex-grow: 1;
-                    border-bottom: 1px solid transparent;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    @include flexin($gap: 0.5rem);
-
-                    .badge {
-                        background-color: $border-color;
-                        padding: 0.15rem 0.3rem;
-                        border-radius: 0.3rem;
-                        text-align: center;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        color: $text-color;
-                    }
-                }
-
-                &>div:hover {
-                    background-color: $border-color;
-                    border-top-left-radius: 0.4rem;
-                    border-top-right-radius: 0.4rem;
-                    cursor: pointer;
-                }
-
-
-                .active {
-                    border-bottom: 1px solid $accent-green;
-                    color: $accent-green;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                    .badge {
-                        background-color: $accent-green;
-                    }
-                }
-            }
-
-            .tooltipBox {
-                padding: 0 1.5rem;
-            }
-        }
-
-        .scrollbar {
-            border-radius: 0.5rem;
-            background-color: $border-color !important;
-        }
-
-        .scrollContainer {
-            width: 100%;
-            height: 100%;
-
-            .scrollContent {
-                @include flexin($justify: flex-start,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 0.7rem);
-                padding: 0 1.5rem 1rem;
-                width: 100%;
-
-                .item {
-                    @include flexin($justify: stretch,
-                        $align: stretch,
-                        $gap: 1rem);
-                    padding: 1rem;
-                    border-radius: 0.5rem;
-                    background-color: $highlight-color;
-                    box-shadow: 0 4px 4px 0 $primary-background;
-                    border: 1px solid transparent;
-                    width: 100%;
-                    position: relative;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                    .greenCircle {
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        width: 10px;
-                        height: 10px;
-                        background-color: $accent-green;
-                        border-radius: 50%;
-                    }
-
-                    &>span {
-                        padding: 10px;
-                        background-color: $border-color;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        border-radius: 0.3rem;
-                        border: 1px solid transparent;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        @include flexin;
-
-                        svg {
-                            font-size: 20px !important;
-                            color: $accent-green;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        }
-                    }
-
-                    .text {
-
-                        @include flexin($justify: space-between,
-                            $align: stretch,
-                            $direction: column,
-                            $gap: 0.4rem);
-
-                        span:last-of-type {
-                            font-weight: 200;
-                            font-size: 12px;
-                        }
-                    }
-                }
-
-                .item:last-of-type {
-                    margin-bottom: 0.5rem;
-                }
-
-                .item:hover {
-                    background-color: transparent;
-                    border: 1px solid $accent-dark-green;
-                    cursor: pointer;
-
-                    &>span {
-                        border: 1px solid $border-color;
-                        background-color: transparent;
-
-                        svg {
-                            color: $accent-dark-green;
-                        }
-                    }
-                }
-            }
-        }
-
-        .noNotifications {
-            height: 100%;
-            flex-grow: 1;
-            margin: 1.5rem;
-            color: $border-color;
-            @include flexin;
-            // background: $highlight-color;
-            // box-shadow: 0 4px 4px 0 $dark-shadow;
-            // border-radius: 0.5rem;
-        }
+      @media (max-width: 400px) {
+        padding: 0.7rem 1rem;
+      }
     }
 
-    .sessionContainerCreate {
-        margin: 1.5rem;
-        height: 80%;
-        box-shadow: 0 4px 4px 0 $dark-shadow;
-        background-color: $secondary-background;
-        position: relative;
-        border-radius: 0.5rem;
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 2.2rem);
+    .body {
+      width: 100%;
+      padding: 0 1.2rem;
+      min-height: 35px;
 
-        width: 650px;
-        min-height: 500px;
-        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+      @media (max-width: 870px) {
+        padding: 0 1.4rem;
+      }
 
-        @media (max-width: 870px) {
-            width: 85%;
-        }
-
-        @media (max-width: 400px) {
-            width: 95%;
-            margin: 1rem;
-            height: 80%;
-        }
-
-        .errorBox {
-            padding: 0.65rem 1rem;
-            margin: 0 1.5rem;
-            background-color: $highlight-color;
-            box-shadow: 0 0 0 1px $lighter-red;
-            color: $rejected-color;
-            border-radius: 0.4rem;
-            opacity: 1;
-            transition: all 1s cubic-bezier(0.6, 0.2, 0.2, 1) 2s;
-
-            @include flexin ($justify: space-between,
-                $gap: 1rem);
-
-            svg {
-                font-size: 1.15rem;
-            }
-
-            svg:hover {
-                cursor: pointer;
-                color: $lighter-red;
-            }
-
-            span {
-                @include flexin($justify: left, $gap: 0.4rem);
-
-                span {
-                    @include flexin();
-                }
-            }
-        }
-
-        .header {
-            padding: 1.5rem 2rem 0;
-            width: 100%;
-        }
-
-        .scrollContainer {
-            width: 100%;
-            height: 100%;
-
-            .scrollContent {
-                @include flexin($justify: space-evenly,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 2rem);
-                padding: 0 2rem;
-                width: 100%;
-
-                &>div {
-                    // width: 100%;
-                    @include flexin($justify: stretch,
-                        $align: flex-start,
-                        $gap: 2rem);
-
-                    &>div {
-                        flex-grow: 1;
-                        flex-basis: 50%;
-                        position: relative;
-                        @include flexin($justify: stretch,
-                            $align: stretch,
-                            $direction: column,
-                            $gap: 0.4rem);
-                    }
-
-                    label {
-                        font-size: 13px;
-                        font-weight: 200;
-                    }
-
-                    input {
-                        background-color: $border-color;
-                        outline: none;
-                        border: 1px solid transparent;
-                        padding: 0.5rem 1rem;
-                        border-radius: 0.5rem;
-                        font-size: 14px;
-                        width: 100%;
-                        color: $text-color;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                    }
-
-                    input:focus,
-                    input:active {
-                        box-shadow: 0 0 0 1px $accent-dark-green !important;
-                    }
-
-                    .top {
-                        @include flexin($justify: space-between,
-                            $align: center,
-                            $gap: 2rem);
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                        svg {
-                            font-size: 20px;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-
-                        svg:hover {
-                            color: $hover-green;
-                            cursor: pointer;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-                    }
-
-                    .bottom {
-                        @include flexin($justify: stretch, $align: stretch, $direction: column, $gap: 0.6rem);
-                    }
-
-                }
-
-
-                .venueRow {
-                    @include flexin($justify: stretch,
-                        $align: stretch,
-                        $gap: 0.4rem,
-                        $direction: column);
-
-                    .venueInput {
-                        background-color: $secondary-background;
-                        height: 35px;
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                        border-radius: 0.5rem;
-                        border: 1px solid transparent;
-                    }
-
-                    input:focus,
-                    input:active {
-                        box-shadow: 0 0 0 0 transparent !important;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    }
-                }
-
-                .timeRow {
-
-                    @media (max-width: 700px) {
-                        flex-direction: column;
-                        gap: 2rem;
-
-
-                        &>div {
-                            flex-basis: 100%;
-
-                            width: 100%;
-                        }
-                    }
-
-                    .calendar,
-                    .react-datepicker__time-box,
-                    .react-datepicker__navigation {
-                        background-color: $border-color !important;
-                        font-family: inherit !important;
-                        color: $text-color !important;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    }
-
-                    .day,
-                    .time {
-                        color: $text-color ;
-                        font-family: inherit !important;
-                    }
-
-                    .sessionTime {
-                        width: 100%;
-                        @include flexin($justify: space-between,
-                            $align: center,
-                            $gap: 2rem);
-
-                        background-color: $border-color;
-                        padding: 0.5rem 1rem;
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                        height: 35px;
-                        border-radius: 0.5rem;
-                        border: 1px solid transparent;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                        .placeholder {
-                            color: gray;
-                        }
-
-                        svg:hover {
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-                    }
-
-                    .sessionTime:hover {
-
-                        svg {
-                            color: $hover-green;
-                        }
-                    }
-
-                    .sessionTime:active,
-                    .sessionTime:focus {
-                        box-shadow: 0 0 0 1px $accent-dark-green !important;
-                    }
-                }
-
-                .courseName,
-                .courseCodes,
-                .invigilators,
-                .classes {
-                    position: relative;
-
-                    svg {
-                        position: absolute;
-                        right: 1rem;
-                        top: 0.5rem;
-                        font-size: 18px;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    }
-
-                    svg:hover {
-                        color: $hover-green;
-                        cursor: pointer;
-                    }
-                }
-
-                .courseRow,
-                .lastRow {
-                    @media (max-width: 700px) {
-                        flex-direction: column;
-                        gap: 2rem;
-
-
-                        &>div {
-                            flex-basis: 100%;
-
-                            width: 100%;
-                        }
-                    }
-                }
-
-            }
-        }
-
-        button.submit {
-            background-color: $accent-green;
-            margin: 0 2rem 1.5rem;
-            font-size: 14px;
-            padding: 0.5rem 2rem;
-        }
-
-        button.submit:hover {
-            background-color: $accent-dark-green;
-        }
-
-        button.submit:disabled {
-            background-color: $hover-green;
-        }
-
-        .errorLabel {
-            color: $rejected-color;
-        }
-
-        .errorInput {
-            border: 1px solid $rejected-color !important;
-        }
+      @media (max-width: 400px) {
+        padding: 0 1rem;
+      }
     }
 
-    .sessionContainerEdit {
-        margin: 1.5rem;
-        height: 75%;
-        box-shadow: 0 4px 4px 0 $dark-shadow;
-        background-color: $secondary-background;
-        position: relative;
-        border-radius: 0.5rem;
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 1.7rem);
-
-        width: 650px;
-        min-height: 500px;
-        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-        @media (max-width: 870px) {
-            width: 85%;
-        }
-
-        @media (max-width: 400px) {
-            width: 95%;
-            margin: 1rem;
-            height: 80%;
-        }
-
-        .errorBox {
-            padding: 0.65rem 1rem;
-            margin: 0 1.5rem;
-            background-color: $highlight-color;
-            box-shadow: 0 0 0 1px $lighter-red;
-            color: $rejected-color;
-            border-radius: 0.4rem;
-            opacity: 1;
-            transition: all 1s cubic-bezier(0.6, 0.2, 0.2, 1) 2s;
-
-            @include flexin ($justify: space-between,
-                $gap: 1rem);
-
-            svg {
-                font-size: 1.15rem;
-            }
-
-            svg:hover {
-                cursor: pointer;
-                color: $lighter-red;
-            }
-
-            span {
-                @include flexin($justify: left, $gap: 0.4rem);
-
-                span {
-                    @include flexin();
-                }
-            }
-        }
-
-        .header {
-            padding: 1.5rem 2rem 0;
-            width: 100%;
-
-            @media (max-width: 870px) {
-                padding: 1.2rem 1.4rem 0;
-            }
-
-            @media (max-width: 400px) {
-                width: 95%;
-                padding: 1rem 1rem 0;
-            }
-        }
-
-        .scrollContainer {
-            width: 100%;
-            height: 100%;
-
-            .scrollContent {
-                @include flexin($justify: space-between,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 2rem);
-                padding: 0 2rem;
-                width: 100%;
-
-                &>div {
-                    // width: 100%;
-                    @include flexin($justify: stretch,
-                        $align: flex-start,
-                        $gap: 2rem);
-
-                    &>div {
-                        flex-grow: 1;
-                        flex-basis: 50%;
-                        position: relative;
-                        @include flexin($justify: stretch,
-                            $align: stretch,
-                            $direction: column,
-                            $gap: 0.4rem);
-                    }
-
-                    label {
-                        font-size: 13px;
-                        font-weight: 200;
-                    }
-
-                    input {
-                        background-color: $border-color;
-                        outline: none;
-                        border: 1px solid transparent;
-                        padding: 0.5rem 1rem;
-                        border-radius: 0.5rem;
-                        font-size: 14px;
-                        width: 100%;
-                        color: $text-color;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                    }
-
-                    input:focus,
-                    input:active {
-                        box-shadow: 0 0 0 1px $accent-dark-green !important;
-                    }
-
-                    .top {
-                        @include flexin($justify: space-between,
-                            $align: center,
-                            $gap: 2rem);
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                        svg {
-                            font-size: 20px;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-
-                        svg:hover {
-                            color: $hover-green;
-                            cursor: pointer;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-                    }
-
-                    .bottom {
-                        @include flexin($justify: stretch, $align: stretch, $direction: column, $gap: 0.6rem);
-                    }
-
-                }
-
-                .venueRow {
-                    @include flexin($justify: stretch,
-                        $align: stretch,
-                        $gap: 0.4rem,
-                        $direction: column);
-
-                    .venueInput {
-                        background-color: $secondary-background;
-                        height: 35px;
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                        border-radius: 0.5rem;
-                        border: 1px solid transparent;
-                    }
-
-                    input:focus,
-                    input:active {
-                        box-shadow: 0 0 0 0 transparent !important;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    }
-                }
-
-                .timeRow {
-
-                    .calendar,
-                    .react-datepicker__time-box,
-                    .react-datepicker__navigation {
-                        background-color: $border-color !important;
-                        font-family: inherit !important;
-                        color: $text-color !important;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    }
-
-                    .day,
-                    .time {
-                        color: $text-color ;
-                        font-family: inherit !important;
-                    }
-
-                    @media (max-width: 700px) {
-                        flex-direction: column;
-                        gap: 2rem;
-
-                        &>div {
-                            flex-basis: 100%;
-                            width: 100%;
-                        }
-                    }
-
-                    .sessionTime {
-                        width: 100%;
-                        @include flexin($justify: space-between,
-                            $align: center,
-                            $gap: 2rem);
-
-                        background-color: $border-color;
-                        padding: 0.5rem 1rem;
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                        height: 35px;
-                        border-radius: 0.5rem;
-                        border: 1px solid transparent;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                        .placeholder {
-                            color: gray;
-                        }
-
-                        svg:hover {
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-                    }
-
-                    .sessionTime:hover {
-
-                        svg {
-                            color: $hover-green;
-                        }
-                    }
-
-                    .sessionTime:active,
-                    .sessionTime:focus {
-                        box-shadow: 0 0 0 1px $accent-dark-green !important;
-                    }
-                }
-
-                .courseRow {
-
-                    @media (max-width: 700px) {
-                        flex-direction: column;
-                        gap: 2rem;
-
-
-                        &>div {
-                            flex-basis: 100%;
-
-                            width: 100%;
-                        }
-                    }
-                }
-
-                .courseName,
-                .courseCodes,
-                .invigilators,
-                .classes {
-                    position: relative;
-
-                    svg {
-                        position: absolute;
-                        right: 1rem;
-                        top: 0.5rem;
-                        font-size: 18px;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                    }
-
-                    svg:hover {
-                        color: $hover-green;
-                        cursor: pointer;
-                    }
-                }
-
-                .commentsBox,
-                .invigilatorsBox {
-                    @include flexin($justify: stretch,
-                        $align: stretch,
-                        $direction: column,
-                        $gap: 0.5rem);
-                }
-
-                .comments {
-
-                    flex-grow: 1;
-                    padding: 0.5rem 1rem;
-                    outline: none;
-                    border: 1px solid transparent;
-                    background-color: $border-color;
-                    box-shadow: 0 3px 3px 0 $dark-shadow;
-                    border-radius: 0.5rem;
-                    color: $text-color;
-                    font-family: inherit;
-                }
-
-                @media (max-width: 870px) {
-                    padding: 0 1.4rem;
-                }
-
-                @media (max-width: 400px) {
-                    width: 95%;
-                    padding: 0 1rem;
-                }
-            }
-        }
-
-        .navigateButtons {
-            padding: 0 2rem 1.5rem;
-            @include flexin($justify: stretch,
-                $align: center,
-                $gap: 1.5rem);
-
-            &>button {
-                flex-basis: 50%;
-                font-size: 14px;
-                padding: 0.5rem 1rem;
-            }
-
-
-            @media (max-width: 870px) {
-                padding: 0 1.4rem 1.2rem;
-            }
-
-            @media (max-width: 400px) {
-                width: 95%;
-                padding: 0 1rem 1rem;
-            }
-
-            button.nextButton,
-            button.saveButton {
-                border: 1px solid transparent;
-                background-color: $accent-green;
-            }
-
-            button.nextButton:hover,
-            button.saveButton:hover {
-                background-color: $accent-dark-green;
-                cursor: pointer;
-            }
-
-            button.nextButton:disabled,
-            button.saveButton:disabled {
-                background-color: $border-color;
-                cursor: disabled;
-            }
-
-            button.backButton,
-            button.cancelButton {
-                border: 1px solid $accent-green;
-                background-color: transparent;
-            }
-
-            button.backButton:hover,
-            button.cancelButton:hover {
-                border-color: $hover-green;
-                color: $hover-green;
-                cursor: pointer;
-            }
-
-            button.backButton:disabled,
-            button.cancelButton:disabled {
-                background-color: $border-color;
-                border: 1px solid transparent;
-                cursor: disabled;
-            }
-
-        }
-
-        .errorLabel {
-            color: $rejected-color;
-        }
-
-        .errorInput {
-            border: 1px solid $rejected-color !important;
-        }
+    .navigateButtons {
+      padding: 0 1.2rem 1.5rem;
+      @include flexin($justify: stretch, $align: center, $gap: 1.5rem);
+
+      & > button {
+        flex-basis: 50%;
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+      }
+
+      @media (max-width: 870px) {
+        padding: 0 1.4rem 1.2rem;
+      }
+
+      @media (max-width: 400px) {
+        padding: 0 1rem 1rem;
+      }
+
+      button.yesButton {
+        border: 1px solid transparent;
+        background-color: $accent-green;
+      }
+
+      button.yesButton:hover {
+        background-color: transparent;
+        border: 1px solid $accent-dark-green;
+        color: $accent-dark-green;
+        cursor: pointer;
+      }
+
+      button.yesButton:disabled,
+      button.noButton:disabled {
+        background-color: $border-color;
+        cursor: disabled;
+      }
+
+      button.noButton {
+        border: 1px solid transparent;
+        background-color: $rejected-color;
+      }
+
+      button.noButton:hover {
+        background-color: transparent;
+        border: 1px solid $rejected-color;
+        color: $rejected-color;
+        cursor: pointer;
+      }
+
+      button.yesButton:disabled,
+      button.noButton:disabled {
+        background-color: $border-color;
+        cursor: disabled;
+      }
     }
-
-    .sessionContainerFilter {
-        padding: 1.5rem 2rem;
-        margin: 1.5rem;
-        box-shadow: 0 3px 3px 0 $dark-shadow;
-        background-color: $secondary-background;
-        width: 80%;
-        max-width: 450px;
-        position: relative;
-        border-radius: 0.5rem;
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 2rem);
-
-
-        .filterColumn {
-            @include flexin($justify: flex-end,
-                $align: stretch,
-                $direction: column,
-                $gap: 1.5rem);
-
-            .venueInput,
-            .statusInput {
-                border: 1px solid $border-color;
-                border-radius: 0.6rem;
-            }
-
-            .calendar,
-            .react-datepicker__time-box,
-            .react-datepicker__navigation {
-                background-color: $border-color !important;
-                font-family: inherit !important;
-                color: $text-color !important;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-            }
-
-            .day,
-            .time {
-                color: $text-color ;
-                font-family: inherit !important;
-            }
-
-            .filterSessionTime {
-                width: 100%;
-                @include flexin($justify: space-between,
-                    $align: center,
-                    $gap: 2rem);
-
-                background-color: $secondary-background;
-                padding: 0.5rem 1rem;
-                box-shadow: 0 4px 4px 0 $dark-shadow;
-                height: 37px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                border: 1px solid $border-color;
-                white-space: nowrap;
-                border-radius: 0.7rem;
-                // border: 1px solid transparent;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                .placeholder {
-                    font-size: 13px;
-                    color: gray;
-                }
-
-                svg {
-                    font-size: 16px;
-                }
-
-                span {
-                    font-size: 13px;
-                }
-
-                svg:hover {
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                }
-
-                .timeIcons {
-                    @include flexin($justify: flex-end,
-                        $align: center,
-                        $gap: 0.6rem);
-                }
-            }
-
-            .filterSessionTime:hover {
-
-                svg {
-                    color: $hover-green;
-                }
-            }
-
-        }
-
-        .filterButton {
-            padding: 10px;
-            border-radius: 0.7rem;
-            box-shadow: 0 4px 4px 0 $dark-shadow;
-            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-            background-color: $accent-green;
-            font-size: 14px;
-
-
-            @include flexin();
-        }
-    }
-
-    .sessionContainerEnd {
-        margin: 1.5rem;
-        box-shadow: 0 4px 4px 0 $dark-shadow;
-        background-color: $secondary-background;
-        position: relative;
-        border-radius: 0.5rem;
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 1rem);
-
-        width: 380px;
-        min-height: fit-content;
-        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-        @media (max-width: 400px) {
-            margin: 1rem;
-            width: 100%;
-        }
-
-
-        .header {
-            padding: 0.7rem 1.2rem;
-            background-color: $border-color;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-            width: 100%;
-
-            h2 {
-                font-size: 21px;
-            }
-
-            @include flexin($justify: stretch, $align: center);
-
-            @media (max-width: 870px) {
-                padding: 0.7rem 1.4rem;
-            }
-
-            @media (max-width: 400px) {
-                padding: 0.7rem 1rem;
-            }
-        }
-
-        .body {
-            width: 100%;
-            padding: 0 1.2rem;
-            min-height: 35px;
-
-            @media (max-width: 870px) {
-                padding: 0 1.4rem;
-            }
-
-            @media (max-width: 400px) {
-                padding: 0 1rem;
-            }
-        }
-
-        .navigateButtons {
-            padding: 0 1.2rem 1.5rem;
-            @include flexin($justify: stretch,
-                $align: center,
-                $gap: 1.5rem);
-
-            &>button {
-                flex-basis: 50%;
-                font-size: 14px;
-                padding: 0.5rem 1rem;
-            }
-
-
-            @media (max-width: 870px) {
-                padding: 0 1.4rem 1.2rem;
-            }
-
-            @media (max-width: 400px) {
-                padding: 0 1rem 1rem;
-            }
-
-            button.yesButton {
-                border: 1px solid transparent;
-                background-color: $accent-green;
-            }
-
-            button.yesButton:hover {
-                background-color: transparent;
-                border: 1px solid $accent-dark-green;
-                color: $accent-dark-green;
-                cursor: pointer;
-            }
-
-            button.yesButton:disabled,
-            button.noButton:disabled {
-                background-color: $border-color;
-                cursor: disabled;
-            }
-
-            button.noButton {
-                border: 1px solid transparent;
-                background-color: $rejected-color;
-            }
-
-            button.noButton:hover {
-                background-color: transparent;
-                border: 1px solid $rejected-color;
-                color: $rejected-color;
-                cursor: pointer;
-            }
-
-            button.yesButton:disabled,
-            button.noButton:disabled {
-                background-color: $border-color;
-                cursor: disabled;
-            }
-        }
-
-
-    }
+  }
 }

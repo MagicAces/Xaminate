@@ -56,7 +56,7 @@ const Sidebar = () => {
   };
   return (
     <>
-      {reload && <Loader />}
+      {/* {reload && <Loader />} */}
       {modalState.mode > 0 && <Modal />}
       <div
         className={`${

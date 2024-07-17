@@ -275,8 +275,8 @@ interface ReportBox {
     endTime: string;
   };
   sort: {
-    field: string;
-    order: string;
+    field: keyof Report;
+    order: "asc" | "desc";
   };
   status: string;
   search: string;
@@ -287,8 +287,8 @@ export interface ReportQuery {
   page: number;
   limit: number;
   sort: {
-    field: SortableReportFields;
-    order: string;
+    field: keyof Report;
+    order: "asc" | "desc";
   };
   startTime: string;
   endTime: string;
@@ -354,6 +354,7 @@ export interface StudentDisplay {
   reference_no: number;
   valid_reports: number;
   total_reports: number;
+  photo: string;
   last_seven: {
     session_id: number;
     report_count: number;

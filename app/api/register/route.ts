@@ -41,8 +41,6 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log(newUser);
-
     return NextResponse.json({
       message: "User Successfully Registered",
       user: {

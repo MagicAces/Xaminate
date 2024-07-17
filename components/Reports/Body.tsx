@@ -11,12 +11,13 @@ import Skeleton from "react-loading-skeleton";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/utils/context";
 import Modal from "../Modal/Modal";
-import { setReload, setReport } from "@/redux/slices/modalSlice";
+import { setReload, setReport, setStudent } from "@/redux/slices/modalSlice";
 import Image from "next/image";
 import { FiExternalLink } from "react-icons/fi";
 import { PiStudent } from "react-icons/pi";
 import { FaRegEdit } from "react-icons/fa";
 import unknown from "@/public/images/unknown_user.png";
+import { toast } from "react-toastify";
 
 const Body = () => {
   const { data, isDisabled } = useSelector((state: any) => state.report);
@@ -27,16 +28,42 @@ const Body = () => {
 
   const showModal = (report: ReportRow, type: string) => {
     if (type == "student") {
-      setState(report.id, 3, "report");
-      dispatch(setReload(true));
-      // dispatch(
-      //   setReport({
-      //     id: report.id,
-
-      //   })
-      // );
+      if (report.student) {
+        setState(Number(report.student.id), 2, "report");
+        // dispatch(setReload(true));
+        dispatch(
+          setStudent({
+            fullName: report.student.fullName,
+            index_number: Number(report.student.index_number),
+            reference_no: 0,
+            valid_reports: 0,
+            total_reports: 0,
+            photo: report.student.photo,
+            last_seven: [],
+          })
+        );
+      } else {
+        toast.info("Student not found");
+      }
     } else if (type === "report") {
-      setState(report.id, 4, "report");
+      setState(report.id, 1, "report");
+      // dispatch(setReload(true));
+      dispatch(
+        setReport({
+          id: report.id,
+          student: {
+            id: Number(report.student.id),
+            fullName: report.student.fullName,
+            reference_no: 0,
+            index_number: Number(report.student.index_number),
+            program: "",
+            photo: report.student.photo,
+          },
+          timestamp: report.timestamp,
+          session_id: report.session_id,
+          description: "",
+        })
+      );
     }
   };
 

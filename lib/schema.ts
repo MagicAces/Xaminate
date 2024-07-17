@@ -1,4 +1,4 @@
-import { number, object, string, TypeOf, array, date } from "zod";
+import { number, object, string, TypeOf, array, date, boolean } from "zod";
 
 export const loginSchema = object({
   email: string({ required_error: "Email is required" })
@@ -167,30 +167,21 @@ export const sessionEndSchema = object({
 });
 
 export const newReportSchema = object({
-  id: number({ required_error: "An ID is required" }).min(
+  description: string().min(1, "Brief description is required"),
+  session_id: number({ required_error: "Session Id is Required" }).min(
     0,
-    "ID cannot be less than 0"
+    "Session ID is required"
   ),
-  student_id: number({ required_error: "Student ID is required" }).min(
-    0,
-    "ID cannot be less than 0"
-  ),
-  description: string({ required_error: "Brief description is needed"}).min(
-    1,
-    "Brief description is required"
-  ),
-  comments: string()
+  student_reference_no: number()
+    .min(0, "Reference Number cannot be less than 0")
     .optional(),
-  password: string({ required_error: "Password is required" })
-    .min(1, "Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
-  passwordConfirm: string({
-    required_error: "Please confirm your password",
-  }).min(1, "Please confirm your password"),
-}).refine((data) => data.password === data.passwordConfirm, {
-  path: ["passwordConfirm"],
-  message: "Passwords do not match",
+  student_identified: boolean(),
+  snapshot_url: string().url().optional(),
+  timestamp: string().transform((val) => new Date(val)),
+  camera_id: number({ required_error: "Camera Id is Required" }).min(
+    0,
+    "Camera ID is required"
+  ),
 });
 
 export type LoginInput = TypeOf<typeof loginSchema>;
