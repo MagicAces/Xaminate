@@ -120,7 +120,7 @@ const pathsToRevalidate = [
 export const revalidateAllPaths = async () => {
   try {
     for (const path of pathsToRevalidate) {
-      await revalidatePath(path);
+      revalidatePath(path);
     }
   } catch (error) {
     console.error("Failed to revalidate paths:", error);

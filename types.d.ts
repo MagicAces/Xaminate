@@ -85,8 +85,8 @@ export type SessionEdit = {
 export interface ModalSliceState {
   venues: Venue[];
   session: SessionEdit | {};
-  report: ReportDisplay | {};
-  student: StudentDisplay | {};
+  report: ReportInfo | {};
+  student: StudentInfo | {};
   reload: boolean;
 }
 
@@ -333,7 +333,7 @@ export interface ReportOutput {
   }[];
 }
 
-export interface ReportPhase {
+export interface ReportInfo {
   id: number;
   student: {
     id: number;
@@ -348,7 +348,7 @@ export interface ReportPhase {
   description: string;
 }
 
-export interface StudentDisplay {
+export interface StudentInfo {
   fullName: string;
   index_number: number;
   reference_no: number;

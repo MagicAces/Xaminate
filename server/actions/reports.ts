@@ -1,9 +1,12 @@
 "use server";
 
-import { ReportDisplay, ReportPhase, ReportQuery, ReportRow } from "@/types";
+import { ReportDisplay, ReportInfo, ReportQuery, ReportRow } from "@/types";
 import { Prisma, Status } from "@prisma/client";
 import prisma from "@/prisma/prisma";
 import { reports } from "@/data/reports.test";
+import { authAction } from "./actions";
+import { approveReportSchema } from "@/lib/schema";
+import { revalidatePath } from "next/cache";
 
 export const getReports = async ({
   query,
@@ -353,3 +356,63 @@ export const getReport = async (id: number) => {
     throw error;
   }
 };
+
+// export const markNotificationAsRead = action(
+//   markNotificationAsReadSchema,
+//   async ({ id }) => {
+//     try {
+//       await prisma.notification.update({
+//         where: {
+//           id: id,
+//         },
+//         data: {
+//           read: true,
+//         },
+//       });
+//       revalidatePath("/");
+//       return { success: "Notification marked as read" };
+//     } catch (error) {
+//       return { error: "Something went wrong" };
+//     }
+//   }
+// );
+
+// export const markNotificationAsSeen = async ({ id }: { id: number }) => {
+//   try {
+//     await prisma.notification.update({
+//       where: {
+//         id: id,
+//       },
+//       data: {
+//         read: true,
+//       },
+//     });
+//     return { success: "Notification marked as read" };
+//   } catch (error) {
+//     return { error: "Something went wrong" };
+//   }
+// };
+
+export const approveReport = authAction(
+  approveReportSchema,
+  async ({ id }: { id: number }, { userId }) => {
+    try {
+      const updatedReport = await prisma.report.update({
+        where: { id },
+        data: {
+          status: "Approved",
+          last_edited_by: Number(userId),
+          status_changed: new Date(),
+        },
+      });
+
+      revalidatePath("/reports");
+      revalidatePath("/reports/" + id.toString());
+
+      return { success: "Report Approved" };
+    } catch (error: any) {
+      console.log(error);
+      return { error: "Somethig went wrong" };
+    }
+  }
+);

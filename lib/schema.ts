@@ -184,6 +184,12 @@ export const newReportSchema = object({
   ),
 });
 
+export const approveReportSchema = object({
+  id: number({ required_error: "Report Id is Required" }).gte(1, {
+    message: "Id should be greater than 1",
+  }),
+});
+
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type AutheniticateInput = TypeOf<typeof authenticateSchema>;
 export type RegisterInput = TypeOf<typeof registerSchema>;

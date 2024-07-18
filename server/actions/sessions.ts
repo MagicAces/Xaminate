@@ -559,7 +559,7 @@ export const endSession = authAction(
   sessionEndSchema,
   async ({ id }: { id: number }, { userId }) => {
     try {
-      if (!id) return { error: "Id not found" };
+      // if (!id) return { error: "Id not found" };
 
       const endTime = new Date();
 
