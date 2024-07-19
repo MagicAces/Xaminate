@@ -3,22 +3,23 @@
 import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
 import Loader from "@/components/Utils/Loader";
 import unknown from "@/public/images/unknown_user.png";
-import { setReload, setReport, setStudent } from "@/redux/slices/modalSlice";
-import { approveReport } from "@/server/actions/reports";
-import { useGetReport, useGetStudent } from "@/server/hooks/reports";
+import { setReload, setStudent } from "@/redux/slices/modalSlice";
+import { useGetStudent } from "@/server/hooks/reports";
 import styles from "@/styles/modal.module.scss";
-import { ReportBox, ReportInfo, StudentInfo } from "@/types";
+import { ReportBox, StudentInfo } from "@/types";
 import { useModal } from "@/utils/context";
-import { useAction } from "next-safe-action/hooks";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+// import ReactCharts from "react-apexcharts";
 import { FiExternalLink } from "react-icons/fi";
-import { MdBlock, MdCheck, MdClose, MdInfo } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import ReactCharts from "react-apexcharts";
+
+// Dynamically import ReactCharts with no SSR
+const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const Student = () => {
   const { exitModal, modalState } = useModal();
@@ -64,7 +65,6 @@ const Student = () => {
     ]);
   }, [student, studentData]);
 
-  console.log(series);
 
   return (
     <>

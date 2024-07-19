@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback } from "react";
 import { Scrollbars, ScrollbarProps } from "react-custom-scrollbars-2";
 

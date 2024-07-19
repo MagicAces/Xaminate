@@ -2,8 +2,8 @@
 
 import { limitOptions } from "@/data/select";
 import { setReload, updateReportControls } from "@/redux/slices/reportSlice";
-import styles from "@/styles/report.module.scss";
 import { ReportSlice, SelectOption } from "@/types";
+import styles from "@/styles/report.module.scss";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,7 @@ const Footer = () => {
             }}
             options={limitOptions()}
             placeholder={"Rows per page"}
-            menuPortalTarget={client ? document.body : null}
+            // menuPortalTarget={client ? document.body : null}
             menuPlacement="top"
           />
         </div>
