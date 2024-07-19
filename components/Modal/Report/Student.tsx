@@ -12,14 +12,14 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import ReactCharts from "react-apexcharts";
+import ReactCharts from "react-apexcharts";
 import { FiExternalLink } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 
 // Dynamically import ReactCharts with no SSR
-const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+// const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const Student = () => {
   const { exitModal, modalState } = useModal();
@@ -35,7 +35,7 @@ const Student = () => {
       data: student?.last_seven?.map((value) => value.report_count),
     },
   ]);
-
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -65,6 +65,9 @@ const Student = () => {
     ]);
   }, [student, studentData]);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <>
@@ -172,137 +175,151 @@ const Student = () => {
                 <div className={styles.lastSeven}>
                   <span>Reports in Last 7 Sessions</span>
                   <div className={styles.lastSevenCharts}>
-                    <ReactCharts
-                      options={{
-                        markers: {
-                          size: 4,
-                          strokeWidth: 2,
-                        },
-                        chart: {
-                          type: "area",
-                          // height: 180,
-                          toolbar: {
-                            show: false,
-                            tools: {
-                              selection: true,
-                              zoom: true,
-                              pan: true,
-                            },
-                            export: {
-                              csv: {
-                                filename:
-                                  "Reports in Last 7 Sessions" +
-                                  "_" +
-                                  reportsBox?.status,
+                    {isClient ? (
+                      <ReactCharts
+                        options={{
+                          markers: {
+                            size: 4,
+                            strokeWidth: 2,
+                          },
+                          chart: {
+                            type: "area",
+                            // height: 180,
+                            toolbar: {
+                              show: false,
+                              tools: {
+                                selection: true,
+                                zoom: true,
+                                pan: true,
                               },
-                              svg: {
-                                filename:
-                                  "Reports in Last 7 Sessions" +
-                                  "_" +
-                                  reportsBox?.status,
+                              export: {
+                                csv: {
+                                  filename:
+                                    "Reports in Last 7 Sessions" +
+                                    "_" +
+                                    reportsBox?.status,
+                                },
+                                svg: {
+                                  filename:
+                                    "Reports in Last 7 Sessions" +
+                                    "_" +
+                                    reportsBox?.status,
+                                },
+                                png: {
+                                  filename:
+                                    "Reports in Last 7 Sessions" +
+                                    "_" +
+                                    reportsBox?.status,
+                                },
                               },
-                              png: {
-                                filename:
-                                  "Reports in Last 7 Sessions" +
-                                  "_" +
-                                  reportsBox?.status,
-                              },
                             },
                           },
-                        },
-                        dataLabels: {
-                          enabled: false,
-                        },
-                        colors:
-                          reportsBox?.status === "Pending"
-                            ? ["#FFC107"]
-                            : reportsBox?.status === "Approved"
-                            ? ["#4CAF50"]
-                            : ["#FF5252"],
-                        yaxis: {
-                          labels: {
-                            formatter: function (val) {
-                              return val.toFixed(0);
-                            },
-                            style: {
-                              colors: "#FFF",
-                              fontFamily: "inherit",
-                              fontSize: "12px",
-                              fontWeight: 200,
-                            },
+                          dataLabels: {
+                            enabled: false,
                           },
-                          // show: true,
-                          // axisBorder: {
-                          //   show: true,
-                          //   color: "#FFF",
-                          // },
-                          // axisTicks: {
-                          //   show: false,
-                          // },
-                        },
-                        stroke: {
-                          curve: "straight",
-                          width: 1,
-                        },
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            opacityFrom: 0.7,
-                            opacityTo: 0.2,
-                          },
-                        },
-                        tooltip: {
-                          y: {
-                            formatter: function (val) {
-                              return val.toFixed(0);
-                            },
-                          },
-                          theme: "dark",
-                          followCursor: true,
-                          fillSeriesColor: true,
-                          style: {
-                            fontFamily: "inherit",
-                          },
-                          onDatasetHover: {
-                            highlightDataSeries: true,
-                          },
-                          hideEmptySeries: false,
-                        },
-                        xaxis: {
-                          categories: student?.last_seven?.map(
-                            (value) => `#${value.session_id}`
-                          ),
-                          axisTicks: {
-                            show: false,
-                          },
-                          labels: {
-                            style: {
-                              colors: "#FFF",
-                              fontFamily: "inherit",
-                              fontSize: "12px",
-                              fontWeight: 200,
-                            },
-                          },
-                        },
-                        grid: {
-                          borderColor: "#505050",
+                          colors:
+                            reportsBox?.status === "Pending"
+                              ? ["#FFC107"]
+                              : reportsBox?.status === "Approved"
+                              ? ["#4CAF50"]
+                              : ["#FF5252"],
                           yaxis: {
-                            lines: {
-                              show: true,
+                            labels: {
+                              formatter: function (val) {
+                                return val.toFixed(0);
+                              },
+                              style: {
+                                colors: "#FFF",
+                                fontFamily: "inherit",
+                                fontSize: "12px",
+                                fontWeight: 200,
+                              },
                             },
+                            // show: true,
+                            // axisBorder: {
+                            //   show: true,
+                            //   color: "#FFF",
+                            // },
+                            // axisTicks: {
+                            //   show: false,
+                            // },
+                          },
+                          stroke: {
+                            curve: "straight",
+                            width: 1,
+                          },
+                          fill: {
+                            type: "gradient",
+                            gradient: {
+                              opacityFrom: 0.7,
+                              opacityTo: 0.2,
+                            },
+                          },
+                          tooltip: {
+                            y: {
+                              formatter: function (val) {
+                                return val.toFixed(0);
+                              },
+                            },
+                            theme: "dark",
+                            followCursor: true,
+                            fillSeriesColor: true,
+                            style: {
+                              fontFamily: "inherit",
+                            },
+                            onDatasetHover: {
+                              highlightDataSeries: true,
+                            },
+                            hideEmptySeries: false,
                           },
                           xaxis: {
-                            lines: {
+                            categories: student?.last_seven?.map(
+                              (value) => `#${value.session_id}`
+                            ),
+                            axisTicks: {
                               show: false,
                             },
+                            labels: {
+                              style: {
+                                colors: "#FFF",
+                                fontFamily: "inherit",
+                                fontSize: "12px",
+                                fontWeight: 200,
+                              },
+                            },
                           },
-                        },
-                      }}
-                      series={series}
-                      type="area"
-                      height={180}
-                      // width={"100%"}
-                    />
+                          grid: {
+                            borderColor: "#505050",
+                            yaxis: {
+                              lines: {
+                                show: true,
+                              },
+                            },
+                            xaxis: {
+                              lines: {
+                                show: false,
+                              },
+                            },
+                          },
+                        }}
+                        series={series}
+                        type="area"
+                        height={180}
+                        width={"100%"}
+                      />
+                    ) : (
+                      <Skeleton
+                        baseColor="#2C2C2C"
+                        highlightColor="#505050"
+                        height={180}
+                        width={"100%"}
+                        style={{
+                          borderRadius: "0.5rem",
+                          // marginTop: "0.5rem",
+                          padding: "1rem",
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
