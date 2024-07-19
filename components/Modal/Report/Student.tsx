@@ -12,14 +12,14 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import ReactCharts from "react-apexcharts";
+// import ReactCharts from "react-apexcharts";
 import { FiExternalLink } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 
 // Dynamically import ReactCharts with no SSR
-// const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const Student = () => {
   const { exitModal, modalState } = useModal();
