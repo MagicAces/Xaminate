@@ -87,6 +87,7 @@ export interface ModalSliceState {
   session: SessionEdit | {};
   report: ReportInfo | {};
   student: StudentInfo | {};
+  summary: SessionSummary | {};
   reload: boolean;
 }
 
@@ -191,10 +192,23 @@ export interface SessionOutput {
   venue: SessionOutputVenue;
   terminator: SessionOutputExamsOfficer | null;
   creator: SessionOutputExamsOfficer | null;
-  reports: SessionOutputReport[] | null;
+  reports: SessionOutputReport[];
   _count: SessionOutputCount;
   duration: string;
   status: string;
+}
+
+export interface SessionSummary {
+  reports: {
+    pending: number;
+    approved: number;
+    rejected: number;
+  };
+  students: {
+    fullname: string;
+    index_number: number;
+    frequency: number;
+  }[];
 }
 
 interface SessionOutputAttendance {
@@ -219,7 +233,8 @@ interface SessionOutputReport {
   status: string;
   description: string;
   created_on: string;
-  student: Student;
+  student: SessionOutputStudent | null;
+  timestamp: string;
 }
 
 interface SessionOutputStudent {
@@ -227,7 +242,7 @@ interface SessionOutputStudent {
   first_name: string;
   last_name: string;
   program: string;
-  image_url: string;
+  image_url: string | null;
 }
 
 interface SessionOutputCount {

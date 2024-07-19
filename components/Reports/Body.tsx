@@ -171,12 +171,14 @@ const Body = () => {
                           >
                             <PiStudent />
                           </div>
-                          <div
-                            className="reportModal"
-                            onClick={() => showModal(report, "report")}
-                          >
-                            <FaRegEdit />
-                          </div>
+                          {report.status === "Pending" && (
+                            <div
+                              className="reportModal"
+                              onClick={() => showModal(report, "report")}
+                            >
+                              <FaRegEdit />
+                            </div>
+                          )}
                         </span>
                       </div>
                     </ScrollSyncPane>

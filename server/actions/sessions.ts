@@ -10,7 +10,7 @@ import {
 } from "@/lib/schema";
 import prisma from "@/prisma/prisma";
 import _ from "lodash";
-import { SessionQuery } from "@/types";
+import { SessionQuery, SessionSummary } from "@/types";
 import { Prisma, TempStatus } from "@prisma/client";
 import { formatDuration, getStatus, getStatusMessage } from "@/utils/functs";
 import { format } from "date-fns";
@@ -322,6 +322,7 @@ export const getSession = async (id: number) => {
             status: true,
             description: true,
             created_on: true,
+            timestamp: true,
             student: {
               select: {
                 index_number: true,
@@ -359,6 +360,7 @@ export const getSession = async (id: number) => {
       : getStatusMessage(new Date(startTime), new Date(endTime));
     const formattedReports = foundSession.reports.map((report) => ({
       ...report,
+      timestamp: report.timestamp.toISOString(),
       created_on: report.created_on.toISOString(),
     }));
 
@@ -431,6 +433,79 @@ export const getSessionForEdit = async (id: number) => {
   }
 };
 
+export const getSessionForSummary = async (id: number) => {
+  try {
+    if (!id) return { error: "Id not found" };
+
+    // Fetch session details with necessary relations
+    const foundSession = await prisma.session.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        reports: {
+          select: {
+            id: true,
+            status: true,
+            student: {
+              select: {
+                first_name: true,
+                last_name: true,
+                index_number: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!foundSession) return { error: "Session not found" };
+
+    // Calculate the report statuses
+    const reportStatusCounts = foundSession.reports.reduce(
+      (counts, report) => {
+        if (report.status === "Pending") counts.pending++;
+        else if (report.status === "Approved") counts.approved++;
+        else if (report.status === "Rejected") counts.rejected++;
+        return counts;
+      },
+      { pending: 0, approved: 0, rejected: 0 }
+    );
+
+    // Calculate the students' report frequency
+    const studentFrequencyMap = foundSession.reports.reduce((map, report) => {
+      if (report.student) {
+        const { index_number, first_name, last_name } = report.student;
+        const fullname = `${first_name} ${last_name}`;
+        if (!map[index_number]) {
+          map[index_number] = {
+            fullname,
+            index_number,
+            frequency: 0,
+          };
+        }
+        map[index_number].frequency++;
+      }
+      return map;
+    }, {} as Record<number, { fullname: string; index_number: number; frequency: number }>);
+
+    const studentFrequency = Object.values(studentFrequencyMap);
+
+    const summary: SessionSummary = {
+      reports: reportStatusCounts,
+      students: studentFrequency,
+    };
+
+    return { success: summary };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+
+
 export const editSession = authAction(
   sessionEditSchema,
   async (session: SessionEdit, { userId }) => {
@@ -468,7 +543,7 @@ export const editSession = authAction(
             undefined,
             session.id
           );
-          
+
           // if (sessionData.start_time)
           if (!isAvailable) return { error: "Venue is not available" };
 

@@ -1,6 +1,6 @@
 import { ReportQuery } from "@/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getReport, getReports } from "../actions/reports";
+import { getReport, getReports, getStudent } from "../actions/reports";
 
 export function useGetReports({
   query,
@@ -43,6 +43,17 @@ export function useGetReport(id: number) {
       return data;
     },
     queryKey: ["report", { id }],
+    // placeholderData: keepPreviousData,
+  });
+}
+
+export function useGetStudent(id: number) {
+  return useQuery({
+    queryFn: async () => {
+      const data = await getStudent(id);
+      return data;
+    },
+    queryKey: ["student", { id }],
     // placeholderData: keepPreviousData,
   });
 }

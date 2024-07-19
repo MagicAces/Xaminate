@@ -4,7 +4,8 @@ import { fetchUnread, getNotifications } from "../actions/notifications";
 import { QueryClient } from "@tanstack/react-query";
 import { getVenues } from "../actions/venues";
 import { getSession, getSessions } from "../actions/sessions";
-import { getReportsTest } from "../actions/reports";
+import { getReports } from "../actions/reports";
+// import { getReportsTest } from "../actions/reports";
 
 export const usePrefetchQueries = async (queryClient: QueryClient) => {
   await Promise.all([
@@ -65,7 +66,7 @@ export const usePrefetchQueries = async (queryClient: QueryClient) => {
         },
       ],
       queryFn: async () => {
-        const data = await getReportsTest({
+        const data = await getReports({
           query: {
             page: 1,
             limit: 10,

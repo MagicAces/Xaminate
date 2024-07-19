@@ -5,10 +5,10 @@ import { SessionOutput } from "@/types";
 import { useState } from "react";
 import { MdArrowBackIos, MdArrowForwardIos, MdCircle } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { faker } from "@faker-js/faker";
 import Image from "next/image";
 import { formatToCCTVTimestamp } from "@/utils/functs";
-import reports from "@/data/reports";
+// import reports from "@/data/reports";
+import unknown from "@/public/images/unknown_user.png";
 
 const Reports = () => {
   const { session }: { session: SessionOutput } = useSelector(
@@ -21,12 +21,12 @@ const Reports = () => {
       <div className={styles.sessionReportsTop}>
         <h4>
           Reports
-          <span>{reports.length}</span>
+          <span>{session?.reports?.length}</span>
         </h4>
       </div>
       <div className={styles.sessionReportsBody}>
         <div className={styles.sessionReportsBodyTop}>
-          {page} / {reports.length}
+          {page} / {session?.reports?.length}
         </div>
         <div className={styles.sessionReportsBodyContent}>
           <div
@@ -38,8 +38,8 @@ const Reports = () => {
             <MdArrowBackIos style={page <= 1 ? { visibility: "hidden" } : {}} />
           </div>
           <div className={styles.reports}>
-            {reports.length > 0 ? (
-              reports?.map((report, index) => {
+            {session?.reports?.length > 0 ? (
+              session?.reports?.map((report, index) => {
                 if (page === index + 1) {
                   return (
                     <div
@@ -51,7 +51,7 @@ const Reports = () => {
                       <MdCircle />
                       <h5>Report {`0${report.id}-0${session?.id}`}</h5>
                       <Image
-                        src={report.student.image}
+                        src={report?.student?.image_url || unknown}
                         alt="Student's pic"
                         width={120}
                         height={120}
@@ -61,7 +61,7 @@ const Reports = () => {
                       <div className={styles.reportBody}>
                         <div className={styles.studentID}>
                           <span>Student ID</span>
-                          <span>{report.student.index_number}</span>
+                          <span>{report?.student?.index_number}</span>
                         </div>
                         <div className={styles.status}>
                           <span>Status</span>
@@ -75,13 +75,11 @@ const Reports = () => {
                         </div>
                         <div className={styles.studentID}>
                           <span>Program</span>
-                          <span>{report.student.program}</span>
+                          <span>{report?.student?.program}</span>
                         </div>
                         <div className={styles.timestamp}>
-                        <span>Timestamp</span>
-                          <span>
-                            {formatToCCTVTimestamp(report.timestamp)}
-                          </span>
+                          <span>Timestamp</span>
+                          <span>{report?.timestamp && formatToCCTVTimestamp(report.timestamp)}</span>
                         </div>
                       </div>
                       <button type="button" className={styles.reportButton}>
@@ -101,17 +99,15 @@ const Reports = () => {
             className={styles.forwardNav}
             onClick={() =>
               setPage((prevPage) =>
-                prevPage < reports.length
+                prevPage < session?.reports?.length
                   ? prevPage + 1
-                  : reports.length 
+                  : session?.reports?.length
               )
             }
           >
             <MdArrowForwardIos
               style={
-                page >= reports.length
-                  ? { visibility: "hidden" }
-                  : {}
+                page >= session?.reports?.length ? { visibility: "hidden" } : {}
               }
             />
           </div>

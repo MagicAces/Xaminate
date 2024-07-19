@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.scss";
 import AllProviders from "@/lib/provider";
-import { ToastContainer } from "react-toastify";
+import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 // import "@radix-ui/themes/styles.css";
 import { GeistSans } from "geist/font/sans";
@@ -24,15 +24,15 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className={GeistSans.className}>
         <AllProviders>
-            <Theme appearance="dark">
-                {children}
-            </Theme>
+          <Theme appearance="dark">{children}</Theme>
         </AllProviders>
         <ToastContainer
           stacked
           position="bottom-right"
           closeOnClick
           theme="dark"
+          transition={Flip}
+          autoClose={2500}
           pauseOnFocusLoss={false}
         />
       </body>

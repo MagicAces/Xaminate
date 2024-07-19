@@ -1,21 +1,24 @@
 "use client";
+
 import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
-import { closeModal, setReload, setReport } from "@/redux/slices/modalSlice";
+import Loader from "@/components/Utils/Loader";
+import unknown from "@/public/images/unknown_user.png";
+import { setReload, setReport } from "@/redux/slices/modalSlice";
+import { approveReport } from "@/server/actions/reports";
 import { useGetReport } from "@/server/hooks/reports";
 import styles from "@/styles/modal.module.scss";
 import { ReportInfo } from "@/types";
 import { useModal } from "@/utils/context";
+import { formatSorRDate } from "@/utils/functs";
+import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FiExternalLink } from "react-icons/fi";
-import { MdClose } from "react-icons/md";
+import { MdBlock, MdCheck, MdClose, MdInfo } from "react-icons/md";
+import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import unknown from "@/public/images/unknown_user.png";
-import Skeleton from "react-loading-skeleton";
-import { IoOpen } from "react-icons/io5";
-import Button from "@/components/Utils/Button";
 
 const View = () => {
   const { exitModal, modalState } = useModal();
@@ -25,11 +28,23 @@ const View = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
+
   const {
     data: reportData,
     isLoading: reportLoading,
     error: reportError,
   } = useGetReport(modalState.id);
+
+  const { execute, result, status } = useAction(approveReport, {
+    onSuccess: (data) => {
+      if (data?.success) toast.success(data?.success);
+      if (data?.error) toast.error(data?.error);
+    },
+    onError: (error) => {
+      console.log(error);
+      if (error.serverError) toast.error("Server Error");
+    },
+  });
 
   useEffect(() => {
     if (reportError || reportData?.error) {
@@ -47,15 +62,26 @@ const View = () => {
     }
   }, [reportError, reportData, dispatch]);
 
+  const handleSubmit = (approved: boolean) => {
+    execute({ approved, id: modalState.id });
+  };
+
+  useEffect(() => {
+    if (status === "hasSucceeded" && result?.data?.success) exitModal();
+  }, [status, exitModal]);
+
   return (
     <>
       <div
-        className={styles.reportContainer}
+        className={styles.reportContainerView}
         onClick={(e) => e.stopPropagation()}
       >
-        <span className={styles.closeIcon}>
-          <MdClose onClick={() => exitModal()} />
-        </span>
+        {(status === "executing" || reportLoading) && <Loader />}
+        {status !== "executing" && (
+          <span className={styles.closeIcon}>
+            <MdClose onClick={() => exitModal()} />
+          </span>
+        )}
         <div className={styles.header}>
           <h2>Report #{modalState.id}</h2>
           <FiExternalLink
@@ -74,8 +100,8 @@ const View = () => {
                     report?.student?.photo ? report?.student?.photo : unknown
                   }
                   alt="student-pic"
-                  width={75}
-                  height={75}
+                  width={90}
+                  height={90}
                   className={styles.studentPhoto}
                   priority
                 />
@@ -98,7 +124,7 @@ const View = () => {
                     <span>Program</span>
                     <p>
                       {report?.student?.program && !reportLoading ? (
-                        report.student.program
+                        report?.student?.program
                       ) : (
                         <Skeleton
                           baseColor="#2C2C2C"
@@ -146,7 +172,7 @@ const View = () => {
                 <div className={styles.timestampBox}>
                   <span>Timestamp</span>
                   <p>
-                    {report?.timestamp || (
+                    {formatSorRDate(report?.timestamp) || (
                       <Skeleton
                         baseColor="#2C2C2C"
                         highlightColor="#505050"
@@ -159,12 +185,16 @@ const View = () => {
                 </div>
                 <div className={styles.sessionIdBox}>
                   <span>Session ID</span>
-                  <p>
+                  <p
+                    onClick={() => {
+                      if (report?.session_id) {
+                        router.push(`/sessions/${report?.session_id}`);
+                        exitModal();
+                      }
+                    }}
+                  >
                     {report?.session_id ? (
-                      <>
-                        <span>#{report?.session_id}</span>
-                        <IoOpen />
-                      </>
+                      `#${report?.session_id}`
                     ) : (
                       <Skeleton
                         baseColor="#2C2C2C"
@@ -181,8 +211,12 @@ const View = () => {
                 <div className={styles.descriptionBox}>
                   <span>Description</span>
                   <p>
-                    {report?.description && reportLoading ? (
-                      report.description
+                    {!reportLoading ? (
+                      report?.description.length > 0 ? (
+                        report?.description
+                      ) : (
+                        "N/A"
+                      )
                     ) : (
                       <Skeleton
                         baseColor="#2C2C2C"
@@ -197,21 +231,28 @@ const View = () => {
               </div>
             </div>
             <span className={styles.subText}>
-              *Enter full details mode of report to view snapshots
+              <MdInfo />
+              <span>Enter full details mode of report to view snapshots</span>
             </span>
           </div>
         </ColoredScrollbars>
         <div className={styles.buttons}>
-          <Button
-            message="Approve"
-            buttonClass={styles.approveButton}
-            disabled={false}
-          />
-          <Button
-            message="Reject"
-            buttonClass={styles.rejectButton}
-            disabled={false}
-          />
+          <button
+            type="button"
+            className={styles.approveButton}
+            onClick={() => handleSubmit(true)}
+          >
+            <MdCheck />
+            <span>Approve</span>
+          </button>
+          <button
+            type="button"
+            className={styles.rejectButton}
+            onClick={() => handleSubmit(false)}
+          >
+            <MdBlock />
+            <span>Reject</span>
+          </button>
         </div>
       </div>
     </>

@@ -3,7 +3,8 @@ import {
   ModalSliceState,
   Venue,
   SessionEdit,
-  ReportDisplay,
+  // ReportDisplay,
+  SessionSummary,
   StudentInfo,
   ReportInfo,
 } from "@/types";
@@ -13,6 +14,7 @@ const initialState: ModalSliceState = {
   session: {},
   report: {},
   student: {},
+  summary: {},
   reload: false,
 };
 
@@ -25,6 +27,9 @@ const modalSlice = createSlice({
     },
     setSession: (state, action: PayloadAction<SessionEdit>) => {
       state.session = action.payload;
+    },
+    setSummary: (state, action: PayloadAction<SessionSummary>) => {
+      state.summary = action.payload;
     },
     setReport: (state, action: PayloadAction<ReportInfo>) => {
       state.report = action.payload;
@@ -47,6 +52,7 @@ export const {
   setSession,
   setReport,
   setStudent,
+  setSummary,
   closeModal,
   setReload,
 } = modalSlice.actions;

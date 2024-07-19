@@ -69,6 +69,16 @@ export async function POST(request: NextRequest, response: NextResponse) {
       );
     }
 
+    if (
+      foundSession.start_time > new Date(data.timestamp) ||
+      foundSession.end_time < new Date(data.timestamp)
+    ) {
+      return NextResponse.json(
+        { status: "error", message: "Invalid timestamp" },
+        { status: 401 }
+      );
+    }
+
     const foundCamera = await prisma.camera.findUnique({
       where: {
         id: data.camera_id,

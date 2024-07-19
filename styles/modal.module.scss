@@ -9,6 +9,7 @@
   min-height: 100vh;
   min-width: 100vw;
   background-color: transparent;
+  overflow-y: auto;
   transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
 
   .closeIcon {
@@ -397,7 +398,7 @@
 
     width: 650px;
     // min-height: 500px;
-    height: 530px;
+    height: 510px;
     transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
 
     @media (max-width: 870px) {
@@ -691,7 +692,7 @@
 
     width: 650px;
     // min-height: 500px;
-    height: 530px;
+    height: 510px;
     transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
 
     @media (max-width: 870px) {
@@ -1262,6 +1263,535 @@
       button.noButton:disabled {
         background-color: $border-color;
         cursor: disabled;
+      }
+    }
+  }
+
+  .reportContainerView {
+    margin: 1.5rem;
+    // height: 75%;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 1.7rem
+    );
+
+    width: 600px;
+    // min-height: 500px;
+    height: 630px;
+    max-height: 90%;
+    position: relative;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    @media (max-width: 870px) {
+      width: 85%;
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+      margin: 1rem;
+      height: 90%;
+    }
+
+    .header {
+      padding: 1.5rem 2rem 0;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+      svg {
+        font-size: 24px;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+      }
+
+      svg:hover {
+        cursor: pointer;
+        color: $hover-green;
+      }
+    }
+
+    .scrollContainer {
+      width: 100%;
+      height: 100%;
+
+      .scrollContent {
+        @include flexin(
+          $justify: stretch,
+          $align: stretch,
+          $direction: column,
+          $gap: 0.5rem
+        );
+        padding: 0 2rem;
+        width: 100%;
+
+        .infoBox {
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0
+          );
+          width: 100%;
+          position: relative;
+          margin-top: 3rem;
+
+          .firstBox {
+            border: 1px solid $border-color;
+            width: 100%;
+            border-top-left-radius: 0.8rem;
+            border-top-right-radius: 0.8rem;
+            position: relative;
+            padding: 4.5rem 1.5rem 1.5rem;
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 1.5rem
+            );
+
+            .studentPhoto {
+              position: absolute;
+              top: -45px;
+              border-radius: 50%;
+              z-index: 20;
+              text-align: center;
+              align-self: center;
+            }
+
+            & > div {
+              @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+              width: 100%;
+
+              @media (max-width: 600px) {
+                flex-direction: column;
+              }
+
+              & > div {
+                flex-basis: 50%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: flex-start,
+                  $direction: column,
+                  $gap: 0.2rem
+                );
+
+                span {
+                  font-size: 13px;
+                  font-weight: 200;
+                }
+
+                p {
+                  font-size: 14px;
+                  font-weight: 400;
+                  @include flexin(
+                    $justify: space-between,
+                    $align: stretch,
+                    $gap: 2rem
+                  );
+                }
+              }
+            }
+          }
+
+          .secondBox {
+            border: 1px solid $border-color;
+            border-top: 0;
+            border-bottom: 0;
+            padding: 1.5rem;
+            @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+            width: 100%;
+
+            @media (max-width: 600px) {
+              flex-direction: column;
+            }
+
+            & > div {
+              flex-basis: 50%;
+              @include flexin(
+                $justify: flex-start,
+                $align: flex-start,
+                $direction: column,
+                $gap: 0.2rem
+              );
+
+              span {
+                font-size: 13px;
+                font-weight: 200;
+              }
+
+              p {
+                font-size: 14px;
+                font-weight: 400;
+                @include flexin(
+                  $justify: space-between,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+              }
+            }
+
+            .sessionIdBox {
+              p {
+                color: $accent-green;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+              }
+
+              p:hover {
+                color: $hover-green;
+                cursor: pointer;
+              }
+            }
+          }
+
+          .thirdBox {
+            border: 1px solid $border-color;
+            border-bottom-left-radius: 0.8rem;
+            border-bottom-right-radius: 0.8rem;
+            padding: 1.5rem;
+            @include flexin($justify: stretch, $align: stretch, $gap: 1rem);
+            width: 100%;
+
+            .descriptionBox {
+              flex-basis: 100%;
+              @include flexin(
+                $justify: flex-start,
+                $align: flex-start,
+                $direction: column,
+                $gap: 0.25rem
+              );
+
+              span {
+                font-size: 13px;
+                font-weight: 200;
+              }
+
+              p {
+                font-size: 14px;
+                font-weight: 400;
+                @include flexin(
+                  $justify: space-between,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+              }
+            }
+          }
+        }
+
+        .subText {
+          // font-size: 9px !important;
+          font-weight: 500;
+          // padding: 0.3rem 0.5rem;
+          // border: 1px solid $border-color;
+          // border-radius: 0.5rem;
+          @include flexin($justify: flex-start, $align: center, $gap: 0.3rem);
+
+          span {
+            font-size: 11px;
+          }
+
+          svg {
+            font-size: 13px;
+            position: relative;
+          }
+        }
+      }
+    }
+
+    .buttons {
+      width: 100%;
+      @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+      padding: 0 2rem 1.5rem;
+
+      button {
+        @include flexin($justify: center, $align: center, $gap: 0.4rem);
+
+        @media (max-width: 400px) {
+          span {
+            display: none;
+          }
+
+          svg {
+            font-size: 18px;
+          }
+        }
+      }
+
+      .approveButton {
+        flex-basis: 50%;
+        border: 1px solid transparent;
+        background-color: $accent-green;
+      }
+
+      .approveButton:hover {
+        background-color: transparent;
+        border: 1px solid $accent-dark-green;
+      }
+
+      .rejectButton {
+        flex-basis: 50%;
+        border: 1px solid transparent;
+        background-color: $rejected-color;
+      }
+
+      .rejectButton:hover {
+        background-color: transparent;
+        border: 1px solid $rejected-color;
+      }
+    }
+  }
+
+  .reportContainerStudent {
+    margin: 1.5rem;
+    // height: 75%;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 1.7rem
+    );
+
+    width: 600px;
+    // min-height: 500px;
+    height: 630px;
+    max-height: 90%;
+    position: relative;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    @media (max-width: 870px) {
+      width: 85%;
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+      margin: 1rem;
+      height: 90%;
+    }
+
+    .header {
+      padding: 1.5rem 2rem 0;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+      @media (max-width: 400px) {
+        padding: 1rem 1rem 0;
+      }
+
+      svg {
+        font-size: 24px;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+      }
+
+      svg:hover {
+        cursor: pointer;
+        color: $hover-green;
+      }
+    }
+
+    .scrollContainer {
+      width: 100%;
+      height: 100%;
+
+      .scrollContent {
+        @include flexin(
+          $justify: stretch,
+          $align: stretch,
+          $direction: column,
+          $gap: 0.5rem
+        );
+        padding: 0 2rem;
+        width: 100%;
+
+        @media (max-width: 400px) {
+          padding: 0 1rem;
+        }
+
+        .infoBox {
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0
+          );
+          width: 100%;
+          position: relative;
+          margin-top: 3rem;
+          margin-bottom: 1.5rem;
+
+          .firstBox {
+            border: 1px solid $border-color;
+            width: 100%;
+            border-top-left-radius: 0.8rem;
+            border-top-right-radius: 0.8rem;
+            position: relative;
+            padding: 4.5rem 1.5rem 1.5rem;
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 1.5rem
+            );
+
+            .studentPhoto {
+              position: absolute;
+              top: -45px;
+              border-radius: 50%;
+              z-index: 20;
+              text-align: center;
+              align-self: center;
+            }
+
+            & > div {
+              @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+              width: 100%;
+
+              @media (max-width: 600px) {
+                flex-direction: column;
+              }
+
+              & > div {
+                flex-basis: 50%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: flex-start,
+                  $direction: column,
+                  $gap: 0.2rem
+                );
+
+                span {
+                  font-size: 13px;
+                  font-weight: 200;
+                }
+
+                p {
+                  font-size: 14px;
+                  font-weight: 400;
+                  @include flexin(
+                    $justify: space-between,
+                    $align: stretch,
+                    $gap: 2rem
+                  );
+                }
+              }
+            }
+          }
+
+          .secondBox {
+            border: 1px solid $border-color;
+            border-top: 0;
+            border-bottom: 0;
+            padding: 1.5rem;
+            @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+            width: 100%;
+
+            @media (max-width: 600px) {
+              flex-direction: column;
+            }
+
+            & > div {
+              flex-basis: 50%;
+              @include flexin(
+                $justify: flex-start,
+                $align: flex-start,
+                $direction: column,
+                $gap: 0.2rem
+              );
+
+              span {
+                font-size: 13px;
+                font-weight: 200;
+              }
+
+              p {
+                font-size: 14px;
+                font-weight: 400;
+                @include flexin(
+                  $justify: space-between,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+              }
+            }
+
+            .sessionIdBox {
+              p {
+                color: $accent-green;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+              }
+
+              p:hover {
+                color: $hover-green;
+                cursor: pointer;
+              }
+            }
+          }
+
+          .thirdBox {
+            border: 1px solid $border-color;
+            border-bottom-left-radius: 0.8rem;
+            border-bottom-right-radius: 0.8rem;
+            padding: 1.5rem;
+            padding-bottom: 0;
+            @include flexin($justify: stretch, $align: stretch, $gap: 1rem);
+            width: 100%;
+
+            .lastSeven {
+              flex-basis: 100%;
+              @include flexin(
+                $justify: flex-start,
+                $align: flex-start,
+                $direction: column,
+                $gap: 0.4rem
+              );
+              width: 100%;
+
+              span {
+                font-size: 13px;
+                font-weight: 200;
+              }
+            }
+
+            .lastSevenCharts {
+              // font-size: 14px;
+              // font-weight: 400;
+              width: 100%;
+              position: relative;
+              left: -10px;
+              // @include flexin(
+              //   $justify: space-between,
+              //   $align: stretch,
+              //   $gap: 2rem
+              // );
+            }
+          }
+        }
+
+        .subText {
+          font-size: 13px;
+          font-weight: 600;
+          // padding: 0.3rem 0.5rem;
+          // border: 1px solid $border-color;
+          // border-radius: 0.5rem;
+          @include flexin($justify: flex-start, $align: center, $gap: 0.3rem);
+
+          svg {
+            font-size: 17px;
+            position: relative;
+            top: -1px;
+          }
+        }
       }
     }
   }

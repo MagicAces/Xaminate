@@ -9,6 +9,8 @@ const ReportScrollbars: React.FC<ReportScrollbarsProps> = (props) => {
       const viewStyle: React.CSSProperties = {
         padding: " 0",
         backgroundColor: "transparent",
+        borderBottomLeftRadius: "0.5rem",
+        borderBottomRightRadius: "0.5rem",
       };
       return (
         <div className="box" style={{ ...style, ...viewStyle }} {...props} />

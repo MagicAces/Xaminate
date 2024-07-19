@@ -459,7 +459,7 @@
         }
 
         .name {
-          flex-basis: 16%;
+          flex-basis: 18%;
           min-width: 120px;
         }
 
@@ -479,13 +479,13 @@
         }
 
         .timestamp {
-          flex-basis: 12%;
+          flex-basis: 14%;
           min-width: 150px;
         }
 
         .actions {
-          flex-basis: 24%;
-          min-width: 200px;
+          flex-basis: 20%;
+          min-width: 170px;
         }
 
         @media (max-width: 675px) {

@@ -1,6 +1,6 @@
-import { setReload, setSession } from "@/redux/slices/modalSlice";
+import { setReload, setSession, setSummary } from "@/redux/slices/modalSlice";
 import styles from "@/styles/session.module.scss";
-import { SessionOutput } from "@/types";
+import { SessionOutput, SessionSummary } from "@/types";
 import { useModal } from "@/utils/context";
 import { capitalize } from "lodash";
 import { useParams, useRouter } from "next/navigation";
@@ -41,6 +41,47 @@ const Top = () => {
       );
     } else if (type === "end") {
       setState(session.id, 4, "session");
+    } else if (type === "summary") {
+      setState(session.id, 5, "session");
+      dispatch(setReload(true));
+
+      // Calculate the report statuses
+      const reportStatusCounts = session.reports.reduce(
+        (counts, report) => {
+          if (report.status === "Pending") counts.pending++;
+          else if (report.status === "Approved") counts.approved++;
+          else if (report.status === "Rejected") counts.rejected++;
+          return counts;
+        },
+        { pending: 0, approved: 0, rejected: 0 }
+      );
+
+      // Calculate the students' report frequency
+      const studentFrequencyMap = session.reports.reduce((map, report) => {
+        if (report.student) {
+          const { index_number, first_name, last_name } = report.student;
+          const fullname = `${first_name} ${last_name}`;
+          if (!map[index_number]) {
+            map[index_number] = {
+              fullname,
+              index_number,
+              frequency: 0,
+            };
+          }
+          map[index_number].frequency++;
+        }
+        return map;
+      }, {} as Record<number, { fullname: string; index_number: number; frequency: number }>);
+
+      const studentFrequency = Object.values(studentFrequencyMap);
+
+      const summary: SessionSummary = {
+        reports: reportStatusCounts,
+        students: studentFrequency,
+      };
+
+      console.log(summary);
+      dispatch(setSummary(summary));
     }
   };
 
@@ -79,7 +120,11 @@ const Top = () => {
             </button>
           )}
           {session?.status === "closed" && (
-            <button type="button" className={styles.closedButton}>
+            <button
+              type="button"
+              className={styles.closedButton}
+              onClick={() => showModal("summary")}
+            >
               <IoMdStats />
               Summary
             </button>
@@ -113,7 +158,11 @@ const Top = () => {
             </button>
           )}
           {session?.status === "closed" && (
-            <button type="button" className={styles.closedButton}>
+            <button
+              type="button"
+              className={styles.closedButton}
+              onClick={() => showModal("summary")}
+            >
               <IoMdStats />
             </button>
           )}

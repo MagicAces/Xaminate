@@ -1,6 +1,12 @@
 "use server";
 
-import { ReportDisplay, ReportInfo, ReportQuery, ReportRow } from "@/types";
+import {
+  ReportDisplay,
+  ReportInfo,
+  ReportQuery,
+  ReportRow,
+  StudentInfo,
+} from "@/types";
 import { Prisma, Status } from "@prisma/client";
 import prisma from "@/prisma/prisma";
 import { reports } from "@/data/reports.test";
@@ -74,8 +80,6 @@ export const getReports = async ({
       AND: andConditions,
       status: status as Status,
     };
-    console.log(field);
-    console.log(order);
 
     const [reports, totalCount, pendingCount, approvedCount, rejectedCount] =
       await Promise.all([
@@ -357,50 +361,14 @@ export const getReport = async (id: number) => {
   }
 };
 
-// export const markNotificationAsRead = action(
-//   markNotificationAsReadSchema,
-//   async ({ id }) => {
-//     try {
-//       await prisma.notification.update({
-//         where: {
-//           id: id,
-//         },
-//         data: {
-//           read: true,
-//         },
-//       });
-//       revalidatePath("/");
-//       return { success: "Notification marked as read" };
-//     } catch (error) {
-//       return { error: "Something went wrong" };
-//     }
-//   }
-// );
-
-// export const markNotificationAsSeen = async ({ id }: { id: number }) => {
-//   try {
-//     await prisma.notification.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         read: true,
-//       },
-//     });
-//     return { success: "Notification marked as read" };
-//   } catch (error) {
-//     return { error: "Something went wrong" };
-//   }
-// };
-
 export const approveReport = authAction(
   approveReportSchema,
-  async ({ id }: { id: number }, { userId }) => {
+  async ({ id, approved }: { id: number; approved: boolean }, { userId }) => {
     try {
-      const updatedReport = await prisma.report.update({
+      await prisma.report.update({
         where: { id },
         data: {
-          status: "Approved",
+          status: approved ? "Approved" : "Rejected",
           last_edited_by: Number(userId),
           status_changed: new Date(),
         },
@@ -409,10 +377,91 @@ export const approveReport = authAction(
       revalidatePath("/reports");
       revalidatePath("/reports/" + id.toString());
 
-      return { success: "Report Approved" };
+      return { success: `Report ${approved ? "Approved" : "Rejected"}` };
     } catch (error: any) {
       console.log(error);
-      return { error: "Somethig went wrong" };
+      return { error: "Something went wrong" };
     }
   }
 );
+
+export const getStudent = async (id: number) => {
+  try {
+    if (!id) return { error: "Id not found" };
+
+    // Fetch student details
+    const foundStudent = await prisma.student.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        other_name: true,
+        image_url: true,
+        index_number: true,
+        reference_no: true,
+        report: {
+          select: {
+            id: true,
+            session_id: true,
+            status: true,
+          },
+        },
+      },
+    });
+
+    if (!foundStudent) return { error: "Student not found" };
+
+    // Full name concatenation
+    const fullName = [foundStudent.first_name, foundStudent.last_name]
+      .filter(Boolean)
+      .join(" ");
+
+    // Calculate total and valid reports
+    const totalReports = foundStudent.report.length;
+    const validReports = foundStudent.report.filter(
+      (report) => report.status === "Approved"
+    ).length;
+
+    // Get the last seven sessions with report count for this student
+    const sessions = await prisma.session.findMany({
+      orderBy: {
+        id: "desc",
+      },
+      take: 7,
+      select: {
+        id: true,
+        reports: {
+          where: {
+            student_id: id,
+          },
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    const lastSeven = sessions.reverse().map((session) => ({
+      session_id: session.id,
+      report_count: session.reports.length,
+    }));
+
+    const student: StudentInfo = {
+      fullName,
+      index_number: foundStudent.index_number,
+      reference_no: foundStudent.reference_no,
+      valid_reports: validReports,
+      total_reports: totalReports,
+      photo: foundStudent.image_url || "",
+      last_seven: lastSeven,
+    };
+
+    return { success: student };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
