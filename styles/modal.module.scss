@@ -1267,6 +1267,302 @@
     }
   }
 
+  .sessionContainerSummary {
+    margin: 1.5rem;
+    // height: 75%;
+    box-shadow: 0 4px 4px 0 $dark-shadow;
+    background-color: $secondary-background;
+    position: relative;
+    border-radius: 0.5rem;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 1.7rem
+    );
+
+    width: 600px;
+    // min-height: 500px;
+    height: 630px;
+    max-height: 90%;
+    position: relative;
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+    @media (max-width: 870px) {
+      width: 85%;
+    }
+
+    @media (max-width: 400px) {
+      width: 95%;
+      margin: 1rem;
+      height: 90%;
+    }
+
+    .header {
+      padding: 1.5rem 2rem 0;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+      svg {
+        font-size: 24px;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+      }
+
+      svg:hover {
+        cursor: pointer;
+        color: $hover-green;
+      }
+    }
+
+    .scrollContainer {
+      width: 100%;
+      height: 100%;
+
+      .scrollContent {
+        @include flexin(
+          $justify: space-between,
+          $align: stretch,
+          $direction: column,
+          $gap: 1.5rem
+        );
+        padding: 0 2rem;
+        width: 100%;
+        flex-grow: 1;
+
+        .reportSummaryChart {
+          flex-basis: 50%;
+          width: 100%;
+          @include flexin(
+            $justify: flex-start,
+            $align: stretch,
+            $gap: 0.8rem,
+            $direction: column
+          );
+
+          span {
+            font-weight: 500;
+          }
+
+          .reportSummaryBox {
+            width: 100%;
+            align-self: center;
+            border: 1px solid $border-color;
+            padding: 1rem;
+            border-radius: 0.5rem;
+          }
+        }
+
+        .reportSummaryStudent {
+          flex-basis: 50%;
+          width: 100%;
+          @include flexin(
+            $justify: flex-start,
+            $align: stretch,
+            $gap: 0.8rem,
+            $direction: column
+          );
+
+          span {
+            font-weight: 500;
+          }
+
+          .reportSummaryTable {
+            &Header {
+              background-color: $border-color;
+              position: sticky;
+              z-index: 1;
+              position: -webkit-sticky;
+              top: 0;
+              border-top-right-radius: 0.7rem;
+              border-top-left-radius: 0.7rem;
+              width: 100%;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              .headerContent {
+                box-shadow: 0 4px 4px 0 $dark-shadow;
+                padding: 0.8rem 1.7rem;
+                width: 100%;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+                border-top-right-radius: 0.7rem;
+                border-top-left-radius: 0.7rem;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                @include flexin(
+                  $justify: flex-start,
+                  $align: center,
+                  $direction: row,
+                  $gap: 1.7rem
+                );
+
+                & > span {
+                  color: $text-color;
+                  font-weight: 500;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  flex-grow: 1;
+                  font-size: 13px;
+                }
+
+                // .actions {
+                //     visibility: hidden;
+                // }
+              }
+            }
+
+            .bodyContainer {
+              width: 100%;
+
+              .summaryRows {
+                @include flexin(
+                  $justify: flex-start,
+                  $align: stretch,
+                  $direction: column,
+                  $gap: 0
+                );
+                padding: 0;
+                width: 100%;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                .summaryRowOuter {
+                  @include flexin($justify: stretch, $align: stretch, $gap: 0);
+                  width: 100%;
+                  // padding: 0.2rem 0;
+                  border: 1px solid $border-color;
+                  flex-grow: 1;
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                  & > div {
+                    padding: 0.8rem 1.7rem;
+                    @include flexin(
+                      $justify: flex-start,
+                      $align: center,
+                      $gap: 1.7rem
+                    );
+                    -webkit-overflow-scrolling: touch;
+                    scroll-snap-type: x mandatory;
+                    overflow-x: auto;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    width: 100%;
+
+                    & > span {
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      font-size: 13px;
+                      font-weight: 300;
+                    }
+                  }
+                }
+
+                // .summaryRowOuter:hover {
+                //   background-color: rgba($color: $text-color, $alpha: 0.1);
+                // }
+
+                .summaryRowOuter:last-of-type {
+                  border-bottom: 1px solid $border-color !important;
+                  border-bottom-left-radius: 0.5rem;
+                  border-bottom-right-radius: 0.5rem;
+                }
+              }
+            }
+
+            .name {
+              flex-basis: 50%;
+              min-width: 150px;
+            }
+
+            .indexNo {
+              flex-basis: 30%;
+              min-width: 80px;
+            }
+
+            .frequency {
+              flex-basis: 20%;
+              min-width: 50px;
+            }
+
+            // @media (max-width: 675px) {
+            //   margin: 0.5rem 1rem;
+            // }
+
+            .noSummary {
+              flex-grow: 1;
+              height: 100%;
+              width: 100%;
+              margin-top: 3rem;
+              font-size: 13px;
+              @include flexin;
+              color: gray;
+            }
+          }
+        }
+
+        .downloadButton {
+          width: 100%;
+          background-color: $accent-green;
+          border: 1px solid transparent;
+          @include flexin($justify: center, $align: center, $gap: 0.6rem);
+
+          svg {
+            position: relative;
+            top: 1px;
+          }
+        }
+
+        .downloadButton:hover {
+          border: 1px solid $accent-green;
+          background-color: transparent;
+        }
+      }
+    }
+
+    .buttons {
+      width: 100%;
+      @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+      padding: 0 2rem 1.5rem;
+
+      button {
+        @include flexin($justify: center, $align: center, $gap: 0.4rem);
+
+        @media (max-width: 400px) {
+          span {
+            display: none;
+          }
+
+          svg {
+            font-size: 18px;
+          }
+        }
+      }
+
+      .approveButton {
+        flex-basis: 50%;
+        border: 1px solid transparent;
+        background-color: $accent-green;
+      }
+
+      .approveButton:hover {
+        background-color: transparent;
+        border: 1px solid $accent-dark-green;
+      }
+
+      .rejectButton {
+        flex-basis: 50%;
+        border: 1px solid transparent;
+        background-color: $rejected-color;
+      }
+
+      .rejectButton:hover {
+        background-color: transparent;
+        border: 1px solid $rejected-color;
+      }
+    }
+  }
+
   .reportContainerView {
     margin: 1.5rem;
     // height: 75%;

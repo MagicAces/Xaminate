@@ -1,1474 +1,1519 @@
-@import 'config';
-@import 'mixins';
+@import "config";
+@import "mixins";
 
 .sessionSection {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    background-color: $primary-background;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: $primary-background;
 
-    @include flexin($justify: stretch,
+  @include flexin($justify: stretch, $align: stretch, $gap: 0);
+
+  .sessionContainer {
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 0
+    );
+    width: calc(100vw - 4rem);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    height: 100%;
+
+    .sessionContent {
+      flex-grow: 1;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      overflow: auto;
+
+      @include flexin(
+        $justify: stretch,
         $align: stretch,
-        $gap: 0);
+        $direction: column,
+        $gap: 0rem
+      );
 
-    .sessionContainer {
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 0);
-        width: calc(100vw - 4rem);
-        overflow: hidden;
-        position: absolute;
-        right: 0;
-        height: 100%;
+      &Top {
+        padding: 1rem 2rem 0.5rem;
+        width: 100%;
+        @include flexin($justify: space-between, $align: stretch, $gap: 1.5rem);
 
-        .sessionContent {
-            flex-grow: 1;
+        .searchBox {
+          position: relative;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+          svg {
+            position: absolute;
             transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-            overflow: auto;
-
-            @include flexin($justify: stretch,
-                $align: stretch,
-                $direction: column,
-                $gap: 0rem);
-
-            &Top {
-                padding: 1rem 2rem 0.5rem;
-                width: 100%;
-                @include flexin($justify: space-between,
-                    $align: stretch,
-                    $gap: 1.5rem);
-
-                .searchBox {
-                    position: relative;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-
-                    svg {
-                        position: absolute;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        font-size: 18px;
-                        top: 10px;
-                    }
-
-                    svg:hover {
-                        color: $hover-green;
-                    }
-
-                    svg:first-of-type {
-                        left: 11px;
-                    }
-
-                    svg:last-of-type {
-                        right: 10px;
-                    }
-
-                    input {
-                        font-size: 13px !important;
-                        all: unset;
-                        background-color: $secondary-background;
-                        color: $text-color;
-                        outline: none;
-                        border-radius: 0.7rem;
-                        height: 37px;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        max-width: 180px;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        padding: 0 2rem 0 2.2rem;
-                    }
-
-                    ::placeholder {
-                        font-size: 13px;
-                    }
-                }
-
-                .searchBox:hover,
-                .searchBox:active,
-                .searchBox:focus {
-                    svg {
-                        color: $accent-green;
-                    }
-                }
-
-
-
-
-                .filterRow,
-                .filterMobileRow {
-                    @include flexin($justify: flex-end,
-                        $align: stretch,
-                        $direction: row,
-                        $gap: 1.5rem);
-
-                    .filterBox {
-                        @include flexin($justify: stretch,
-                            $align: stretch, $direction: row,
-                            $gap: 1.5rem);
-
-                        .calendar,
-                        .react-datepicker__time-box,
-                        .react-datepicker__navigation {
-                            background-color: $border-color !important;
-                            font-family: inherit !important;
-                            color: $text-color !important;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                        }
-
-                        .day,
-                        .time {
-                            color: $text-color ;
-                            font-family: inherit !important;
-                        }
-
-                        .filterSessionTime {
-                            width: 100%;
-                            @include flexin($justify: space-between,
-                                $align: center,
-                                $gap: 2rem);
-
-                            background-color: $secondary-background;
-                            padding: 0.5rem 1rem;
-                            box-shadow: 0 4px 4px 0 $dark-shadow;
-                            height: 37px;
-                            width: 150px;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            border-radius: 0.7rem;
-                            // border: 1px solid transparent;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-
-                            .placeholder {
-                                font-size: 13px;
-                                color: gray;
-                            }
-
-                            svg {
-                                font-size: 16px;
-                            }
-
-                            span {
-                                font-size: 13px;
-                            }
-
-                            svg:hover {
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
-                            }
-
-                            .timeIcons {
-                                @include flexin($justify: flex-end,
-                                    $align: center,
-                                    $gap: 0.6rem);
-                            }
-                        }
-
-                        .filterSessionTime:hover {
-
-                            svg {
-                                color: $hover-green;
-                            }
-                        }
-
-                    }
-
-
-                    .filterButton {
-                        padding: 10px;
-                        border-radius: 0.7rem;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        background-color: $accent-green;
-
-
-                        @include flexin();
-
-                        svg {
-                            font-size: 17px;
-                            color: $text-color;
-
-                        }
-                    }
-
-                    .filterButton:hover {
-                        cursor: pointer;
-                        background-color: $accent-dark-green;
-                    }
-
-                    .clearFilterButton {
-                        padding: 10px;
-                        border-radius: 0.7rem;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        border: 1px inset transparent;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        background-color: $rejected-color;
-
-                        @include flexin();
-
-                        svg {
-                            font-size: 17px;
-                            color: $text-color;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                        }
-                    }
-
-                    .clearFilterButton:hover {
-                        cursor: pointer;
-                        background-color: transparent;
-                        border: 1px inset $rejected-color;
-
-                        svg {
-                            color: $rejected-color;
-                        }
-                    }
-
-                }
-
-                .filterMobileRow {
-                    display: none;
-                }
-
-                @media (max-width: 675px) {
-                    padding: 1rem;
-                    gap: 1rem;
-
-                    .searchBox {
-                        input {
-                            max-width: 150px;
-                        }
-                    }
-
-                    .filterRow {
-                        display: none;
-                    }
-
-                    .filterMobileRow {
-                        display: flex;
-                        gap: 1rem;
-                    }
-
-                }
-
-                @media (max-width: 1170px) {
-                    .filterRow {
-                        display: none;
-                    }
-
-                    .filterMobileRow {
-                        display: flex;
-                        gap: 1rem;
-                    }
-                }
-            }
-
-            &Body {
-                flex-grow: 1;
-                position: relative;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                overscroll-behavior: contain;
-                padding: 0.9rem 2rem 0.4rem;
-
-                @include flexin($justify: stretch,
-                    $align: stretch,
-                    $direction: column,
-                    $gap: 0rem);
-
-                &Header {
-                    background-color: $secondary-background;
-                    position: sticky;
-                    z-index: 1;
-                    position: -webkit-sticky;
-                    top: 0;
-                    border-radius: 0.7rem;
-                    width: 100%;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                    .headerContent {
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        padding: 0.8rem 1.4rem;
-                        width: 100%;
-                        overflow: auto;
-                        -webkit-overflow-scrolling: touch;
-                        border-radius: 0.7rem;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                        @include flexin($justify: flex-start,
-                            $align: center,
-                            $direction: row,
-                            $gap: 1.7rem);
-
-                        &>span {
-                            color: $text-color;
-                            font-weight: 300;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            flex-grow: 1;
-                            font-size: 13px;
-                        }
-
-                        .actions {
-                            visibility: hidden;
-                        }
-                    }
-                }
-
-                .bodyContainer {
-                    width: 100%;
-
-                    .sessionRows {
-                        @include flexin($justify: flex-start,
-                            $align: stretch,
-                            $direction: column,
-                            $gap: 0);
-                        padding: 0;
-                        width: 100%;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                        .sessionRowOuter {
-                            @include flexin($justify: stretch,
-                                $align: stretch, $gap: 0);
-                            width: 100%;
-                            padding: 0.2rem 0;
-                            border-bottom: 1px solid $highlight-color;
-                            flex-grow: 1;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                            &>div {
-                                padding: 0.25rem 1.4rem;
-                                @include flexin($justify: flex-start,
-                                    $align: center,
-                                    $gap: 1.7rem);
-                                -webkit-overflow-scrolling: touch;
-                                scroll-snap-type: x mandatory;
-                                overflow-x: auto;
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                                width: 100%;
-
-                                &>span {
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                    white-space: nowrap;
-                                    font-size: 13px;
-                                    font-weight: 300;
-                                }
-
-                                .id {
-                                    color: $accent-dark-green;
-                                }
-
-                                .id:hover {
-                                    color: $hover-green;
-                                    cursor: pointer;
-                                }
-
-                                .pending {
-                                    color: $pending-color;
-                                }
-
-                                .active {
-                                    color: $hover-green;
-                                }
-
-                                .closed {
-                                    color: $border-color;
-
-                                }
-
-                                .attendance {
-                                    color: $attendance-color;
-                                }
-
-                                .attendance:hover {
-                                    color: $attendance-color-hover;
-                                }
-
-                                .courseCodes {
-                                    @include flexin($justify: flex-start,
-                                        $align: center,
-                                        $gap: 0.5rem);
-
-                                    .extraBadge {
-                                        color: gray;
-                                        font-weight: 200;
-                                    }
-                                }
-                            }
-                        }
-
-                        .sessionRowOuter:hover {
-                            background-color: rgba($color: $text-color, $alpha: 0.1);
-                        }
-                    }
-                }
-
-                .dateCreated {
-                    flex-basis: 16%;
-                    min-width: 140px;
-                }
-
-                .id {
-                    flex-basis: 8%;
-                    min-width: 30px;
-                }
-
-                .courseCodes {
-                    flex-basis: 14%;
-                    min-width: 100px;
-                }
-
-                .venue {
-                    flex-basis: 12%;
-                    min-width: 65px;
-                }
-
-                .attendance {
-                    flex-basis: 10%;
-                    min-width: 75px;
-                }
-
-                .status {
-                    flex-basis: 12%;
-                    min-width: 50px;
-                }
-
-                .reports {
-                    flex-basis: 9%;
-                    min-width: 60px;
-                }
-
-                .duration {
-                    flex-basis: 15%;
-                    min-width: 120px;
-                }
-
-                .actions {
-                    flex-basis: 4%;
-                    min-width: 30px;
-                }
-
-                @media (max-width: 675px) {
-                    padding: 0.5rem 1rem;
-                }
-
-            }
-
-            .noSessions {
-                flex-grow: 1;
-                height: 100%;
-                width: 100%;
-                margin-top: 3rem;
-                @include flexin;
-                color: gray;
-            }
-
-            .sessionFilterValues {
-                padding: 0.5rem 2rem;
-                width: 100%;
-                @include flexin($justify: flex-start, $align: center,
-                    $direction: row,
-                    $gap: 2rem);
-                flex-wrap: wrap;
-
-                .filterValue {
-                    padding: 0.5rem 1rem;
-                    border-radius: 1rem;
-                    @include flexin($justify: center,
-                        $align: center,
-                        $gap: 1.5rem);
-                    background-color: $secondary-background;
-                    box-shadow: 0 3px 3px 0 $dark-shadow;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    border: 1px solid transparent;
-
-
-                    &>span {
-                        font-weight: 300;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    }
-
-                    &>svg {
-                        font-size: 18px;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    }
-
-                    &>svg:hover {
-                        color: $hover-green;
-                        cursor: pointer;
-                    }
-                }
-
-                .filterValue:hover {
-                    border: 1px solid $hover-green;
-                    background-color: transparent;
-
-                    &>svg,
-                    &>span {
-                        color: $hover-green;
-                    }
-                }
-            }
-
-            &Footer {
-                padding: 1rem 2rem;
-                width: 100%;
-                @include flexin($justify: flex-start,
-                    $align: center,
-                    $direction: row,
-                    $gap: 1.5rem);
-
-                &Stats {
-                    justify-self: flex-start;
-                    flex-grow: 1;
-                    flex-basis: 33.33%;
-
-                    @include flexin($justify: flex-start,
-                        $align: center,
-                        $gap: 1rem);
-
-                    span {
-
-                        span {
-                            font-weight: bold;
-                        }
-
-                        br {
-                            display: none
-                        }
-                    }
-                }
-
-                &Navigation {
-                    justify-self: center;
-                    flex-grow: 1;
-                    flex-basis: 33.33%;
-                    @include flexin($justify: center,
-                        $align: center,
-                        $gap: 1rem);
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                    button {
-                        background-color: $accent-green;
-                        color: $text-color;
-                        border-radius: 0.7rem;
-                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                        padding: 0.3rem 0.5rem;
-                        @include flexin;
-                        border: 1px solid transparent;
-
-                        svg {
-                            font-size: 16px;
-                            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        }
-                    }
-
-                    button:hover {
-                        background-color: $accent-dark-green;
-                        cursor: pointer;
-                    }
-
-                    button:disabled {
-                        background-color: $highlight-color;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    }
-
-                    button:disabled:hover {
-                        background-color: $border-color;
-                        cursor: not-allowed;
-                    }
-                }
-
-                &Input {
-                    justify-self: flex-end;
-                    flex-grow: 1;
-                    flex-basis: 33.33%;
-                    @include flexin($justify: flex-end,
-                        $align: center,
-                        $gap: 1rem);
-
-                    input {
-                        width: 40px;
-                        padding: 0.3rem;
-                        background-color: $secondary-background;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        color: $text-color;
-                        font-size: 14px;
-                        text-align: center;
-                        outline: none;
-                        border: 0;
-                        border-radius: 0.5rem;
-                    }
-                }
-
-                @media (max-width: 675px) {
-                    @include flexin($justify: stretch,
-                        $align: center,
-                        $direction: column,
-                        $gap: 1rem);
-
-                    &>div {
-                        flex-basis: 100%;
-                    }
-
-                    &Stats {
-                        order: 3;
-
-                    }
-                }
-            }
+            font-size: 18px;
+            top: 10px;
+          }
+
+          svg:hover {
+            color: $hover-green;
+          }
+
+          svg:first-of-type {
+            left: 11px;
+          }
+
+          svg:last-of-type {
+            right: 10px;
+          }
+
+          input {
+            font-size: 13px !important;
+            all: unset;
+            background-color: $secondary-background;
+            color: $text-color;
+            outline: none;
+            border-radius: 0.7rem;
+            height: 37px;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            max-width: 180px;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            padding: 0 2rem 0 2.2rem;
+          }
+
+          ::placeholder {
+            font-size: 13px;
+          }
         }
 
-        .sessionPage {
-            flex-grow: 1;
+        .searchBox:hover,
+        .searchBox:active,
+        .searchBox:focus {
+          svg {
+            color: $accent-green;
+          }
+        }
+
+        .filterRow,
+        .filterMobileRow {
+          @include flexin(
+            $justify: flex-end,
+            $align: stretch,
+            $direction: row,
+            $gap: 1.5rem
+          );
+
+          .filterBox {
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: row,
+              $gap: 1.5rem
+            );
+
+            .calendar,
+            .react-datepicker__time-box,
+            .react-datepicker__navigation {
+              background-color: $border-color !important;
+              font-family: inherit !important;
+              color: $text-color !important;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+            }
+
+            .day,
+            .time {
+              color: $text-color;
+              font-family: inherit !important;
+            }
+
+            .filterSessionTime {
+              width: 100%;
+              @include flexin(
+                $justify: space-between,
+                $align: center,
+                $gap: 2rem
+              );
+
+              background-color: $secondary-background;
+              padding: 0.5rem 1rem;
+              box-shadow: 0 4px 4px 0 $dark-shadow;
+              height: 37px;
+              width: 150px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              border-radius: 0.7rem;
+              // border: 1px solid transparent;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+              .placeholder {
+                font-size: 13px;
+                color: gray;
+              }
+
+              svg {
+                font-size: 16px;
+              }
+
+              span {
+                font-size: 13px;
+              }
+
+              svg:hover {
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+              }
+
+              .timeIcons {
+                @include flexin(
+                  $justify: flex-end,
+                  $align: center,
+                  $gap: 0.6rem
+                );
+              }
+            }
+
+            .filterSessionTime:hover {
+              svg {
+                color: $hover-green;
+              }
+            }
+          }
+
+          .filterButton {
+            padding: 10px;
+            border-radius: 0.7rem;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
             transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-            overflow: auto;
-            padding: 1.5rem 2rem;
+            background-color: $accent-green;
 
-            @include flexin($justify: stretch,
-                $align: stretch,
-                $direction: column,
-                $gap: 1.5rem);
+            @include flexin();
 
-            &Top {
-                width: 100%;
-                @include flexin($justify: space-between,
-                    $align: stretch,
-                    $gap: 1.5rem);
-
-                &Left {
-
-                    @include flexin($justify: flex-start,
-                        $align: center,
-                        $gap: 1rem);
-
-                    svg {
-                        font-size: 20px;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                    }
-
-                    svg:hover {
-                        color: $hover-green;
-                        cursor: pointer;
-                    }
-
-                    &>span {
-                        font-size: 16px;
-
-                        span {
-                            font-weight: 200;
-                            font-size: 16px;
-                        }
-                    }
-
-                    &>div {
-                        padding: 0.4rem 0.65rem;
-                        border-radius: 0.8rem;
-                        background-color: $secondary-background;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        font-size: 12px;
-
-                        @include flexin($justify: space-between,
-                            $align: center,
-                            $gap: 0.3rem);
-
-                        &>div:first-of-type {
-                            width: 12px;
-                            height: 12px;
-                            border-radius: 50%;
-                            box-shadow: 0 4px 4px 0 $dark-shadow;
-                        }
-
-                        &>div:last-of-type {
-                            font-size: 12px;
-                            font-weight: 300;
-                            @include flexin();
-                        }
-                    }
-
-                    div.pending {
-                        color: $pending-color;
-
-                        div:first-of-type {
-                            background-color: $pending-color;
-                        }
-                    }
-
-                    div.active {
-                        color: $hover-green;
-
-                        div:first-of-type {
-                            background-color: $hover-green;
-                        }
-                    }
-
-                    div.closed {
-                        color: #757575;
-
-                        div:first-of-type {
-                            background-color: #757575;
-                        }
-                    }
-
-                }
-
-                &Right,
-                .mobileMode {
-                    @include flexin($justify: flex-end,
-                        $align: center,
-                        $gap: 1rem);
-
-                    button {
-                        font-size: 14px;
-                        padding: 0.55rem 1rem;
-                        border-radius: 0.55rem;
-                        border: 1px solid transparent;
-                        @include flexin($gap: 0.4rem);
-
-                        svg {
-                            font-size: 14px;
-                        }
-                    }
-
-                    .editButton {
-                        background-color: $accent-green;
-                    }
-
-                    .editButton:hover {
-                        background-color: $hover-green;
-                    }
-
-                    .endButton,
-                    .terminateButton {
-                        background-color: $rejected-color;
-                    }
-
-                    .endButton:hover,
-                    .terminateButton:hover {
-                        background-color: transparent;
-                        color: $rejected-color;
-                        border: 1px solid $rejected-color;
-                    }
-
-                    .closedButton {
-                        background-color: $secondary-background;
-                    }
-
-                    .closedButton:hover {
-                        background-color: transparent;
-                        border: 1px solid $border-color;
-                        color: $border-color;
-
-                    }
-                }
-
-                .mobileMode {
-                    display: none;
-                }
-
-                @media (max-width: 675px) {
-                    .mobileMode {
-                        display: flex;
-                    }
-
-                    &Right {
-                        display: none;
-                    }
-
-                    &Left {
-                        gap: 0.75rem;
-
-                        span {
-                            font-size: 14px !important;
-                        }
-
-                        &>div {
-                            font-size: 10px;
-
-                            &>div:first-of-type {
-                                display: none;
-                            }
-
-                            &>div:last-of-type {
-                                font-size: 10px;
-                            }
-                        }
-                    }
-                }
-
+            svg {
+              font-size: 17px;
+              color: $text-color;
             }
-
-            &Body {
-                flex-grow: 1;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                overscroll-behavior: contain;
-
-                @include flexin($justify: stretch,
-                    $align: stretch,
-                    $direction: row,
-                    $gap: 2rem);
-
-                .sessionDetails {
-                    flex-grow: 1;
-                    flex-basis: 50%;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                    @include flexin($justify: stretch,
-                        $align: stretch,
-                        $direction: column,
-                        $gap: 1rem);
-
-                    &Top {
-                        h4 {
-                            width: 100%;
-                            font-size: 15px;
-
-                            span {
-                                text-align: center;
-                                padding: 0.2rem 0.5rem;
-                                box-shadow: 0 3px 3px 0 $dark-shadow;
-                                background-color: $secondary-background;
-                                border-radius: 0.5rem;
-                                font-weight: 400;
-                                margin-left: 0.4rem;
-                                font-size: 14px;
-                            }
-                        }
-                    }
-
-                    &Body {
-                        background-color: $secondary-background;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        border-radius: 0.7rem;
-                        padding: 1rem;
-                        padding-top: 0;
-                        flex-grow: 1;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        border: 1px solid transparent;
-
-                        @include flexin($justify: stretch, $align: flex-start,
-                            $direction: column,
-                            $gap: 0.4rem);
-
-                        .detailHeader {
-                            width: 70%;
-                            padding: 1rem;
-                            margin: 0 auto;
-                            position: relative;
-                            top: -1px;
-                            border: 1px solid $secondary-background;
-                            border-top: 0;
-
-                            background-color: $primary-background;
-                            border-bottom-left-radius: 0.5rem;
-                            border-bottom-right-radius: 0.5rem;
-                            @include flexin($justify: space-evenly,
-                                $align: center,
-                                $gap: 1.5rem);
-
-                            &>div {
-                                width: 100px;
-                                height: 10px;
-                                border-radius: 0.9rem;
-                                text-align: center;
-                                background-color: $border-color;
-                                box-shadow: 0 2px 2px 0 $dark-shadow;
-                                font-size: 12px;
-                                border: 1px solid transparent;
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                            }
-
-                            &>div:hover {
-                                background-color: transparent;
-                                border: 1px solid $border-color;
-                                cursor: pointer;
-                            }
-
-                            .activeView {
-                                background-color: $accent-green;
-                            }
-
-                            .activeView:hover {
-                                background-color: transparent;
-                                border: 1px $accent-green solid;
-                            }
-                        }
-
-                        .viewOne {
-                            width: 100%;
-                            flex-grow: 1;
-
-                            @include flexin($justify: space-between,
-                                $align: stretch,
-                                $direction: column,
-                                $gap: 2rem);
-
-                            label {
-                                font-size: 14px;
-                                font-weight: 300;
-                            }
-
-                            .course,
-                            .classes,
-                            .invigilators {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: flex-start,
-                                    $direction: column,
-                                    $gap: 0.5rem);
-
-                                &>div {
-                                    width: 100%;
-                                    @include flexin($justify: stretch,
-                                        $align: stretch,
-                                        $direction: column,
-                                        $gap: 0.5rem);
-
-                                    &>div {
-                                        background-color: $border-color;
-                                        border-radius: 0.5rem;
-                                        padding: 0.6rem 0.7rem;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        font-size: 14px;
-                                        border: 1px solid transparent;
-
-                                        @include flexin($justify: flex-start, $align: center,
-                                            $gap: 0.5rem);
-
-                                        span:last-of-type {
-                                            font-weight: 200;
-                                        }
-                                    }
-
-                                }
-
-                            }
-
-                            .sessionTime {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: stretch, $gap: 2rem);
-
-                                &>div {
-                                    flex-basis: 50%;
-                                    @include flexin($justify: flex-start,
-                                        $align: flex-start,
-                                        $direction: column,
-                                        $gap: 0.5rem);
-
-                                    &>div {
-                                        background-color: $border-color;
-                                        border-radius: 0.5rem;
-                                        padding: 0.6rem 0.7rem;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        font-size: 14px;
-                                        border: 1px solid transparent;
-                                        font-size: 14px;
-                                        width: 100%;
-
-
-                                        @include flexin($justify: space-between, $align: center,
-                                            $gap: 0.5rem);
-                                    }
-                                }
-
-                            }
-
-                            .venueDuration {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: stretch, $gap: 2rem);
-
-                                &>div {
-                                    flex-basis: 50%;
-                                    @include flexin($justify: flex-start,
-                                        $align: flex-start,
-                                        $direction: column,
-                                        $gap: 0.5rem);
-
-
-                                    &>div {
-                                        background-color: $border-color;
-                                        border-radius: 0.5rem;
-                                        padding: 0.6rem 0.7rem;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        font-size: 14px;
-                                        border: 1px solid transparent;
-                                        font-size: 14px;
-                                        width: 100%;
-
-
-                                        @include flexin($justify: space-between, $align: center,
-                                            $gap: 0.5rem);
-                                    }
-                                }
-                            }
-
-
-                        }
-
-                        .viewTwo {
-                            width: 100%;
-
-                            @include flexin($justify: space-between,
-                                $align: stretch,
-                                $direction: column,
-                                $gap: 2rem);
-
-                            label {
-                                font-size: 14px;
-                                font-weight: 300;
-                            }
-
-                            .actualValues {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: stretch, $gap: 2rem);
-
-                                &>div {
-                                    flex-basis: 50%;
-                                    @include flexin($justify: flex-start,
-                                        $align: flex-start,
-                                        $direction: column,
-                                        $gap: 0.5rem);
-
-
-                                    &>div {
-                                        background-color: $border-color;
-                                        border-radius: 0.5rem;
-                                        padding: 0.6rem 0.7rem;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        font-size: 14px;
-                                        border: 1px solid transparent;
-                                        font-size: 14px;
-                                        width: 100%;
-
-
-                                        @include flexin($justify: space-between, $align: center,
-                                            $gap: 0.5rem);
-                                    }
-                                }
-                            }
-
-                            .comment {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: flex-start,
-                                    $direction: column,
-                                    $gap: 0.5rem);
-
-                                &>div {
-                                    background-color: $border-color;
-                                    border-radius: 0.5rem;
-                                    padding: 0.6rem 0.7rem;
-                                    box-shadow: 0 3px 3px 0 $dark-shadow;
-                                    font-size: 14px;
-                                    border: 1px solid transparent;
-                                    min-height: 100px;
-                                    width: 100%;
-                                    max-height: 150px;
-                                }
-                            }
-
-                            .authors,
-                            .dateStats {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: stretch, $gap: 2rem);
-
-                                &>div {
-                                    flex-basis: 50%;
-                                    @include flexin($justify: flex-start,
-                                        $align: flex-start,
-                                        $direction: column,
-                                        $gap: 0.5rem);
-
-
-                                    &>div {
-                                        background-color: $border-color;
-                                        border-radius: 0.5rem;
-                                        padding: 0.6rem 0.7rem;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        font-size: 14px;
-                                        border: 1px solid transparent;
-                                        font-size: 14px;
-                                        width: 100%;
-                                    }
-                                }
-                            }
-
-                            .attendance {
-                                width: 100%;
-                                @include flexin($justify: flex-start,
-                                    $align: flex-start,
-                                    $direction: column,
-                                    $gap: 0.5rem);
-
-                                label {
-                                    width: 100%;
-                                    @include flexin($justify: space-between,
-                                        $align: center,
-                                        $gap: 3rem);
-
-                                    svg {
-                                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                                    }
-
-                                    svg:hover {
-                                        cursor: pointer;
-                                        color: $hover-green;
-                                    }
-                                }
-
-                                &>div {
-                                    background-color: $border-color;
-                                    border-radius: 0.5rem;
-                                    padding: 0.6rem 0.7rem;
-                                    box-shadow: 0 3px 3px 0 $dark-shadow;
-                                    font-size: 14px;
-                                    border: 1px solid transparent;
-                                    font-size: 14px;
-                                    width: 100%;
-                                }
-
-                            }
-                        }
-                    }
-
-                }
-
-
-                .sessionReports {
-                    flex-grow: 1;
-                    flex-basis: 50%;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                    @include flexin($justify: stretch,
-                        $align: stretch,
-                        $direction: column,
-                        $gap: 1rem);
-
-                    &Top {
-                        h4 {
-                            width: 100%;
-                            font-size: 15px;
-
-                            span {
-                                text-align: center;
-                                padding: 0.2rem 0.5rem;
-                                box-shadow: 0 3px 3px 0 $dark-shadow;
-                                background-color: $secondary-background;
-                                border-radius: 0.5rem;
-                                font-weight: 400;
-                                margin-left: 0.4rem;
-                                font-size: 14px;
-                            }
-                        }
-                    }
-
-                    &Body {
-                        background-color: transparent;
-                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                        border-radius: 0.7rem;
-                        flex-grow: 1;
-                        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                        border: 1px solid $border-color;
-
-                        @include flexin($justify: stretch, $align: flex-start,
-                            $direction: column,
-                            $gap: 0.4rem);
-
-                        &Top {
-                            width: 100%;
-                            padding: 1rem;
-                            border-radius: 0.7rem;
-                            @include flexin($justify: space-evenly,
-                                $align: center,
-                                $gap: 1.5rem);
-                            text-align: center;
-                            font-size: 14px;
-                            font-weight: 300;
-
-                        }
-
-                        &Content {
-                            flex-grow: 1;
-                            width: 100%;
-
-                            @include flexin($justify: stretch, $align: stretch,
-                                $gap: 0);
-
-                            .backNav,
-                            .forwardNav {
-                                padding: 1rem 0.5rem;
-                                flex-grow: 1;
-                                @include flexin;
-                                border-radius: 0.5rem;
-                                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                                background-color: transparent;
-                                max-width: 50px;
-
-                                svg {
-                                    font-size: 14px;
-                                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                                }
-                            }
-
-                            .backNav:hover,
-                            .forwardNav:hover {
-                                background-color: rgba($color: $border-color, $alpha: 0.2);
-                                cursor: pointer;
-
-                                svg {
-                                    color: $hover-green;
-                                }
-                            }
-
-                            .reports {
-                                flex-grow: 1;
-                                @include flexin($justify: stretch,
-                                    $align: stretch,
-                                    $direction: column,
-                                    $gap: 1rem);
-                                margin-bottom: 1.5rem;
-
-                                .report {
-                                    flex-grow: 1;
-                                    width: 100%;
-                                    border-radius: 0.5rem;
-                                    padding: 1.5rem;
-                                    background-color: transparent;
-                                    position: relative;
-
-                                    @include flexin($justify: center,
-                                        $align: center,
-                                        $direction: column,
-                                        $gap: 1.5rem);
-
-                                    &>svg {
-                                        position: absolute;
-                                        top: 12px;
-                                        left: 12px;
-                                        font-size: 17px;
-                                    }
-
-                                    h5 {
-                                        padding: 0.4rem 0.6rem;
-                                        border-radius: 0.5rem;
-                                        border: 1px solid $border-color;
-                                        background-color: transparent;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                        font-size: 14px;
-                                        text-align: center;
-                                        font-weight: 400;
-                                    }
-
-                                    .reportImage {
-                                        border-radius: 50%;
-                                        box-shadow: 0 3px 3px 0 $dark-shadow;
-                                    }
-
-                                    .reportBody {
-                                        background-color: $secondary-background;
-                                        border-radius: 0.5rem;
-                                        box-shadow: 0 4px 4px 0 $dark-shadow;
-                                        padding: 1rem 1.5rem;
-                                        width: 100%;
-
-
-                                        @include flexin($justify: stretch,
-                                            $align: stretch,
-                                            $direction: column,
-                                            $gap: 1rem);
-
-                                        &>div {
-                                            @include flexin($justify: space-between, $align: flex-start,
-                                                $gap: 1rem);
-                                            font-size: 14px;
-
-                                            &>span {
-                                                flex-basis: 50%;
-                                            }
-
-                                            &>span:first-of-type {
-                                                font-weight: 500;
-                                            }
-
-                                            &>span:last-of-type {
-                                                font-weight: 200
-                                            }
-                                        }
-
-
-                                    }
-
-
-                                    .reportButton {
-                                        background-color: $accent-green;
-                                        border: 1px solid transparent;
-                                        width: 100%;
-                                        font-size: 14px;
-                                    }
-
-                                    .reportButton:hover {
-                                        background-color: transparent;
-                                        border: 1px solid $accent-green;
-                                        color: $accent-green;
-                                    }
-
-                                }
-
-                                .approved {
-                                    border: 1px solid $accent-green;
-
-                                    &>svg {
-                                        color: $accent-green;
-                                    }
-
-                                    .reportBody {
-                                        .status {
-                                            &>span:nth-of-type(2) {
-                                                color: $accent-green;
-                                            }
-
-                                        }
-                                    }
-
-                                }
-
-                                .rejected {
-                                    border: 1px solid $rejected-color;
-
-                                    &>svg {
-                                        color: $rejected-color
-                                    }
-
-
-                                    .reportBody {
-                                        .status {
-                                            &>span:nth-of-type(2) {
-                                                color: $rejected-color;
-                                            }
-
-                                        }
-                                    }
-
-                                }
-
-                                .pending {
-                                    border: 1px solid $pending-color;
-
-                                    &>svg {
-                                        color: $pending-color
-                                    }
-
-                                    .reportBody {
-                                        .status {
-                                            &>span:nth-of-type(2) {
-                                                color: $pending-color;
-                                            }
-
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .skeletonDetails {
-                    flex: 1;
-                }
-
-                .skeletonReports {
-                    flex: 1;
-                }
-
-                @media (max-width: 1024px) {
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-
-                @media (max-width: 675px) {
-                    .sessionDetails {
-                        &Body {
-                            .viewOne {
-
-                                .sessionTime,
-                                .venueDuration {
-                                    @include flexin($justify: space-between,
-                                        $align: stretch,
-                                        $direction: column,
-                                        $gap: 2rem);
-                                }
-                            }
-
-                            .viewTwo {
-
-                                .actualValues,
-                                .authors,
-                                .dateStats {
-                                    @include flexin($justify: space-between,
-                                        $align: stretch,
-                                        $direction: column,
-                                        $gap: 2rem);
-                                }
-                            }
-                        }
-                    }
-
-                    .sessionReports {
-                        &Body {
-                            &Content {
-                                .reports {
-                                    .report {
-                                        .reportBody {
-                                            &>div {
-                                                @include flexin($justify: space-between,
-                                                    $align: stretch,
-                                                    $direction: column,
-                                                    $gap: 0.5rem);
-
-                                                &>span {
-                                                    flex-basis: 100%;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
+          }
+
+          .filterButton:hover {
+            cursor: pointer;
+            background-color: $accent-dark-green;
+          }
+
+          .clearFilterButton {
+            padding: 10px;
+            border-radius: 0.7rem;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            border: 1px inset transparent;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            background-color: $rejected-color;
+
+            @include flexin();
+
+            svg {
+              font-size: 17px;
+              color: $text-color;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
             }
+          }
 
+          .clearFilterButton:hover {
+            cursor: pointer;
+            background-color: transparent;
+            border: 1px inset $rejected-color;
 
-            @media (max-width: 675px) {
-                padding: 1rem;
-
-                .sessionReports {
-                    &Body &Content {
-
-                        .backNav,
-                        .forwardNav {
-                            padding: 1rem 0.25rem;
-                        }
-
-                        .reportBody {
-                            padding: 1rem 0.75rem;
-                        }
-                    }
-                }
+            svg {
+              color: $rejected-color;
             }
+          }
+        }
+
+        .filterMobileRow {
+          display: none;
         }
 
         @media (max-width: 675px) {
-            width: 100vw;
+          padding: 1rem;
+          gap: 1rem;
+
+          .searchBox {
+            input {
+              max-width: 150px;
+            }
+          }
+
+          .filterRow {
+            display: none;
+          }
+
+          .filterMobileRow {
+            display: flex;
+            gap: 1rem;
+          }
         }
 
+        @media (max-width: 1170px) {
+          .filterRow {
+            display: none;
+          }
+
+          .filterMobileRow {
+            display: flex;
+            gap: 1rem;
+          }
+        }
+      }
+
+      &Body {
+        flex-grow: 1;
+        position: relative;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        overscroll-behavior: contain;
+        padding: 0.9rem 2rem 0.4rem;
+
+        @include flexin(
+          $justify: stretch,
+          $align: stretch,
+          $direction: column,
+          $gap: 0rem
+        );
+
+        &Header {
+          background-color: $secondary-background;
+          position: sticky;
+          z-index: 1;
+          position: -webkit-sticky;
+          top: 0;
+          border-radius: 0.7rem;
+          width: 100%;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+          .headerContent {
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            padding: 0.8rem 1.4rem;
+            width: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 0.7rem;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+            @include flexin(
+              $justify: flex-start,
+              $align: center,
+              $direction: row,
+              $gap: 1.7rem
+            );
+
+            & > span {
+              color: $text-color;
+              font-weight: 300;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              flex-grow: 1;
+              font-size: 13px;
+            }
+
+            .actions {
+              visibility: hidden;
+            }
+          }
+        }
+
+        .bodyContainer {
+          width: 100%;
+
+          .sessionRows {
+            @include flexin(
+              $justify: flex-start,
+              $align: stretch,
+              $direction: column,
+              $gap: 0
+            );
+            padding: 0;
+            width: 100%;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+            .sessionRowOuter {
+              @include flexin($justify: stretch, $align: stretch, $gap: 0);
+              width: 100%;
+              padding: 0.2rem 0;
+              border-bottom: 1px solid $highlight-color;
+              flex-grow: 1;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              & > div {
+                padding: 0.25rem 1.4rem;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: center,
+                  $gap: 1.7rem
+                );
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                overflow-x: auto;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                width: 100%;
+
+                & > span {
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-size: 13px;
+                  font-weight: 300;
+                }
+
+                .id {
+                  color: $accent-dark-green;
+                }
+
+                .id:hover {
+                  color: $hover-green;
+                  cursor: pointer;
+                }
+
+                .pending {
+                  color: $pending-color;
+                }
+
+                .active {
+                  color: $hover-green;
+                }
+
+                .closed {
+                  color: $border-color;
+                }
+
+                .attendance {
+                  color: $attendance-color;
+                }
+
+                .attendance:hover {
+                  color: $attendance-color-hover;
+                }
+
+                .courseCodes {
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: center,
+                    $gap: 0.5rem
+                  );
+
+                  .extraBadge {
+                    color: gray;
+                    font-weight: 200;
+                  }
+                }
+              }
+            }
+
+            .sessionRowOuter:hover {
+              background-color: rgba($color: $text-color, $alpha: 0.1);
+            }
+          }
+        }
+
+        .dateCreated {
+          flex-basis: 16%;
+          min-width: 140px;
+        }
+
+        .id {
+          flex-basis: 8%;
+          min-width: 30px;
+        }
+
+        .courseCodes {
+          flex-basis: 14%;
+          min-width: 100px;
+        }
+
+        .venue {
+          flex-basis: 12%;
+          min-width: 65px;
+        }
+
+        .attendance {
+          flex-basis: 10%;
+          min-width: 75px;
+        }
+
+        .status {
+          flex-basis: 12%;
+          min-width: 50px;
+        }
+
+        .reports {
+          flex-basis: 9%;
+          min-width: 60px;
+        }
+
+        .duration {
+          flex-basis: 15%;
+          min-width: 120px;
+        }
+
+        .actions {
+          flex-basis: 4%;
+          min-width: 30px;
+        }
+
+        @media (max-width: 675px) {
+          padding: 0.5rem 1rem;
+        }
+      }
+
+      .noSessions {
+        flex-grow: 1;
+        height: 100%;
+        width: 100%;
+        margin: 3rem;
+        @include flexin;
+        color: gray;
+        @include flexin($justify: center, $align: center);
+      }
+
+      .sessionFilterValues {
+        padding: 0.5rem 2rem;
+        width: 100%;
+        @include flexin(
+          $justify: flex-start,
+          $align: center,
+          $direction: row,
+          $gap: 2rem
+        );
+        flex-wrap: wrap;
+
+        .filterValue {
+          padding: 0.5rem 1rem;
+          border-radius: 1rem;
+          @include flexin($justify: center, $align: center, $gap: 1.5rem);
+          background-color: $secondary-background;
+          box-shadow: 0 3px 3px 0 $dark-shadow;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          border: 1px solid transparent;
+
+          & > span {
+            font-weight: 300;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          }
+
+          & > svg {
+            font-size: 18px;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          }
+
+          & > svg:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+        }
+
+        .filterValue:hover {
+          border: 1px solid $hover-green;
+          background-color: transparent;
+
+          & > svg,
+          & > span {
+            color: $hover-green;
+          }
+        }
+      }
+
+      &Footer {
+        padding: 1rem 2rem;
+        width: 100%;
+        @include flexin(
+          $justify: flex-start,
+          $align: center,
+          $direction: row,
+          $gap: 1.5rem
+        );
+
+        &Stats {
+          justify-self: flex-start;
+          flex-grow: 1;
+          flex-basis: 33.33%;
+
+          @include flexin($justify: flex-start, $align: center, $gap: 1rem);
+
+          span {
+            span {
+              font-weight: bold;
+            }
+
+            br {
+              display: none;
+            }
+          }
+        }
+
+        &Navigation {
+          justify-self: center;
+          flex-grow: 1;
+          flex-basis: 33.33%;
+          @include flexin($justify: center, $align: center, $gap: 1rem);
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+          button {
+            background-color: $accent-green;
+            color: $text-color;
+            border-radius: 0.7rem;
+            box-shadow: 0 3px 3px 0 $dark-shadow;
+            padding: 0.3rem 0.5rem;
+            @include flexin;
+            border: 1px solid transparent;
+
+            svg {
+              font-size: 16px;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            }
+          }
+
+          button:hover {
+            background-color: $accent-dark-green;
+            cursor: pointer;
+          }
+
+          button:disabled {
+            background-color: $highlight-color;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          }
+
+          button:disabled:hover {
+            background-color: $border-color;
+            cursor: not-allowed;
+          }
+        }
+
+        &Input {
+          justify-self: flex-end;
+          flex-grow: 1;
+          flex-basis: 33.33%;
+          @include flexin($justify: flex-end, $align: center, $gap: 1rem);
+
+          input {
+            width: 40px;
+            padding: 0.3rem;
+            background-color: $secondary-background;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            color: $text-color;
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+            border: 0;
+            border-radius: 0.5rem;
+          }
+        }
+
+        @media (max-width: 675px) {
+          @include flexin(
+            $justify: stretch,
+            $align: center,
+            $direction: column,
+            $gap: 1rem
+          );
+
+          & > div {
+            flex-basis: 100%;
+          }
+
+          &Stats {
+            order: 3;
+          }
+        }
+      }
     }
 
+    .sessionPage {
+      flex-grow: 1;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      overflow: auto;
+      padding: 1.5rem 2rem;
 
+      @include flexin(
+        $justify: stretch,
+        $align: stretch,
+        $direction: column,
+        $gap: 1.5rem
+      );
+
+      &Top {
+        width: 100%;
+        @include flexin($justify: space-between, $align: stretch, $gap: 1.5rem);
+
+        &Left {
+          @include flexin($justify: flex-start, $align: center, $gap: 1rem);
+
+          svg {
+            font-size: 20px;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+          }
+
+          svg:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+
+          & > span {
+            font-size: 16px;
+
+            span {
+              font-weight: 200;
+              font-size: 16px;
+            }
+          }
+
+          & > div {
+            padding: 0.4rem 0.65rem;
+            border-radius: 0.8rem;
+            background-color: $secondary-background;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            font-size: 12px;
+
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 0.3rem
+            );
+
+            & > div:first-of-type {
+              width: 12px;
+              height: 12px;
+              border-radius: 50%;
+              box-shadow: 0 4px 4px 0 $dark-shadow;
+            }
+
+            & > div:last-of-type {
+              font-size: 12px;
+              font-weight: 300;
+              @include flexin();
+            }
+          }
+
+          div.pending {
+            color: $pending-color;
+
+            div:first-of-type {
+              background-color: $pending-color;
+            }
+          }
+
+          div.active {
+            color: $hover-green;
+
+            div:first-of-type {
+              background-color: $hover-green;
+            }
+          }
+
+          div.closed {
+            color: #757575;
+
+            div:first-of-type {
+              background-color: #757575;
+            }
+          }
+        }
+
+        &Right,
+        .mobileMode {
+          @include flexin($justify: flex-end, $align: center, $gap: 1rem);
+
+          button {
+            font-size: 14px;
+            padding: 0.55rem 1rem;
+            border-radius: 0.55rem;
+            border: 1px solid transparent;
+            @include flexin($gap: 0.4rem);
+
+            svg {
+              font-size: 14px;
+            }
+          }
+
+          .editButton {
+            background-color: $accent-green;
+          }
+
+          .editButton:hover {
+            background-color: $hover-green;
+          }
+
+          .endButton,
+          .terminateButton {
+            background-color: $rejected-color;
+          }
+
+          .endButton:hover,
+          .terminateButton:hover {
+            background-color: transparent;
+            color: $rejected-color;
+            border: 1px solid $rejected-color;
+          }
+
+          .closedButton {
+            background-color: $secondary-background;
+          }
+
+          .closedButton:hover {
+            background-color: transparent;
+            border: 1px solid $border-color;
+            color: $border-color;
+          }
+        }
+
+        .mobileMode {
+          display: none;
+        }
+
+        @media (max-width: 675px) {
+          .mobileMode {
+            display: flex;
+          }
+
+          &Right {
+            display: none;
+          }
+
+          &Left {
+            gap: 0.75rem;
+
+            span {
+              font-size: 14px !important;
+            }
+
+            & > div {
+              font-size: 10px;
+
+              & > div:first-of-type {
+                display: none;
+              }
+
+              & > div:last-of-type {
+                font-size: 10px;
+              }
+            }
+          }
+        }
+      }
+
+      &Body {
+        flex-grow: 1;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        overscroll-behavior: contain;
+
+        @include flexin(
+          $justify: stretch,
+          $align: stretch,
+          $direction: row,
+          $gap: 2rem
+        );
+
+        .sessionDetails {
+          flex-grow: 1;
+          flex-basis: 50%;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1rem
+          );
+
+          &Top {
+            h4 {
+              width: 100%;
+              font-size: 15px;
+
+              span {
+                text-align: center;
+                padding: 0.2rem 0.5rem;
+                box-shadow: 0 3px 3px 0 $dark-shadow;
+                background-color: $secondary-background;
+                border-radius: 0.5rem;
+                font-weight: 400;
+                margin-left: 0.4rem;
+                font-size: 14px;
+              }
+            }
+          }
+
+          &Body {
+            background-color: $secondary-background;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            border-radius: 0.7rem;
+            padding: 1rem;
+            padding-top: 0;
+            flex-grow: 1;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            border: 1px solid transparent;
+
+            @include flexin(
+              $justify: stretch,
+              $align: flex-start,
+              $direction: column,
+              $gap: 0.4rem
+            );
+
+            .detailHeader {
+              width: 70%;
+              padding: 1rem;
+              margin: 0 auto;
+              position: relative;
+              top: -1px;
+              border: 1px solid $secondary-background;
+              border-top: 0;
+
+              background-color: $primary-background;
+              border-bottom-left-radius: 0.5rem;
+              border-bottom-right-radius: 0.5rem;
+              @include flexin(
+                $justify: space-evenly,
+                $align: center,
+                $gap: 1.5rem
+              );
+
+              & > div {
+                width: 100px;
+                height: 10px;
+                border-radius: 0.9rem;
+                text-align: center;
+                background-color: $border-color;
+                box-shadow: 0 2px 2px 0 $dark-shadow;
+                font-size: 12px;
+                border: 1px solid transparent;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
+
+              & > div:hover {
+                background-color: transparent;
+                border: 1px solid $border-color;
+                cursor: pointer;
+              }
+
+              .activeView {
+                background-color: $accent-green;
+              }
+
+              .activeView:hover {
+                background-color: transparent;
+                border: 1px $accent-green solid;
+              }
+            }
+
+            .viewOne {
+              width: 100%;
+              flex-grow: 1;
+
+              @include flexin(
+                $justify: space-between,
+                $align: stretch,
+                $direction: column,
+                $gap: 2rem
+              );
+
+              label {
+                font-size: 14px;
+                font-weight: 300;
+              }
+
+              .course,
+              .classes,
+              .invigilators {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: flex-start,
+                  $direction: column,
+                  $gap: 0.5rem
+                );
+
+                & > div {
+                  width: 100%;
+                  @include flexin(
+                    $justify: stretch,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 0.5rem
+                  );
+
+                  & > div {
+                    background-color: $border-color;
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 0.7rem;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    font-size: 14px;
+                    border: 1px solid transparent;
+
+                    @include flexin(
+                      $justify: flex-start,
+                      $align: center,
+                      $gap: 0.5rem
+                    );
+
+                    span:last-of-type {
+                      font-weight: 200;
+                    }
+                  }
+                }
+              }
+
+              .sessionTime {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+
+                & > div {
+                  flex-basis: 50%;
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: flex-start,
+                    $direction: column,
+                    $gap: 0.5rem
+                  );
+
+                  & > div {
+                    background-color: $border-color;
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 0.7rem;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    font-size: 14px;
+                    border: 1px solid transparent;
+                    font-size: 14px;
+                    width: 100%;
+
+                    @include flexin(
+                      $justify: space-between,
+                      $align: center,
+                      $gap: 0.5rem
+                    );
+                  }
+                }
+              }
+
+              .venueDuration {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+
+                & > div {
+                  flex-basis: 50%;
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: flex-start,
+                    $direction: column,
+                    $gap: 0.5rem
+                  );
+
+                  & > div {
+                    background-color: $border-color;
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 0.7rem;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    font-size: 14px;
+                    border: 1px solid transparent;
+                    font-size: 14px;
+                    width: 100%;
+
+                    @include flexin(
+                      $justify: space-between,
+                      $align: center,
+                      $gap: 0.5rem
+                    );
+                  }
+                }
+              }
+            }
+
+            .viewTwo {
+              width: 100%;
+
+              @include flexin(
+                $justify: space-between,
+                $align: stretch,
+                $direction: column,
+                $gap: 2rem
+              );
+
+              label {
+                font-size: 14px;
+                font-weight: 300;
+              }
+
+              .actualValues {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+
+                & > div {
+                  flex-basis: 50%;
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: flex-start,
+                    $direction: column,
+                    $gap: 0.5rem
+                  );
+
+                  & > div {
+                    background-color: $border-color;
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 0.7rem;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    font-size: 14px;
+                    border: 1px solid transparent;
+                    font-size: 14px;
+                    width: 100%;
+
+                    @include flexin(
+                      $justify: space-between,
+                      $align: center,
+                      $gap: 0.5rem
+                    );
+                  }
+                }
+              }
+
+              .comment {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: flex-start,
+                  $direction: column,
+                  $gap: 0.5rem
+                );
+
+                & > div {
+                  background-color: $border-color;
+                  border-radius: 0.5rem;
+                  padding: 0.6rem 0.7rem;
+                  box-shadow: 0 3px 3px 0 $dark-shadow;
+                  font-size: 14px;
+                  border: 1px solid transparent;
+                  min-height: 100px;
+                  width: 100%;
+                  max-height: 150px;
+                }
+              }
+
+              .authors,
+              .dateStats {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: stretch,
+                  $gap: 2rem
+                );
+
+                & > div {
+                  flex-basis: 50%;
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: flex-start,
+                    $direction: column,
+                    $gap: 0.5rem
+                  );
+
+                  & > div {
+                    background-color: $border-color;
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 0.7rem;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    font-size: 14px;
+                    border: 1px solid transparent;
+                    font-size: 14px;
+                    width: 100%;
+                  }
+                }
+              }
+
+              .attendance {
+                width: 100%;
+                @include flexin(
+                  $justify: flex-start,
+                  $align: flex-start,
+                  $direction: column,
+                  $gap: 0.5rem
+                );
+
+                label {
+                  width: 100%;
+                  @include flexin(
+                    $justify: space-between,
+                    $align: center,
+                    $gap: 3rem
+                  );
+
+                  svg {
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                  }
+
+                  svg:hover {
+                    cursor: pointer;
+                    color: $hover-green;
+                  }
+                }
+
+                & > div {
+                  background-color: $border-color;
+                  border-radius: 0.5rem;
+                  padding: 0.6rem 0.7rem;
+                  box-shadow: 0 3px 3px 0 $dark-shadow;
+                  font-size: 14px;
+                  border: 1px solid transparent;
+                  font-size: 14px;
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+
+        .sessionReports {
+          flex-grow: 1;
+          flex-basis: 50%;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1rem
+          );
+
+          &Top {
+            h4 {
+              width: 100%;
+              font-size: 15px;
+
+              span {
+                text-align: center;
+                padding: 0.2rem 0.5rem;
+                box-shadow: 0 3px 3px 0 $dark-shadow;
+                background-color: $secondary-background;
+                border-radius: 0.5rem;
+                font-weight: 400;
+                margin-left: 0.4rem;
+                font-size: 14px;
+              }
+            }
+          }
+
+          &Body {
+            background-color: transparent;
+            box-shadow: 0 4px 4px 0 $dark-shadow;
+            border-radius: 0.7rem;
+            flex-grow: 1;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            border: 1px solid $border-color;
+
+            @include flexin(
+              $justify: stretch,
+              $align: flex-start,
+              $direction: column,
+              $gap: 0.4rem
+            );
+
+            &Top {
+              width: 100%;
+              padding: 1rem;
+              border-radius: 0.7rem;
+              @include flexin(
+                $justify: space-evenly,
+                $align: center,
+                $gap: 1.5rem
+              );
+              text-align: center;
+              font-size: 14px;
+              font-weight: 300;
+            }
+
+            &Content {
+              flex-grow: 1;
+              width: 100%;
+
+              @include flexin($justify: stretch, $align: stretch, $gap: 0);
+
+              .backNav,
+              .forwardNav {
+                padding: 1rem 0.5rem;
+                flex-grow: 1;
+                @include flexin;
+                border-radius: 0.5rem;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                background-color: transparent;
+                max-width: 50px;
+
+                svg {
+                  font-size: 14px;
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                }
+              }
+
+              .backNav:hover,
+              .forwardNav:hover {
+                background-color: rgba($color: $border-color, $alpha: 0.2);
+                cursor: pointer;
+
+                svg {
+                  color: $hover-green;
+                }
+              }
+
+              .reports {
+                flex-grow: 1;
+                @include flexin(
+                  $justify: stretch,
+                  $align: stretch,
+                  $direction: column,
+                  $gap: 1rem
+                );
+                margin-bottom: 1.5rem;
+
+                .report {
+                  flex-grow: 1;
+                  width: 100%;
+                  border-radius: 0.5rem;
+                  padding: 1.5rem;
+                  background-color: transparent;
+                  position: relative;
+
+                  @include flexin(
+                    $justify: center,
+                    $align: center,
+                    $direction: column,
+                    $gap: 1.5rem
+                  );
+
+                  & > svg {
+                    position: absolute;
+                    top: 12px;
+                    left: 12px;
+                    font-size: 17px;
+                  }
+
+                  h5 {
+                    padding: 0.4rem 0.6rem;
+                    border-radius: 0.5rem;
+                    border: 1px solid $border-color;
+                    background-color: transparent;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                    font-size: 14px;
+                    text-align: center;
+                    font-weight: 400;
+                  }
+
+                  .reportImage {
+                    border-radius: 50%;
+                    box-shadow: 0 3px 3px 0 $dark-shadow;
+                  }
+
+                  .reportBody {
+                    background-color: $secondary-background;
+                    border-radius: 0.5rem;
+                    box-shadow: 0 4px 4px 0 $dark-shadow;
+                    padding: 1rem 1.5rem;
+                    width: 100%;
+
+                    @include flexin(
+                      $justify: stretch,
+                      $align: stretch,
+                      $direction: column,
+                      $gap: 1rem
+                    );
+
+                    & > div {
+                      @include flexin(
+                        $justify: space-between,
+                        $align: flex-start,
+                        $gap: 1rem
+                      );
+                      font-size: 14px;
+
+                      & > span {
+                        flex-basis: 50%;
+                      }
+
+                      & > span:first-of-type {
+                        font-weight: 500;
+                      }
+
+                      & > span:last-of-type {
+                        font-weight: 200;
+                      }
+                    }
+                  }
+
+                  .reportButton {
+                    background-color: $accent-green;
+                    border: 1px solid transparent;
+                    width: 100%;
+                    font-size: 14px;
+                  }
+
+                  .reportButton:hover {
+                    background-color: transparent;
+                    border: 1px solid $accent-green;
+                    color: $accent-green;
+                  }
+                }
+
+                .approved {
+                  border: 1px solid $accent-green;
+
+                  & > svg {
+                    color: $accent-green;
+                  }
+
+                  .reportBody {
+                    .status {
+                      & > span:nth-of-type(2) {
+                        color: $accent-green;
+                      }
+                    }
+                  }
+                }
+
+                .rejected {
+                  border: 1px solid $rejected-color;
+
+                  & > svg {
+                    color: $rejected-color;
+                  }
+
+                  .reportBody {
+                    .status {
+                      & > span:nth-of-type(2) {
+                        color: $rejected-color;
+                      }
+                    }
+                  }
+                }
+
+                .pending {
+                  border: 1px solid $pending-color;
+
+                  & > svg {
+                    color: $pending-color;
+                  }
+
+                  .reportBody {
+                    .status {
+                      & > span:nth-of-type(2) {
+                        color: $pending-color;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .noReports {
+            flex-grow: 1;
+            height: 100%;
+            width: 100%;
+            margin: 3rem 0;
+            @include flexin;
+            color: gray;
+            @include flexin($justify: center, $align: center);
+          }
+        }
+
+        .skeletonDetails {
+          flex: 1;
+        }
+
+        .skeletonReports {
+          flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        @media (max-width: 675px) {
+          .sessionDetails {
+            &Body {
+              .viewOne {
+                .sessionTime,
+                .venueDuration {
+                  @include flexin(
+                    $justify: space-between,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 2rem
+                  );
+                }
+              }
+
+              .viewTwo {
+                .actualValues,
+                .authors,
+                .dateStats {
+                  @include flexin(
+                    $justify: space-between,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 2rem
+                  );
+                }
+              }
+            }
+          }
+
+          .sessionReports {
+            &Body {
+              &Content {
+                .reports {
+                  .report {
+                    .reportBody {
+                      & > div {
+                        @include flexin(
+                          $justify: space-between,
+                          $align: stretch,
+                          $direction: column,
+                          $gap: 0.5rem
+                        );
+
+                        & > span {
+                          flex-basis: 100%;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      @media (max-width: 675px) {
+        padding: 1rem;
+
+        .sessionReports {
+          &Body &Content {
+            .backNav,
+            .forwardNav {
+              padding: 1rem 0.25rem;
+            }
+
+            .reportBody {
+              padding: 1rem 0.75rem;
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 675px) {
+      width: 100vw;
+    }
+  }
 }

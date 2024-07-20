@@ -9,8 +9,9 @@ const ReportScrollbars: React.FC<ReportScrollbarsProps> = (props) => {
   const renderView = useCallback(
     ({ style, ...props }: React.HTMLProps<HTMLDivElement>) => {
       const viewStyle: React.CSSProperties = {
-        padding: " 0",
+        padding: "0",
         backgroundColor: "transparent",
+        borderColor: "transparent",
         borderBottomLeftRadius: "0.5rem",
         borderBottomRightRadius: "0.5rem",
       };
@@ -24,7 +25,7 @@ const ReportScrollbars: React.FC<ReportScrollbarsProps> = (props) => {
   const renderThumb = useCallback(
     ({ style, ...props }: React.HTMLProps<HTMLDivElement>) => {
       const thumbStyle: React.CSSProperties = {
-        backgroundColor: "#505050",
+        backgroundColor: "transparent",
         borderRadius: "0.5rem",
       };
       return <div style={{ ...style, ...thumbStyle }} {...props} />;
@@ -54,7 +55,7 @@ const ReportScrollbars: React.FC<ReportScrollbarsProps> = (props) => {
       // renderTrackVertical={renderTrack}
       // renderTrackHorizontal={renderTrack}
       hideTracksWhenNotNeeded={true}
-      universal={true}
+      // universal={true}
       //   autoHide={true}
       {...props}
     />

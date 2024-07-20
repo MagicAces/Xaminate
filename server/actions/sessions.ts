@@ -6,7 +6,7 @@ import {
   sessionSchema,
   sessionEditSchema,
   SessionEdit,
-  sessionEndSchema,
+  sessionIdSchema,
 } from "@/lib/schema";
 import prisma from "@/prisma/prisma";
 import _ from "lodash";
@@ -14,7 +14,11 @@ import { SessionQuery, SessionSummary } from "@/types";
 import { Prisma, TempStatus } from "@prisma/client";
 import { formatDuration, getStatus, getStatusMessage } from "@/utils/functs";
 import { format } from "date-fns";
-import { isVenueAvailable, revalidateAllPaths } from "@/lib/sessions";
+import {
+  generateSessionPDF,
+  isVenueAvailable,
+  revalidateAllPaths,
+} from "@/lib/sessions";
 
 export const createSession = authAction(
   sessionSchema,
@@ -504,7 +508,21 @@ export const getSessionForSummary = async (id: number) => {
   }
 };
 
+export const getSessionPDF = authAction(
+  sessionIdSchema,
+  async ({ id }: { id: number }, { userId }) => {
+    try {
+      if (!id) return { error: "Session ID not provided" };
 
+      const pdfBuffer = await generateSessionPDF(id);
+      
+      return { success: "Successfully exported", pdf: pdfBuffer };
+    } catch (error) {
+      console.error(error);
+      return { error: "Failed to generate session PDF" };
+    }
+  }
+);
 
 export const editSession = authAction(
   sessionEditSchema,
@@ -631,7 +649,7 @@ export const editSession = authAction(
 );
 
 export const endSession = authAction(
-  sessionEndSchema,
+  sessionIdSchema,
   async ({ id }: { id: number }, { userId }) => {
     try {
       // if (!id) return { error: "Id not found" };

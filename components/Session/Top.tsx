@@ -42,9 +42,6 @@ const Top = () => {
     } else if (type === "end") {
       setState(session.id, 4, "session");
     } else if (type === "summary") {
-      setState(session.id, 5, "session");
-      dispatch(setReload(true));
-
       // Calculate the report statuses
       const reportStatusCounts = session.reports.reduce(
         (counts, report) => {
@@ -80,8 +77,9 @@ const Top = () => {
         students: studentFrequency,
       };
 
-      console.log(summary);
       dispatch(setSummary(summary));
+      dispatch(setReload(true));
+      setState(session.id, 5, "session");
     }
   };
 

@@ -160,7 +160,7 @@ export const sessionEditSchema = object({
   }
 );
 
-export const sessionEndSchema = object({
+export const sessionIdSchema = object({
   id: number({ required_error: "Session Id is Required" }).gte(1, {
     message: "Id should be greater than 1",
   }),

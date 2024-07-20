@@ -25,18 +25,24 @@ const Reports = () => {
         </h4>
       </div>
       <div className={styles.sessionReportsBody}>
-        <div className={styles.sessionReportsBodyTop}>
-          {page} / {session?.reports?.length}
-        </div>
-        <div className={styles.sessionReportsBodyContent}>
-          <div
-            className={styles.backNav}
-            onClick={() =>
-              setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1))
-            }
-          >
-            <MdArrowBackIos style={page <= 1 ? { visibility: "hidden" } : {}} />
+        {session?.reports?.length > 0 && (
+          <div className={styles.sessionReportsBodyTop}>
+            {page} / {session?.reports?.length}
           </div>
+        )}
+        <div className={styles.sessionReportsBodyContent}>
+          {session?.reports?.length > 0 && (
+            <div
+              className={styles.backNav}
+              onClick={() =>
+                setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1))
+              }
+            >
+              <MdArrowBackIos
+                style={page <= 1 ? { visibility: "hidden" } : {}}
+              />
+            </div>
+          )}
           <div className={styles.reports}>
             {session?.reports?.length > 0 ? (
               session?.reports?.map((report, index) => {
@@ -79,7 +85,10 @@ const Reports = () => {
                         </div>
                         <div className={styles.timestamp}>
                           <span>Timestamp</span>
-                          <span>{report?.timestamp && formatToCCTVTimestamp(report.timestamp)}</span>
+                          <span>
+                            {report?.timestamp &&
+                              formatToCCTVTimestamp(report.timestamp)}
+                          </span>
                         </div>
                       </div>
                       <button type="button" className={styles.reportButton}>
@@ -91,26 +100,30 @@ const Reports = () => {
                 return;
               })
             ) : (
-              <div className={styles.noReport}>No Report Found</div>
+              <div className={styles.noReports}>No Report Found</div>
             )}
           </div>
 
-          <div
-            className={styles.forwardNav}
-            onClick={() =>
-              setPage((prevPage) =>
-                prevPage < session?.reports?.length
-                  ? prevPage + 1
-                  : session?.reports?.length
-              )
-            }
-          >
-            <MdArrowForwardIos
-              style={
-                page >= session?.reports?.length ? { visibility: "hidden" } : {}
+          {session?.reports?.length > 0 && (
+            <div
+              className={styles.forwardNav}
+              onClick={() =>
+                setPage((prevPage) =>
+                  prevPage < session?.reports?.length
+                    ? prevPage + 1
+                    : session?.reports?.length
+                )
               }
-            />
-          </div>
+            >
+              <MdArrowForwardIos
+                style={
+                  page >= session?.reports?.length
+                    ? { visibility: "hidden" }
+                    : {}
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
