@@ -1,6 +1,11 @@
 import { ReportQuery } from "@/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getReport, getReports, getStudent } from "../actions/reports";
+import {
+  getReport,
+  getReports,
+  getReportSummary,
+  getStudent,
+} from "../actions/reports";
 
 export function useGetReports({
   query,
@@ -36,13 +41,13 @@ export function useGetReports({
 //   });
 // }
 
-export function useGetReport(id: number) {
+export function useGetReportSummary(id: number) {
   return useQuery({
     queryFn: async () => {
-      const data = await getReport(id);
+      const data = await getReportSummary(id);
       return data;
     },
-    queryKey: ["report", { id }],
+    queryKey: ["report_summary", { id }],
     // placeholderData: keepPreviousData,
   });
 }
@@ -54,6 +59,17 @@ export function useGetStudent(id: number) {
       return data;
     },
     queryKey: ["student", { id }],
+    // placeholderData: keepPreviousData,
+  });
+}
+
+export function useGetReport(id: number) {
+  return useQuery({
+    queryFn: async () => {
+      const data = await getReport(id);
+      return data;
+    },
+    queryKey: ["report", { id }],
     // placeholderData: keepPreviousData,
   });
 }

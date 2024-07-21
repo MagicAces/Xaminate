@@ -325,11 +325,10 @@ export interface ReportOutput {
     photo: string;
   };
   status: string;
-  description: string;
-  comments: string | null;
-  snapshot_url: string;
   timestamp: string;
   session_id: number;
+  description: string;
+  comments: string | null;
   status_changed: string | undefined;
   editor:
     | {
@@ -338,8 +337,9 @@ export interface ReportOutput {
         last_name: string;
       }
     | undefined;
-  created_on: string;
-  updated_at: string;
+    created_on: string;
+    updated_at: string;
+  snapshot_url: string;
   valid_reports: number;
   total_reports: number;
   last_seven: {

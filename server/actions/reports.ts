@@ -3,6 +3,7 @@
 import {
   ReportDisplay,
   ReportInfo,
+  ReportOutput,
   ReportQuery,
   ReportRow,
   StudentInfo,
@@ -307,7 +308,7 @@ export const getReports = async ({
 //   }
 // };
 
-export const getReport = async (id: number) => {
+export const getReportSummary = async (id: number) => {
   try {
     if (!id) return { error: "Id not found" };
     const foundReport = await prisma.report.findUnique({
@@ -460,6 +461,137 @@ export const getStudent = async (id: number) => {
     };
 
     return { success: student };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getReport = async (id: number) => {
+  try {
+    if (!id) return { error: "Id not found" };
+
+    // Fetch report details with related student and editor information
+    const foundReport = await prisma.report.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        status: true,
+        description: true,
+        comments: true,
+        snapshot_url: true,
+        timestamp: true,
+        session_id: true,
+        status_changed: true,
+        created_on: true,
+        updated_at: true,
+        student: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            other_name: true,
+            image_url: true,
+            index_number: true,
+            reference_no: true,
+            program: true,
+            level: true,
+            report: {
+              select: {
+                id: true,
+                session_id: true,
+                status: true,
+              },
+            },
+          },
+        },
+        editor: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+          },
+        },
+      },
+    });
+
+    if (!foundReport) return { error: "Report not found" };
+
+    const { student, editor, ...rest } = foundReport;
+
+    // Full name concatenation
+    const fullName = student
+      ? `${student.first_name} ${student.last_name}`
+      : "";
+
+    // Calculate total and valid reports
+    const totalReports = student ? student.report.length : 0;
+    const validReports = student
+      ? student.report.filter((report) => report.status === "Approved").length
+      : 0;
+
+    // Get the last seven sessions with report count for this student
+    const sessions = await prisma.session.findMany({
+      orderBy: {
+        id: "desc",
+      },
+      take: 7,
+      select: {
+        id: true,
+        reports: {
+          where: {
+            student_id: student?.id,
+          },
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    const lastSeven = sessions.reverse().map((session) => ({
+      session_id: session.id,
+      report_count: session.reports.length,
+    }));
+
+    const reportOutput: ReportOutput = {
+      id: rest.id,
+      student: {
+        id: student ? student.id : 0,
+        level: student ? student.level.toString() : "",
+        last_name: student ? student.last_name : "",
+        first_name: student ? student.first_name : "",
+        reference_no: student ? student.reference_no : 0,
+        index_number: student ? student.index_number : 0,
+        program: student ? student.program : "",
+        photo: student ? student.image_url || "" : "",
+      },
+      status: rest.status,
+      description: rest.description,
+      comments: rest.comments || null,
+      snapshot_url: rest.snapshot_url || "",
+      timestamp: rest.timestamp.toISOString(),
+      session_id: rest.session_id,
+      status_changed: rest.status_changed
+        ? rest.status_changed.toISOString()
+        : undefined,
+      editor: editor
+        ? {
+            id: editor.id,
+            first_name: editor.first_name,
+            last_name: editor.last_name,
+          }
+        : undefined,
+      created_on: rest.created_on.toISOString(),
+      updated_at: rest.updated_at.toISOString(),
+      valid_reports: validReports,
+      total_reports: totalReports,
+      last_seven: lastSeven,
+    };
+
+    return { success: reportOutput };
   } catch (error) {
     console.error(error);
     throw error;

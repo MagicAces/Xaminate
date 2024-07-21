@@ -121,7 +121,7 @@ const Summary = () => {
                     options={{
                       chart: {
                         type: "donut",
-                        height: "180px",
+                        height: "170px",
                         toolbar: {
                           show: false,
                         },
@@ -210,31 +210,39 @@ const Summary = () => {
                         type: "gradient",
                         gradient: {
                           opacityFrom: 1,
-                          opacityTo: 0.8,
+                          opacityTo: 0.75,
                         },
                       },
                       responsive: [
                         {
-                          breakpoint: 620,
+                          breakpoint: 650,
                           options: {
                             chart: {
                               width: "100%",
-                              height: "180px",
+                              height: "250px",
                             },
-                            legend: {
-                              position: "right",
-                            },
-                          },
-                        },
-                        {
-                          breakpoint: 480,
-                          options: {
-                            chart: {
-                              width: "100%",
-                              height: "180px",
+                            plotOptions: {
+                              pie: {
+                                offsetX: 0,
+                                donut: {
+                                  size: "60%",
+                                },
+                                labels: {
+                                  name: {
+                                    fontSize: "12px",
+                                  },
+                                },
+                              },
                             },
                             legend: {
                               position: "bottom",
+                              horizontalAlign: "center",
+                              offsetY: 0,
+                              offsetX: 0,
+                              itemMargin: {
+                                horizontal: 8,
+                              },
+                              width: "100%",
                             },
                           },
                         },
@@ -242,7 +250,7 @@ const Summary = () => {
                     }}
                     series={series}
                     type={"donut"}
-                    height={180}
+                    height={170}
                     width={"100%"}
                   />
                 ) : (
@@ -276,8 +284,8 @@ const Summary = () => {
                   <ReportScrollbars
                     className={styles.bodyContainer}
                     autoHeight={true}
-                    autoHeightMin={120}
-                    autoHeightMax={120}
+                    autoHeightMin={110}
+                    autoHeightMax={110}
                     autoHide={true}
                     autoHideTimeout={1000}
                   >

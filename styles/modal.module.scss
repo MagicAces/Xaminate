@@ -1273,6 +1273,7 @@
     box-shadow: 0 4px 4px 0 $dark-shadow;
     background-color: $secondary-background;
     position: relative;
+    padding: 1.5rem 0 1rem;
     border-radius: 0.5rem;
     @include flexin(
       $justify: stretch,
@@ -1299,7 +1300,7 @@
     }
 
     .header {
-      padding: 1.5rem 2rem 0;
+      padding: 0 2rem;
       width: 100%;
       position: relative;
       z-index: 1;

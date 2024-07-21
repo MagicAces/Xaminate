@@ -2,13 +2,11 @@
 import styles from "@/styles/session.module.scss";
 import { useState } from "react";
 
-import { ImArrowRight, ImArrowLeft } from "react-icons/im";
-import { FiExternalLink } from "react-icons/fi";
-import ColoredScrollbars from "../Utils/ColoredScrollbars";
-import { useSelector } from "react-redux";
 import { SessionOutput } from "@/types";
-import { MdAccessTime } from "react-icons/md";
 import { formatSorRDate } from "@/utils/functs";
+import { FiExternalLink } from "react-icons/fi";
+import { MdAccessTime } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const Details = () => {
   const [view, setView] = useState(1);

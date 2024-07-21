@@ -4,7 +4,7 @@ import { fetchUnread, getNotifications } from "../actions/notifications";
 import { QueryClient } from "@tanstack/react-query";
 import { getVenues } from "../actions/venues";
 import { getSession, getSessions } from "../actions/sessions";
-import { getReports } from "../actions/reports";
+import { getReport, getReports } from "../actions/reports";
 // import { getReportsTest } from "../actions/reports";
 
 export const usePrefetchQueries = async (queryClient: QueryClient) => {
@@ -122,6 +122,17 @@ export const usePrefetchSession = async (
     queryKey: ["session", { id }],
     queryFn: async () => {
       const data = await getSession(id);
+      if (data.success) return { ...data.success };
+      else return data.error;
+    },
+  });
+};
+
+export const usePrefetchReport = async (queryClient: QueryClient, id: number) => {
+  await queryClient.prefetchQuery({
+    queryKey: ["report", { id }],
+    queryFn: async () => {
+      const data = await getReport(id);
       if (data.success) return { ...data.success };
       else return data.error;
     },

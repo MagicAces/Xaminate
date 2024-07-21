@@ -9,12 +9,14 @@ import Image from "next/image";
 import { formatToCCTVTimestamp } from "@/utils/functs";
 // import reports from "@/data/reports";
 import unknown from "@/public/images/unknown_user.png";
+import { useRouter } from "next/navigation";
 
 const Reports = () => {
   const { session }: { session: SessionOutput } = useSelector(
     (state: any) => state.session
   );
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   return (
     <div className={styles.sessionReports}>
@@ -47,6 +49,7 @@ const Reports = () => {
             {session?.reports?.length > 0 ? (
               session?.reports?.map((report, index) => {
                 if (page === index + 1) {
+                  router.prefetch(`/reports/${report.id}`);
                   return (
                     <div
                       className={`${styles.report} ${
@@ -91,7 +94,11 @@ const Reports = () => {
                           </span>
                         </div>
                       </div>
-                      <button type="button" className={styles.reportButton}>
+                      <button
+                        type="button"
+                        className={styles.reportButton}
+                        onClick={() => router.push(`/reports/${report.id}`)}
+                      >
                         Review
                       </button>
                     </div>

@@ -5,7 +5,7 @@ import Loader from "@/components/Utils/Loader";
 import unknown from "@/public/images/unknown_user.png";
 import { setReload, setReport } from "@/redux/slices/modalSlice";
 import { approveReport } from "@/server/actions/reports";
-import { useGetReport } from "@/server/hooks/reports";
+import { useGetReportSummary } from "@/server/hooks/reports";
 import styles from "@/styles/modal.module.scss";
 import { ReportInfo } from "@/types";
 import { useModal } from "@/utils/context";
@@ -33,7 +33,7 @@ const View = () => {
     data: reportData,
     isLoading: reportLoading,
     error: reportError,
-  } = useGetReport(modalState.id);
+  } = useGetReportSummary(modalState.id);
 
   const { execute, result, status } = useAction(approveReport, {
     onSuccess: (data) => {
