@@ -4,7 +4,7 @@ import logo from "@/public/images/logo.svg";
 import { setEmail, setIds, setSection } from "@/redux/slices/resetSlice";
 import { sendOTP } from "@/server/actions/reset";
 import styles from "@/styles/email.module.scss";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import { useState } from "react";
@@ -65,23 +65,25 @@ const Email = () => {
             reset instructions
           </span>
         </div>
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0.1 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeInOut", duration: 1 }}
-              className={styles.errorBox}
-            >
-              <span>
-                <MdInfoOutline />
-                <span>{error}</span>
-              </span>
-              <MdClose onClick={() => setError("")} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* <AnimatePresence> */}
+        {error && (
+          // <motion.div
+          //   animate={{ opacity: 1 }}
+          //   initial={{ opacity: 0.1 }}
+          //   exit={{ opacity: 0 }}
+          //   transition={{ ease: "easeInOut", duration: 1 }}
+          // className={styles.errorBox}
+          // >
+          <div className={styles.errorBox}>
+            <span>
+              <MdInfoOutline />
+              <span>{error}</span>
+            </span>
+            <MdClose onClick={() => setError("")} />
+          </div>
+          // </motion.div>
+        )}
+        {/* </AnimatePresence> */}
         <form className={styles.emailForm} onSubmit={handleSubmit}>
           <div className={styles.emailBox}>
             <label htmlFor="email">Email</label>

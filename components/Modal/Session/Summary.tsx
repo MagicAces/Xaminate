@@ -9,7 +9,6 @@ import { useGetSessionForSummary } from "@/server/hooks/sessions";
 import styles from "@/styles/modal.module.scss";
 import { SessionSummary } from "@/types";
 import { useModal } from "@/utils/context";
-import { saveAs } from "file-saver";
 import { capitalize } from "lodash";
 import { useAction } from "next-safe-action/hooks";
 import dynamic from "next/dynamic";
@@ -35,14 +34,16 @@ const Summary = () => {
       if (data?.success) {
         toast.success(data?.success);
 
-        // Ensure pdf is a Uint8Array and convert it to Blob correctly
         const pdfBlob = new Blob([new Uint8Array(data.pdf)], {
           type: "application/pdf",
         });
-        console.log("PDF Data Type:", data.pdf.constructor.name);
 
-        // Save the Blob as a PDF file
-        saveAs(pdfBlob, `Session_${modalState.id}_Summary.pdf`);
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(pdfBlob);
+        link.download = `Session_${modalState.id}_Summary.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
       if (data?.error) toast.error(data?.error);
     },
@@ -53,7 +54,6 @@ const Summary = () => {
   });
 
   const [isClient, setClient] = useState(false);
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const {

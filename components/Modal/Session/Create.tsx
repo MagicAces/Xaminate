@@ -27,7 +27,7 @@ import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
 import Button from "@/components/Utils/Button";
 import { venueOptions } from "@/data/select";
 
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useAction } from "next-safe-action/hooks";
@@ -287,7 +287,7 @@ const Create: React.FC = () => {
         values.sessionStart,
         values.sessionEnd
       );
-      setOptions(updatedOpts);
+      setOptions(updatedOpts.filter((opt) => !opt.isDeleted));
     };
 
     updateOptions();
@@ -313,23 +313,25 @@ const Create: React.FC = () => {
         <div className={styles.header}>
           <h2>Create Session</h2>
         </div>
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeInOut", duration: 1 }}
-              className={styles.errorBox}
-            >
-              <span>
-                <MdInfoOutline />
-                <span>{error}</span>
-              </span>
-              <MdClose onClick={() => setError("")} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* <AnimatePresence> */}
+        {error && (
+          // <motion.div
+          //   animate={{ opacity: 1 }}
+          //   initial={{ opacity: 0 }}
+          //   exit={{ opacity: 0 }}
+          //   transition={{ ease: "easeInOut", duration: 1 }}
+          // className={styles.errorBox}
+          // >
+          <div className={styles.errorBox}>
+            <span>
+              <MdInfoOutline />
+              <span>{error}</span>
+            </span>
+            <MdClose onClick={() => setError("")} />
+          </div>
+          // </motion.div>
+        )}
+        {/* </AnimatePresence> */}
         <ColoredScrollbars className={styles.scrollContainer}>
           <div className={styles.scrollContent}>
             <div className={styles.courseRow}>

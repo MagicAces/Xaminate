@@ -5,6 +5,7 @@ import modalReducer from "@/redux/slices/modalSlice";
 import sessionReducer from "@/redux/slices/sessionSlice";
 import reportReducer from "@/redux/slices/reportSlice";
 import sidebarReducer from "@/redux/slices/sidebarSlice";
+import settingReducer from "@/redux/slices/settingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     session: sessionReducer,
     report: reportReducer,
     sidebar: sidebarReducer,
+    setting: settingReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

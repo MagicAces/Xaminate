@@ -1,0 +1,832 @@
+@import "config";
+@import "mixins";
+
+.settingSection {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: $primary-background;
+
+  @include flexin($justify: stretch, $align: stretch, $gap: 0);
+
+  .settingContainer {
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 0
+    );
+    width: calc(100vw - 4rem);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    height: 100%;
+
+    .settingContent {
+      flex-grow: 1;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      overflow: auto;
+
+      @include flexin(
+        $justify: flex-start,
+        $align: stretch,
+        $direction: column,
+        $gap: 0
+      );
+
+      &Venue {
+        padding: 1.5rem 2rem;
+        width: 100%;
+        @include flexin(
+          $justify: flex-start,
+          $align: stretch,
+          $direction: column,
+          $gap: 1rem
+        );
+
+        &Header {
+          width: 100%;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid $border-color;
+          @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+          &Left {
+            @include flexin($justify: flex-start, $align: center, $gap: 0.6rem);
+
+            span {
+              font-size: 16px;
+              font-weight: 500;
+            }
+
+            svg {
+              color: $accent-green;
+              font-size: 17px;
+            }
+          }
+
+          &Right {
+            @include flexin($justify: flex-end, $align: center, $gap: 0.2rem);
+            font-size: 13px;
+            // color: $border-color;
+            font-weight: 200;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+            svg {
+              font-size: 14px;
+            }
+          }
+
+          &Right:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+        }
+
+        &View {
+          width: 100%;
+          border: 1px solid $border-color;
+          box-shadow: 0 12px 12px 0 $dark-shadow;
+          border-radius: 0.5rem;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0
+          );
+
+          .venue {
+            padding: 1rem;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 3rem
+            );
+            width: 100%;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+            background-color: transparent;
+          }
+
+          .venue:first-of-type {
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+          }
+
+          .venue:nth-of-type(odd) {
+            background-color: $border-color;
+          }
+
+          .venue:last-of-type {
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+          }
+
+          .venue:hover {
+            background-color: $highlight-color;
+          }
+        }
+
+        &Edit {
+          width: 100%;
+          // width: 100%;
+          // border: 1px solid $border-color;
+          // box-shadow: 0 12px 12px 0 $dark-shadow;
+          // border-radius: 0.5rem;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0.6rem
+          );
+
+          .venues {
+            width: 100%;
+            border: 1px solid $border-color;
+            box-shadow: 0 12px 12px 0 $dark-shadow;
+            border-radius: 0.5rem;
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 0
+            );
+            position: relative;
+
+            .venue {
+              position: relative;
+              width: 100%;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              padding: 0.5rem;
+              @include flexin($justify: stretch, $align: center, $gap: 0);
+
+              input {
+                width: 100%;
+                flex-grow: 1;
+                padding: 0.7rem 1rem;
+                border: 1px solid $border-color;
+                outline: none;
+                border-radius: 0.5rem;
+                background: transparent;
+                color: $text-color;
+                font-size: 14px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
+
+              input:focus,
+              input:hover,
+              input:active {
+                border: 1px solid $hover-green;
+              }
+
+              svg {
+                position: absolute;
+                right: 1.5rem;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
+
+              svg:hover {
+                color: $hover-green;
+                cursor: pointer;
+              }
+            }
+
+            .venue:first-of-type {
+              border-top-left-radius: 0.5rem;
+              border-top-right-radius: 0.5rem;
+            }
+
+            .venue:nth-of-type(odd) {
+              background-color: $border-color;
+
+              input {
+                border: 1px solid $border-color;
+                background: $primary-background;
+              }
+
+              input:focus,
+              input:hover,
+              input:active {
+                border: 1px solid $hover-green;
+              }
+            }
+
+            .venue:last-of-type {
+              border-bottom-left-radius: 0.5rem;
+              border-bottom-right-radius: 0.5rem;
+            }
+
+            .venue:hover {
+              background-color: $highlight-color;
+
+              input {
+                background: $primary-background;
+              }
+            }
+          }
+          .editToolbar {
+            align-self: center;
+            @include flexin($justify: center, $align: center, $gap: 1rem);
+            background-color: $secondary-background;
+            box-shadow: 0 10px 10px 0 $dark-shadow;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+
+            span {
+              padding: 0.7rem 0.8rem;
+              border-radius: 50%;
+              border: 1px solid transparent;
+              text-align: center;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              svg {
+                font-size: 18px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
+            }
+
+            span.disabled {
+              color: $border-color;
+
+              &:hover {
+                cursor: not-allowed;
+              }
+            }
+
+            span:hover:not(.disabled) {
+              border: 1px solid $hover-green;
+              background-color: $primary-background;
+              box-shadow: 0 3px 3px 0 $dark-shadow;
+              cursor: pointer;
+
+              svg {
+                color: $hover-green;
+              }
+            }
+          }
+        }
+
+        .noVenues {
+          flex-grow: 1;
+          height: 100%;
+          width: 100%;
+          margin: 3rem 0;
+          text-align: center;
+          font-size: 13px;
+          @include flexin;
+          color: gray;
+          font-weight: 300;
+        }
+      }
+
+      &Alert {
+        padding: 1.5rem 2rem;
+        width: 100%;
+        @include flexin(
+          $justify: flex-start,
+          $align: stretch,
+          $direction: column,
+          $gap: 1rem
+        );
+
+        &Header {
+          width: 100%;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid $border-color;
+          @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+          &Left {
+            @include flexin($justify: flex-start, $align: center, $gap: 0.6rem);
+
+            span {
+              font-size: 16px;
+              font-weight: 500;
+            }
+
+            svg {
+              color: $accent-green;
+              font-size: 17px;
+            }
+          }
+        }
+
+        &Body {
+          width: 100%;
+          border: 1px solid $border-color;
+          box-shadow: 0 12px 12px 0 $dark-shadow;
+          border-radius: 0.5rem;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0
+          );
+          padding: 0.5rem;
+
+          &Email {
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            background-color: $secondary-background;
+            box-shadow: 0 12px 12px 0 $dark-shadow;
+            width: 100%;
+            flex-grow: 1;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 3rem
+            );
+
+            span:first-of-type {
+              flex-basis: 70%;
+            }
+
+            span:last-of-type {
+              flex-basis: 30%;
+              text-align: right;
+            }
+          }
+        }
+      }
+
+      &Camera {
+        padding: 1.5rem 2rem;
+        width: 100%;
+        @include flexin(
+          $justify: flex-start,
+          $align: stretch,
+          $direction: column,
+          $gap: 1rem
+        );
+
+        &Header {
+          width: 100%;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid $border-color;
+          @include flexin($justify: space-between, $align: center, $gap: 3rem);
+
+          &Left {
+            @include flexin($justify: flex-start, $align: center, $gap: 0.6rem);
+
+            span {
+              font-size: 16px;
+              font-weight: 500;
+            }
+
+            svg {
+              color: $accent-green;
+              font-size: 17px;
+            }
+          }
+
+          &Right {
+            @include flexin($justify: flex-end, $align: center, $gap: 0.2rem);
+            font-size: 13px;
+            // color: $border-color;
+            font-weight: 200;
+            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+            svg {
+              font-size: 14px;
+            }
+          }
+
+          &Right:hover {
+            color: $hover-green;
+            cursor: pointer;
+          }
+        }
+
+        &View {
+          width: 100%;
+          border: 1px solid $border-color;
+          padding: 0.5rem;
+          box-shadow: 0 12px 12px 0 $dark-shadow;
+          border-radius: 0.5rem;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0
+          );
+
+          .settingCameraTable {
+            &Header {
+              background-color: $border-color;
+              position: sticky;
+              z-index: 1;
+              position: -webkit-sticky;
+              top: 0;
+              border-top-right-radius: 0.7rem;
+              border-top-left-radius: 0.7rem;
+              width: 100%;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              .headerContent {
+                box-shadow: 0 4px 4px 0 $dark-shadow;
+                padding: 0.8rem 1.7rem;
+                width: 100%;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+                border-top-right-radius: 0.7rem;
+                border-top-left-radius: 0.7rem;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                @include flexin(
+                  $justify: flex-start,
+                  $align: center,
+                  $direction: row,
+                  $gap: 1.7rem
+                );
+
+                & > span {
+                  color: $text-color;
+                  font-weight: 500;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  flex-grow: 1;
+                  font-size: 13px;
+                }
+
+                // .actions {
+                //     visibility: hidden;
+                // }
+              }
+            }
+
+            .bodyContainer {
+              width: 100%;
+
+              .camerasRows {
+                @include flexin(
+                  $justify: flex-start,
+                  $align: stretch,
+                  $direction: column,
+                  $gap: 0
+                );
+                padding: 0;
+                width: 100%;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                .camerasRowOuter {
+                  @include flexin($justify: stretch, $align: stretch, $gap: 0);
+                  width: 100%;
+                  // padding: 0.2rem 0;
+                  border: 1px solid $border-color;
+                  flex-grow: 1;
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                  & > div {
+                    padding: 0.8rem 1.7rem;
+                    @include flexin(
+                      $justify: flex-start,
+                      $align: center,
+                      $gap: 1.7rem
+                    );
+                    -webkit-overflow-scrolling: touch;
+                    scroll-snap-type: x mandatory;
+                    overflow-x: auto;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                    width: 100%;
+
+                    & > span {
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      font-size: 13px;
+                      font-weight: 300;
+                    }
+
+                    span.Active {
+                      color: $approved-color;
+                    }
+
+                    span.Inactive {
+                      color: $rejected-color;
+                    }
+
+                    span.Maintenance {
+                      color: $pending-color;
+                    }
+                  }
+                }
+
+                // .summaryRowOuter:hover {
+                //   background-color: rgba($color: $text-color, $alpha: 0.1);
+                // }
+
+                .camerasRowOuter:last-of-type {
+                  border-bottom: 1px solid $border-color !important;
+                  border-bottom-left-radius: 0.5rem;
+                  border-bottom-right-radius: 0.5rem;
+                }
+              }
+            }
+
+            .actions {
+              flex-basis: 2%;
+              min-width: 30px;
+            }
+
+            .name {
+              flex-basis: 49%;
+              min-width: 150px;
+            }
+
+            .venue {
+              flex-basis: 30%;
+              min-width: 80px;
+            }
+
+            .status {
+              flex-basis: 19%;
+              min-width: 50px;
+            }
+
+            // @media (max-width: 675px) {
+            //   margin: 0.5rem 1rem;
+            // }
+
+            .noCameras {
+              flex-grow: 1;
+              height: 100%;
+              width: 100%;
+              margin-top: 3rem;
+              font-size: 13px;
+              @include flexin;
+              color: gray;
+            }
+          }
+        }
+
+        &Edit {
+          width: 100%;
+          // width: 100%;
+          // border: 1px solid $border-color;
+          // box-shadow: 0 12px 12px 0 $dark-shadow;
+          // border-radius: 0.5rem;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 0.6rem
+          );
+
+          .camerasPane {
+            width: 100%;
+            border: 1px solid $border-color;
+            padding: 0.5rem;
+            box-shadow: 0 12px 12px 0 $dark-shadow;
+            border-radius: 0.5rem;
+            @include flexin(
+              $justify: stretch,
+              $align: stretch,
+              $direction: column,
+              $gap: 0
+            );
+
+            .settingCameraTable {
+              &Header {
+                background-color: $border-color;
+                position: sticky;
+                z-index: 1;
+                position: -webkit-sticky;
+                top: 0;
+                border-top-right-radius: 0.7rem;
+                border-top-left-radius: 0.7rem;
+                width: 100%;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                .headerContent {
+                  box-shadow: 0 4px 4px 0 $dark-shadow;
+                  padding: 0.8rem 1.7rem;
+                  width: 100%;
+                  overflow: auto;
+                  -webkit-overflow-scrolling: touch;
+                  border-top-right-radius: 0.7rem;
+                  border-top-left-radius: 0.7rem;
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: center,
+                    $direction: row,
+                    $gap: 1.7rem
+                  );
+
+                  & > span {
+                    color: $text-color;
+                    font-weight: 500;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    flex-grow: 1;
+                    font-size: 13px;
+                  }
+
+                  // .actions {
+                  //     visibility: hidden;
+                  // }
+                }
+              }
+
+              .bodyContainer {
+                width: 100%;
+
+                .camerasRows {
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 0
+                  );
+                  padding: 0;
+                  width: 100%;
+                  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                  .camerasRowOuter {
+                    @include flexin(
+                      $justify: stretch,
+                      $align: stretch,
+                      $gap: 0
+                    );
+                    width: 100%;
+                    // padding: 0.2rem 0;
+                    border: 1px solid $border-color;
+                    flex-grow: 1;
+                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                    & > div {
+                      padding: 0.4rem 1.7rem;
+                      @include flexin(
+                        $justify: flex-start,
+                        $align: center,
+                        $gap: 1.7rem
+                      );
+                      -webkit-overflow-scrolling: touch;
+                      scroll-snap-type: x mandatory;
+                      overflow-x: auto;
+                      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+                      width: 100%;
+
+                      & > span {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        font-size: 13px;
+                        font-weight: 300;
+                      }
+
+                      .status.Active {
+                        color: $approved-color;
+                      }
+
+                      .status.Inactive {
+                        color: $rejected-color;
+                      }
+
+                      .status.Maintenance {
+                        color: $pending-color;
+                      }
+
+                      .name {
+                        input {
+                          padding: 0.4rem 1rem;
+                          border: 1px solid $border-color;
+                          outline: none;
+                          background-color: transparent;
+                          border-radius: 0.5rem;
+                          color: $text-color;
+                          width: 100%;
+                          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1)
+                            0ms;
+                        }
+
+                        input:hover,
+                        input:active,
+                        input:focus {
+                          border: 1px solid $hover-green;
+                        }
+                      }
+
+                      .actions {
+                        svg {
+                          font-size: 17px;
+                          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1)
+                            0ms;
+                        }
+
+                        svg:hover {
+                          color: $hover-green;
+                          cursor: pointer;
+                        }
+                      }
+                    }
+                  }
+
+                  // .summaryRowOuter:hover {
+                  //   background-color: rgba($color: $text-color, $alpha: 0.1);
+                  // }
+
+                  .camerasRowOuter:last-of-type {
+                    border-bottom: 1px solid $border-color !important;
+                    border-bottom-left-radius: 0.5rem;
+                    border-bottom-right-radius: 0.5rem;
+                  }
+                }
+              }
+
+              .actions {
+                flex-basis: 2%;
+                min-width: 30px;
+              }
+
+              .name {
+                flex-basis: 49%;
+                min-width: 150px;
+              }
+
+              .venue {
+                flex-basis: 30%;
+                min-width: 120px;
+              }
+
+              .status {
+                flex-basis: 19%;
+                min-width: 100px;
+              }
+
+              // @media (max-width: 675px) {
+              //   margin: 0.5rem 1rem;
+              // }
+
+              .noCameras {
+                flex-grow: 1;
+                height: 100%;
+                width: 100%;
+                margin-top: 3rem;
+                font-size: 13px;
+                @include flexin;
+                color: gray;
+              }
+            }
+          }
+          .editToolbar {
+            align-self: center;
+            @include flexin($justify: center, $align: center, $gap: 1rem);
+            background-color: $secondary-background;
+            box-shadow: 0 10px 10px 0 $dark-shadow;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+
+            span {
+              padding: 0.7rem 0.8rem;
+              border-radius: 50%;
+              border: 1px solid transparent;
+              text-align: center;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              svg {
+                font-size: 18px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
+            }
+
+            span.disabled {
+              color: $border-color;
+
+              &:hover {
+                cursor: not-allowed;
+              }
+            }
+
+            span:hover:not(.disabled) {
+              border: 1px solid $hover-green;
+              background-color: $primary-background;
+              box-shadow: 0 3px 3px 0 $dark-shadow;
+              cursor: pointer;
+
+              svg {
+                color: $hover-green;
+              }
+            }
+          }
+        }
+
+        .noVenues {
+          flex-grow: 1;
+          height: 100%;
+          width: 100%;
+          margin: 3rem 0;
+          text-align: center;
+          font-size: 13px;
+          @include flexin;
+          color: gray;
+          font-weight: 300;
+        }
+      }
+    }
+
+    @media (max-width: 675px) {
+      width: 100vw;
+    }
+  }
+}

@@ -20,7 +20,7 @@ const Body = () => {
   const dispatch = useDispatch();
 
   const showModal = (session: SessionRow, type: string) => {
-    if (type == "edit") {    
+    if (type == "edit") {
       setState(session.id, 3, "session");
       dispatch(setReload(true));
       dispatch(
@@ -74,67 +74,74 @@ const Body = () => {
           >
             <div className={styles.sessionRows}>
               {data?.sessions?.length > 0 ? (
-                data?.sessions?.map((session: SessionRow, index: number) => (
-                  <div
-                    className={styles.sessionRowOuter}
-                    key={index}
-                    // style={{
-                    //   opacity: 0,
-                    //   animation: `slideIn 0.5s ease-out forwards`,
-                    //   animationDelay: `${index * 0.2}s`,
-                    // }}
-                  >
-                    <ScrollSyncPane>
-                      <div
-                        className={`${styles.sessionRowInner} hide-scrollbar`}
-                      >
-                        <span className={styles.dateCreated}>
-                          {formatSorRDate(session.created_on)}
-                        </span>
-                        <span
-                          className={styles.id}
-                          onClick={() => router.push(`/sessions/${session.id}`)}
+                data?.sessions?.map((session: SessionRow, index: number) => {
+                  return (
+                    <div
+                      className={styles.sessionRowOuter}
+                      key={index}
+                      // style={{
+                      //   opacity: 0,
+                      //   animation: `slideIn 0.5s ease-out forwards`,
+                      //   animationDelay: `${index * 0.2}s`,
+                      // }}
+                    >
+                      <ScrollSyncPane>
+                        <div
+                          className={`${styles.sessionRowInner} hide-scrollbar`}
                         >
-                          #{session.id}
-                        </span>
-                        <span className={styles.courseCodes}>
-                          <span>{formatArray(session.course_codes).first}</span>
-                          {formatArray(session.course_codes).extra && (
-                            <span className={styles.extraBadge}>
-                              {formatArray(session.course_codes).extra}
+                          <span className={styles.dateCreated}>
+                            {formatSorRDate(session.created_on)}
+                          </span>
+                          <span
+                            className={styles.id}
+                            onClick={() => {
+                              router.prefetch(`/sessions/${session.id}`);
+                              router.push(`/sessions/${session.id}`);
+                            }}
+                          >
+                            #{session.id}
+                          </span>
+                          <span className={styles.courseCodes}>
+                            <span>
+                              {formatArray(session.course_codes).first}
                             </span>
-                          )}
-                        </span>
-                        <span className={styles.venue}>
-                          {toUpper(session.venue_name)}
-                        </span>
-                        <span className={styles.attendance}>
-                          {session.studentCount}
-                        </span>
-                        <span
-                          className={`${styles.status} ${
-                            styles[`${session.status}`]
-                          }`}
-                        >
-                          {capitalize(session.status)}
-                        </span>
-                        <span className={styles.reports}>
-                          {session.reportsCount}
-                        </span>
-                        <span className={styles.duration}>
-                          {session.duration}
-                        </span>
-                        <span className={styles.actions}>
-                          <SessionIcon
-                            id={session.id}
-                            status={session.status}
-                            openModal={(type) => showModal(session, type)}
-                          />
-                        </span>
-                      </div>
-                    </ScrollSyncPane>
-                  </div>
-                ))
+                            {formatArray(session.course_codes).extra && (
+                              <span className={styles.extraBadge}>
+                                {formatArray(session.course_codes).extra}
+                              </span>
+                            )}
+                          </span>
+                          <span className={styles.venue}>
+                            {toUpper(session.venue_name)}
+                          </span>
+                          <span className={styles.attendance}>
+                            {session.studentCount}
+                          </span>
+                          <span
+                            className={`${styles.status} ${
+                              styles[`${session.status}`]
+                            }`}
+                          >
+                            {capitalize(session.status)}
+                          </span>
+                          <span className={styles.reports}>
+                            {session.reportsCount}
+                          </span>
+                          <span className={styles.duration}>
+                            {session.duration}
+                          </span>
+                          <span className={styles.actions}>
+                            <SessionIcon
+                              id={session.id}
+                              status={session.status}
+                              openModal={(type) => showModal(session, type)}
+                            />
+                          </span>
+                        </div>
+                      </ScrollSyncPane>
+                    </div>
+                  );
+                })
               ) : isDisabled ? (
                 new Array(8).fill("").map((_, index) => (
                   <Skeleton

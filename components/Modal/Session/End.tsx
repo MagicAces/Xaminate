@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/components/Utils/Button";
 import Loader from "@/components/Utils/Loader";
+import { setReload } from "@/redux/slices/sessionSlice";
 import { endSession } from "@/server/actions/sessions";
 import styles from "@/styles/modal.module.scss";
 import { useModal } from "@/utils/context";
@@ -39,6 +40,7 @@ const End = () => {
 
   useEffect(() => {
     if (status === "hasSucceeded") {
+      dispatch(setReload(true));
       exitModal();
     }
   }, [status, exitModal, dispatch]);
@@ -64,7 +66,7 @@ const End = () => {
         </div>
         <div className={styles.navigateButtons}>
           <Button
-            disabled={false}
+            disabled={status === "executing"}
             message={"Yes"}
             buttonClass={styles.yesButton}
           />

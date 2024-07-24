@@ -7,9 +7,10 @@ export function useGetVenues() {
       try {
         const data = await getVenues();
         if (data?.success) return data.success;
-        return data?.error;
+        return [];
       } catch (error) {
-        return { error: "Server Error" };
+        // return { error: "Server Error" };
+        return [];
       }
     },
     queryKey: ["venues"],

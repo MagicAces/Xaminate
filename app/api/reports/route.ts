@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/prisma";
 import { newReportSchema } from "@/lib/schema";
 import { ZodError } from "zod";
+import { revalidateAllPaths } from "@/lib/sessions";
 
 export const revalidate = 60;
 // export const runtime = "edge";
@@ -9,7 +10,7 @@ export const revalidate = 60;
 // 2 approaches
 // First is a webhook, that receives a payload from the camera, in the form of a new report.
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
   try {
     const adminToken = process.env.ADMIN_TOKEN;
 
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     const data = await newReportSchema.parseAsync(await request.json());
 
-    let student_id = undefined;
+    let student_id: number | undefined = undefined;
 
     if (data.student_identified) {
       const foundStudent = await prisma.student.findUnique({
@@ -92,16 +93,36 @@ export async function POST(request: NextRequest, response: NextResponse) {
       );
     }
 
-    const newReport = await prisma.report.create({
-      data: {
-        student_id: student_id,
-        description: data.description,
-        snapshot_url: data.snapshot_url || "",
-        session_id: data.session_id,
-        timestamp: data.timestamp,
-        camera_id: data.camera_id,
-      },
+    const createReport = async () => {
+      return prisma.report.create({
+        data: {
+          student_id: student_id,
+          description: data.description,
+          snapshot_url: data.snapshot_url || "",
+          session_id: data.session_id,
+          timestamp: data.timestamp,
+          camera_id: data.camera_id,
+        },
+      });
+    };
+
+    const createNotification = (reportId: number) => {
+      return prisma.notification.create({
+        data: {
+          category: "Report",
+          message: `New report created - #${reportId}. Kindly review it`,
+          category_id: reportId,
+        },
+      });
+    };
+
+    const [newReport] = await prisma.$transaction(async (prisma) => {
+      const report = await createReport();
+      await createNotification(report.id);
+      return [report];
     });
+
+    await revalidateAllPaths();
 
     return NextResponse.json(
       {
@@ -128,5 +149,4 @@ export async function POST(request: NextRequest, response: NextResponse) {
     );
   }
 }
-
 // Second is polling, querying their api, to give us new reports. If it

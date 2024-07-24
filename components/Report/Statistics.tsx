@@ -36,13 +36,13 @@ const Statistics = () => {
     <>
       <div className={styles.reportStatistics}>
         <div className={styles.snapshot}>
-          <span>Snapshot</span>
+          <h4>Snapshot</h4>
           <div className={styles.snapshotBox}>
             <Image
               src={report?.snapshot_url}
               alt="snapshot"
-              // width={250}
-              // height={200}
+              width={250}
+              height={200}
               className={styles.snapshotPhoto}
               priority
               placeholder="blur"
@@ -53,7 +53,7 @@ const Statistics = () => {
           </div>
         </div>
         <div className={styles.studentStats}>
-          <span>Student Stats</span>
+          <h4>Student Stats</h4>
           <div className={styles.studentStatsBox}>
             <div className={styles.studentStatsBoxTop}>
               <div className={styles.totalValidReports}>
@@ -195,7 +195,7 @@ const Statistics = () => {
                         },
                         xaxis: {
                           lines: {
-                            show: false,
+                            show: true,
                           },
                         },
                       },

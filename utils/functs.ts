@@ -78,6 +78,36 @@ export const formatSorRDate = (isoString: string): string => {
   return `${day} ${month} '${year}, ${formattedHours}:${minutes}${period}`;
 };
 
+export const formatFullDate = (isoString: string): string => {
+  const date = new Date(isoString);
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  const period = hours < 12 ? "am" : "pm";
+  const formattedHours = (hours % 12 || 12).toString().padStart(2, "0");
+
+  return `${day} ${month} ${year}, ${formattedHours}:${minutes}${period}`;
+};
+
 export const formatArray = (
   arr: string[]
 ): { first: string; extra: string } => {

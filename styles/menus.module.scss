@@ -33,6 +33,77 @@
   }
 }
 
+.venueTooltip,
+.cameraTooltip {
+  @include flexin;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+
+  svg {
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    font-size: 16px;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    svg {
+      color: $hover-green;
+    }
+  }
+}
+
+.venueTooltipMenu,
+.cameraTooltipMenu {
+  background-color: $secondary-background;
+  // border: 1px solid $border-color;
+  // padding: 0.5rem 1rem;
+  box-shadow: 0 8px 8px 0 $dark-shadow;
+  padding: 0;
+  border-radius: 0.5rem;
+  min-width: max-content;
+
+  @include flexin(
+    $justify: stretch,
+    $align: flex-start,
+    $direction: column,
+    $gap: 0
+  );
+
+  &Content {
+    text-transform: none;
+    font-family: inherit !important;
+    color: $text-color;
+    font-size: 14px;
+    padding: 0;
+    min-width: max-content;
+
+    & > div {
+      padding: 0.7rem 2rem 0.7rem 1rem;
+      border-bottom: 1px solid $border-color;
+      @include flexin(
+        $justify: stretch,
+        $align: flex-start,
+        $direction: column,
+        $gap: 0.5rem
+      );
+
+      span:first-of-type {
+        font-weight: 500;
+        font-size: 12px;
+      }
+
+      span:last-of-type {
+        font-weight: 300;
+        font-size: 14px;
+      }
+    }
+
+    & > div:last-of-type {
+      border: none;
+    }
+  }
+}
+
 .sessionIcon {
   @include flexin;
   width: 30px;

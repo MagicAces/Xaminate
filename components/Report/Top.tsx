@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
 import styles from "@/styles/report.module.scss";
 import { ReportOutput } from "@/types";
 import { useModal } from "@/utils/context";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FaRegCommentDots } from "react-icons/fa6";
 import { IoMdArrowBack } from "react-icons/io";
 import { MdBlock, MdCheck } from "react-icons/md";
@@ -28,6 +29,10 @@ const Top = () => {
     }
   };
 
+  useEffect(() => {
+    router.prefetch("/reports");
+  }, []);
+
   return (
     <>
       <div className={styles.reportPageTop}>
@@ -36,7 +41,7 @@ const Top = () => {
           <span className={styles.reportId}>
             Report <span>#{id}</span>
           </span>
-          <div className={styles[`${report?.status}`]}>
+          <div className={styles[`${report?.status?.toLowerCase()}`]}>
             <div></div>
             <div>{report?.status}</div>
           </div>
@@ -56,7 +61,7 @@ const Top = () => {
             <button
               type="button"
               className={styles.rejectButton}
-              onClick={() => showModal("approve")}
+              onClick={() => showModal("reject")}
             >
               <MdBlock />
               <span>Reject</span>
@@ -79,17 +84,15 @@ const Top = () => {
               onClick={() => showModal("approve")}
             >
               <MdCheck />
-              <span>Approve</span>
             </button>
           )}
           {(report?.status === "Pending" || report?.status === "Approved") && (
             <button
               type="button"
               className={styles.rejectButton}
-              onClick={() => showModal("approve")}
+              onClick={() => showModal("reject")}
             >
               <MdBlock />
-              <span>Reject</span>
             </button>
           )}
           <button
@@ -98,7 +101,6 @@ const Top = () => {
             onClick={() => showModal("comment")}
           >
             <FaRegCommentDots />
-            Comment
           </button>
         </div>
       </div>

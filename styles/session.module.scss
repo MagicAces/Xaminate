@@ -790,6 +790,34 @@
             }
           }
         }
+
+        @media (max-width: 400px) {
+          &Left {
+            @include flexin($justify: flex-start, $align: center, $gap: 0.7rem);
+
+            span {
+              font-size: 12px !important;
+            }
+
+            & > div {
+              & > div:last-of-type {
+                font-size: 10px;
+              }
+            }
+          }
+          .mobileMode {
+            @include flexin($justify: flex-end, $align: center, $gap: 0.7rem);
+
+            button {
+              padding: 0.4rem 0.8rem;
+              border-radius: 0.4rem;
+
+              svg {
+                font-size: 12px;
+              }
+            }
+          }
+        }
       }
 
       &Body {

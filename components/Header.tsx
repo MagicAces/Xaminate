@@ -29,13 +29,14 @@ import { useAction } from "next-safe-action/hooks";
 import Loader from "./Utils/Loader";
 import Image from "next/image";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setFullView } from "@/redux/slices/sidebarSlice";
 import { useRouter } from "next/navigation";
 
 const Header = () => {
   const pathname = usePathname();
   const [styleMenu, setStyleMenu] = useState(false);
+  const { logoutReload } = useSelector((state: any) => state.sidebar);
   const { setState, modalState } = useModal();
   const { data: session } = useSession();
   const { execute: markAsRead } = useAction(markNotificationAsRead);
@@ -49,7 +50,15 @@ const Header = () => {
     if (notification.read) return;
 
     if (notification?.category_id && notification.category === "Session") {
+      router.prefetch(`/sessions/${notification.category_id}`);
       router.push(`/sessions/${notification.category_id}`);
+      markAsRead({ id: notification.id });
+    } else if (
+      notification?.category_id &&
+      notification.category === "Report"
+    ) {
+      router.prefetch(`/reports/${notification.category_id}`);
+      router.push(`/reports/${notification.category_id}`);
       markAsRead({ id: notification.id });
     }
   }
@@ -61,6 +70,7 @@ const Header = () => {
   return (
     <>
       {modalState.mode > 0 && <Modal />}
+      {logoutReload && <Loader curved={false} />}
       <div className={styles.header}>
         <div className={styles.leftSection}>
           <div className={styles.logoContainer}>

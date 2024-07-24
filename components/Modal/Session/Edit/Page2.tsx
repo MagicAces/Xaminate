@@ -2,50 +2,30 @@
 
 import styles from "@/styles/modal.module.scss";
 import { useModal } from "@/utils/context";
-import { filterPassedTime, isWeekday } from "@/utils/dates";
 
-import { SessionWarn, SelectOption, SessionEdit } from "@/types";
-import {
-  createElement,
-  forwardRef,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
-import DatePicker from "react-datepicker";
+import Button from "@/components/Utils/Button";
+import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
+import { SessionEdit, SessionWarn } from "@/types";
+import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { IoIosAdd } from "react-icons/io";
-import {
-  MdAccessTime,
-  MdClose,
-  MdDeleteOutline,
-  MdOutlineArrowDropDown,
-  MdInfoOutline,
-} from "react-icons/md";
-import Select, { components, DropdownIndicatorProps } from "react-select";
-import ColoredScrollbars from "@/components/Utils/ColoredScrollbars";
-import Button from "@/components/Utils/Button";
-import { venueOptions } from "@/data/select";
+import { MdClose, MdDeleteOutline, MdInfoOutline } from "react-icons/md";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { useAction } from "next-safe-action/hooks";
-import { createSession } from "@/server/actions/sessions";
+// import { AnimatePresence, motion } from "framer-motion";
 import { SessionInput } from "@/lib/schema";
-import Loader from "@/components/Utils/Loader";
-import { closeModal } from "@/redux/slices/modalSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Page2 = ({
   session,
   setSessionVal,
   setPage,
-  disabled
+  disabled,
 }: {
   session: SessionEdit;
   setSessionVal: any;
-    setPage: any;
-  disabled: boolean
+  setPage: any;
+  disabled: boolean;
 }) => {
   const { exitModal } = useModal();
   const dispatch = useDispatch();
@@ -128,23 +108,25 @@ const Page2 = ({
 
   return (
     <>
-      <AnimatePresence>
-        {error && (
-          <motion.div
-            animate={{ opacity: 1 }}
-            initial={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ ease: "easeInOut", duration: 1 }}
-            className={styles.errorBox}
-          >
-            <span>
-              <MdInfoOutline />
-              <span>{error}</span>
-            </span>
-            <MdClose onClick={() => setError("")} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* <AnimatePresence> */}
+      {error && (
+        // <motion.div
+        //   animate={{ opacity: 1 }}
+        //   initial={{ opacity: 0 }}
+        //   exit={{ opacity: 0 }}
+        //   transition={{ ease: "easeInOut", duration: 1 }}
+        //   className={styles.errorBox}
+        // >
+        <div className={styles.errorBox}>
+          <span>
+            <MdInfoOutline />
+            <span>{error}</span>
+          </span>
+          <MdClose onClick={() => setError("")} />
+        </div>
+        // </motion.div>
+      )}
+      {/* </AnimatePresence> */}
       <ColoredScrollbars className={styles.scrollContainer}>
         <div className={styles.scrollContent}>
           <div className={styles.invigilatorsBox}>

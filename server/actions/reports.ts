@@ -12,7 +12,7 @@ import { Prisma, Status } from "@prisma/client";
 import prisma from "@/prisma/prisma";
 import { reports } from "@/data/reports.test";
 import { authAction } from "./actions";
-import { approveReportSchema } from "@/lib/schema";
+import { addCommentSchema, approveReportSchema } from "@/lib/schema";
 import { revalidatePath } from "next/cache";
 
 export const getReports = async ({
@@ -37,7 +37,7 @@ export const getReports = async ({
     // Handle search parameter
     let searchFilter: Prisma.ReportWhereInput | undefined = undefined;
     if (search) {
-      if (search.startsWith("#")) {
+      if (search.startsWith("#") && search.length > 1) {
         const idOrSessionId = parseInt(search.replace("#", ""), 10);
         searchFilter = {
           OR: [
@@ -168,145 +168,10 @@ export const getReports = async ({
     };
   } catch (error) {
     console.error(error);
-    // return { error: "Something wrong occurred"}
-    throw error;
+    return { error: "Error occured fetching sessions" };
+    // throw error;
   }
 };
-
-// Function to get reports for testing
-// export const getReportsTest = async ({
-//   query,
-//   status,
-// }: {
-//   query: ReportQuery;
-//   status: "Pending" | "Approved" | "Rejected";
-// }): Promise<{ success: ReportDisplay }> => {
-//   try {
-//     const {
-//       startTime,
-//       endTime,
-//       search,
-//       page = 1,
-//       limit = 15,
-//       sort: { field, order } = { field: "timestamp", order: "desc" },
-//     } = query;
-
-//     const offset = (page - 1) * limit;
-
-//     // Filter reports based on the query parameters
-//     let filteredReports = reports.filter((report) => report.status === status);
-
-//     if (startTime) {
-//       filteredReports = filteredReports.filter(
-//         (report) => new Date(report.timestamp) >= new Date(startTime)
-//       );
-//     }
-
-//     if (endTime) {
-//       filteredReports = filteredReports.filter(
-//         (report) => new Date(report.timestamp) <= new Date(endTime)
-//       );
-//     }
-
-//     if (search) {
-//       if (search.startsWith("#")) {
-//         const idOrSessionId = parseInt(search.replace("#", ""), 10);
-//         filteredReports = filteredReports.filter(
-//           (report) =>
-//             report.id === idOrSessionId || report.session_id === idOrSessionId
-//         );
-//       } else {
-//         filteredReports = filteredReports.filter((report) => {
-//           const student = report.student;
-//           if (student) {
-//             return (
-//               student.first_name.toLowerCase().includes(search.toLowerCase()) ||
-//               student.last_name.toLowerCase().includes(search.toLowerCase()) ||
-//               (student.other_name &&
-//                 student.other_name
-//                   .toLowerCase()
-//                   .includes(search.toLowerCase())) ||
-//               student.index_number.includes(search)
-//             );
-//           }
-//           return false;
-//         });
-//       }
-//     }
-
-//     // Sort the filtered reports
-//     filteredReports.sort((a, b) => {
-//       const aValue = a[field as keyof Report];
-//       const bValue = b[field as keyof Report];
-
-//       if (typeof aValue === "string" && typeof bValue === "string") {
-//         return order === "asc"
-//           ? aValue.localeCompare(bValue)
-//           : bValue.localeCompare(aValue);
-//       } else if (typeof aValue === "number" && typeof bValue === "number") {
-//         return order === "asc" ? aValue - bValue : bValue - aValue;
-//       } else if (aValue instanceof Date && bValue instanceof Date) {
-//         return order === "asc"
-//           ? aValue.getTime() - bValue.getTime()
-//           : bValue.getTime() - aValue.getTime();
-//       } else {
-//         return 0;
-//       }
-//     });
-
-//     const paginatedReports = filteredReports.slice(offset, offset + limit);
-
-//     const formattedReports: ReportRow[] = paginatedReports.map((report) => {
-//       const { id, timestamp, session_id, status, student } = report;
-
-//       const fullName = student
-//         ? [student.first_name, student.last_name, student.other_name]
-//             .filter(Boolean)
-//             .join(" ")
-//         : "-";
-
-//       return {
-//         id,
-//         session_id,
-//         status,
-//         timestamp,
-//         student: {
-//           id: student ? student.id : "-",
-//           fullName: student ? fullName : "-",
-//           photo: student ? student.image_url || "" : "",
-//           index_number: student ? student.index_number : "-",
-//         },
-//       };
-//     });
-
-//     const totalCount = filteredReports.length;
-//     const totalPages = Math.ceil(totalCount / limit);
-//     const hasNextPage = page < totalPages;
-//     const hasPrevPage = page > 1;
-
-//     const pendingCount = reports.filter((r) => r.status === "Pending").length;
-//     const approvedCount = reports.filter((r) => r.status === "Approved").length;
-//     const rejectedCount = reports.filter((r) => r.status === "Rejected").length;
-
-//     return {
-//       success: {
-//         reports: formattedReports,
-//         totalCount,
-//         totalPages,
-//         hasNextPage,
-//         hasPrevPage,
-//         pageNumber: page,
-//         pendingCount,
-//         approvedCount,
-//         rejectedCount,
-//       },
-//     };
-//   } catch (error) {
-//     console.error(error);
-//     // return { error: "Something went wrong" };
-//     throw error;
-//   }
-// };
 
 export const getReportSummary = async (id: number) => {
   try {
@@ -451,6 +316,7 @@ export const getStudent = async (id: number) => {
     }));
 
     const student: StudentInfo = {
+      id: foundStudent.id,
       fullName,
       index_number: foundStudent.index_number,
       reference_no: foundStudent.reference_no,
@@ -597,3 +463,25 @@ export const getReport = async (id: number) => {
     throw error;
   }
 };
+
+export const addComment = authAction(
+  addCommentSchema,
+  async ({ id, comments }: { id: number; comments: string }, { userId }) => {
+    try {
+      await prisma.report.update({
+        where: { id },
+        data: {
+          comments,
+        },
+      });
+
+      revalidatePath("/reports");
+      revalidatePath("/reports/" + id.toString());
+
+      return { success: "Successfully Added Comments" };
+    } catch (error: any) {
+      console.log(error);
+      return { error: "Something went wrong" };
+    }
+  }
+);

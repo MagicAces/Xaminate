@@ -11,6 +11,7 @@ export const venueOptions = async (
       value: venue.id,
       label: venue.name,
       isDisabled: false,
+      isDeleted: venue.deleted,
     }));
   }
 
@@ -30,6 +31,7 @@ export const venueOptions = async (
         value: venue.id,
         label: venue.name,
         isDisabled,
+        isDeleted: venue.deleted,
       };
     })
   );
@@ -75,6 +77,36 @@ export const limitOptions = (): readonly SelectOption[] => {
     {
       value: 50,
       label: "50 per page",
+    },
+  ];
+};
+
+export const cameraVenues = (venues: Venue[]): readonly SelectOption[] => {
+  const options = venues.map((venue) => {
+    return {
+      value: venue.id,
+      label: venue.name,
+      isDisabled: false,
+      isDeleted: venue.deleted,
+    };
+  });
+
+  return options;
+};
+
+export const cameraOptions = (): readonly SelectOption[] => {
+  return [
+    {
+      value: "active",
+      label: "Active",
+    },
+    {
+      value: "inactive",
+      label: "Inactive",
+    },
+    {
+      value: "maintenance",
+      label: "Maintenance",
     },
   ];
 };

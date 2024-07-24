@@ -9,7 +9,7 @@ import styles from "@/styles/report.module.scss";
 import Top from "./Top";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setReport } from "@/redux/slices/reportSlice";
+import { setReload, setReport } from "@/redux/slices/reportSlice";
 import Skeleton from "react-loading-skeleton";
 import Statistics from "./Statistics";
 import Details from "./Details";
@@ -17,12 +17,13 @@ import { useModal } from "@/utils/context";
 import Modal from "../Modal/Modal";
 
 const Report = ({ id }: { id: number }) => {
-  const { data, isLoading, error } = useGetReport(id);
-  const { report } = useSelector((state: any) => state.report);
+  const { data, isLoading, error, isFetching } = useGetReport(id);
+  const { report, reload } = useSelector((state: any) => state.report);
   const router = useRouter();
   const dispatch = useDispatch();
   const { modalState } = useModal();
 
+  console.log(reload);
   useEffect(() => {
     if (error || data?.error) {
       console.log(error);
@@ -30,12 +31,14 @@ const Report = ({ id }: { id: number }) => {
       router.replace("/reports");
     }
 
+    if (!isLoading && !isFetching) dispatch(setReload(false));
+
     if (data?.success) dispatch(setReport(data?.success));
   }, [error, data, dispatch, router]);
 
   return (
     <>
-      {isLoading && <Loader curved={false} />}
+      {(reload || isLoading) && <Loader curved={false} />}
 
       {modalState.mode > 0 && modalState.id > 0 && <Modal />}
       <div className={styles.reportPage}>
@@ -68,7 +71,7 @@ const Report = ({ id }: { id: number }) => {
                   padding: "1rem",
                 }}
               />
-              <>
+              <div className={styles.reportStatistics}>
                 <Skeleton
                   baseColor="#2C2C2C"
                   highlightColor="#505050"
@@ -83,7 +86,7 @@ const Report = ({ id }: { id: number }) => {
                 <Skeleton
                   baseColor="#2C2C2C"
                   highlightColor="#505050"
-                  containerClassName={styles.skeletonStats}
+                  containerClassName={styles.skeletonStudentStats}
                   height={"100%"}
                   style={{
                     borderRadius: "0.5rem",
@@ -91,7 +94,7 @@ const Report = ({ id }: { id: number }) => {
                     // padding: "1rem",
                   }}
                 />
-              </>
+              </div>
             </>
           ) : (
             <>

@@ -15,6 +15,7 @@ import { closeModal, setReload, setSession } from "@/redux/slices/modalSlice";
 import { editSession } from "@/server/actions/sessions";
 import { useAction } from "next-safe-action/hooks";
 import { isEqual } from "lodash";
+import { setReload as sessionReload } from "@/redux/slices/sessionSlice";
 
 const Edit = () => {
   const [page, setPage] = useState(1);
@@ -76,6 +77,7 @@ const Edit = () => {
     if (status === "hasSucceeded" && result?.data?.success) {
       exitModal();
       dispatch(closeModal());
+      dispatch(sessionReload(true));
     }
   }, [status, exitModal, dispatch]);
 

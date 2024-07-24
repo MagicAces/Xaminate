@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import Session from "@/components/Session/Session";
+import Report from "@/components/Report/Report";
 import styles from "@/styles/report.module.scss";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className={styles.reportContainer}>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
-            <Session id={parseInt(id)} />
+            <Report id={parseInt(id)} />
           </HydrationBoundary>
         </div>
       </section>

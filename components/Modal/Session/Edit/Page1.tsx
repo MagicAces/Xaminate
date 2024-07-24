@@ -28,7 +28,7 @@ import Select, { DropdownIndicatorProps, components } from "react-select";
 
 import { SessionInput } from "@/lib/schema";
 import { closeModal } from "@/redux/slices/modalSlice";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -292,23 +292,25 @@ const Page1 = ({
 
   return (
     <>
-      <AnimatePresence>
-        {error && (
-          <motion.div
-            animate={{ opacity: 1 }}
-            initial={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ ease: "easeInOut", duration: 1 }}
-            className={styles.errorBox}
-          >
-            <span>
-              <MdInfoOutline />
-              <span>{error}</span>
-            </span>
-            <MdClose onClick={() => setError("")} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* <AnimatePresence> */}
+      {error && (
+        // <motion.div
+        //   animate={{ opacity: 1 }}
+        //   initial={{ opacity: 0 }}
+        //   exit={{ opacity: 0 }}
+        //   transition={{ ease: "easeInOut", duration: 1 }}
+        //   className={styles.errorBox}
+        // >
+        <div className={styles.errorBox}>
+          <span>
+            <MdInfoOutline />
+            <span>{error}</span>
+          </span>
+          <MdClose onClick={() => setError("")} />
+        </div>
+        // </motion.div>
+      )}
+      {/* </AnimatePresence> */}
       <ColoredScrollbars className={styles.scrollContainer}>
         <div className={styles.scrollContent}>
           <div className={styles.courseRow}>

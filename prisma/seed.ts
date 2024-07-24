@@ -30,30 +30,30 @@ async function main() {
   //     password,
   //   },
   // });
-  // await prisma.camera.createMany({
-  //   data: [
-  //     {
-  //       name: "NEB-GF Camera 1",
-  //       venue_id: 3,
-  //       status: "Active",
-  //     },
-  //     {
-  //       name: "NEB-GF Camera 2",
-  //       venue_id: 3,
-  //       status: "Active",
-  //     },
-  //     {
-  //       name: "NEB-GF Camera 3",
-  //       venue_id: 3,
-  //       status: "Active",
-  //     },
-  //     {
-  //       name: "PB 001 Camera 1",
-  //       venue_id: 2,
-  //       status: "Active",
-  //     },
-  //   ],
-  // });
+  await prisma.camera.createMany({
+    data: [
+      {
+        name: "NEB-GF Camera 1",
+        venue_id: 3,
+        status: "Active",
+      },
+      {
+        name: "NEB-GF Camera 2",
+        venue_id: 3,
+        status: "Active",
+      },
+      {
+        name: "NEB-GF Camera 3",
+        venue_id: 3,
+        status: "Active",
+      },
+      {
+        name: "PB 001 Camera 1",
+        venue_id: 2,
+        status: "Active",
+      },
+    ],
+  });
 
   const programs = [
     "BSc. Computer Engineering",
@@ -74,7 +74,7 @@ async function main() {
     const program = faker.helpers.arrayElement(programs);
     const level = faker.helpers.arrayElement(levels);
     const indexNumber =
-      faker.number.int({ min: 100000, max: 999999 }) +
+      faker.number.int({ min: 10000, max: 99999 }) +
       faker.helpers.arrayElement(endYears);
     const referenceNo = faker.number.int({
       min: 10000000,
@@ -94,12 +94,12 @@ async function main() {
     });
   }
 
-  const res = await prisma.student.createMany({
+  const res2 = await prisma.student.createMany({
     data: students,
   });
 
   console.log("Seeding finished.");
-  console.log(res);
+  console.log(res2);
   // console.log(user);
 }
 

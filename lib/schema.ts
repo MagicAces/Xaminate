@@ -191,6 +191,71 @@ export const approveReportSchema = object({
   approved: boolean({ required_error: "Approval status needed" }),
 });
 
+export const addCommentSchema = object({
+  id: number({ required_error: "Report Id is Required" }).gte(1, {
+    message: "Id should be greater than 1",
+  }),
+  comments: string(),
+});
+
+export const editVenueSchema = object({
+  deleted: array(
+    number().gte(1, {
+      message: "Id should be greater than 1",
+    })
+  )
+    // .nonempty({ message: "At least one deleted id is required" })
+    .optional(),
+  updated: array(
+    object({
+      id: number().gte(1, {
+        message: "Id should be greater than 1",
+      }),
+      name: string().nonempty({ message: "Name is required" }),
+    })
+  ).optional(),
+  added: array(
+    object({
+      name: string().nonempty({ message: "Name is required" }),
+    })
+  ).optional(),
+});
+
+export const editCameraSchema = object({
+  deleted: array(
+    number().gte(1, {
+      message: "Id should be greater than 1",
+    })
+  )
+    // .nonempty({ message: "At least one deleted id is required" })
+    .optional(),
+  updated: array(
+    object({
+      id: number().gte(1, {
+        message: "Id should be greater than 1",
+      }),
+      name: string().nonempty({ message: "Name is required" }),
+      venue_id: number().gte(1, {
+        message: "Id should be greater than 1",
+      }),
+      status: string().nonempty({ message: "Status is required" }),
+    })
+  ).optional(),
+  added: array(
+    object({
+      name: string().min(1, { message: "Name is required" }),
+      venue_id: number().gte(1, {
+        message: "Id should be greater than 1",
+      }),
+      status: string().min(1, { message: "Status is required" }),
+    })
+  ).optional(),
+});
+
+export const emailAlertsSchema = object({
+  emailAlerts: boolean({ required_error: "Email alerts " }),
+});
+
 export type LoginInput = TypeOf<typeof loginSchema>;
 export type AutheniticateInput = TypeOf<typeof authenticateSchema>;
 export type RegisterInput = TypeOf<typeof registerSchema>;

@@ -1,7 +1,7 @@
 "use client";
 
 import logo from "@/public/images/logo.svg";
-import { logout } from "@/server/actions/login";
+import { logout } from "@/server/actions/user";
 import styles from "@/styles/sidebar.module.scss";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,8 +21,9 @@ import { useModal } from "@/utils/context";
 import Modal from "./Modal/Modal";
 import { useGetVenues } from "@/server/hooks/venues";
 import { useDispatch, useSelector } from "react-redux";
-import { setReload, setVenues } from "@/redux/slices/modalSlice";
-import { setFullView } from "@/redux/slices/sidebarSlice";
+import { setLogoutReload, setFullView } from "@/redux/slices/sidebarSlice";
+import { useGetCameras } from "@/server/hooks/cameras";
+import { setCameras, setVenues } from "@/redux/slices/settingSlice";
 
 const Sidebar = () => {
   const { fullView } = useSelector((state: any) => state.sidebar);
@@ -32,15 +33,23 @@ const Sidebar = () => {
   const [, formAction, isPending] = useFormState(logout, null);
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
-  const { data: venues, error, isLoading } = useGetVenues();
+  const { data: venues, error: venuesError } = useGetVenues();
+  const { data: cameras, error: camerasError } = useGetCameras();
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (error) console.error(error);
+    if (venuesError) console.error(venuesError);
 
-    if (Array.isArray(venues) && venues?.length && typeof venues !== "string")
-      dispatch(setVenues(venues));
-  }, [venues, error, dispatch]);
+    if (venues !== undefined && Array.isArray(venues) && venues?.length)
+      dispatch(setVenues(typeof venues === "string" ? [] : venues));
+  }, [venues, venuesError, dispatch]);
+
+  useEffect(() => {
+    if (camerasError) console.error(camerasError);
+
+    if (cameras !== undefined && Array.isArray(cameras) && cameras?.length)
+      dispatch(setCameras(typeof cameras === "string" ? [] : cameras));
+  }, [cameras, camerasError, dispatch]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClick);
@@ -133,7 +142,10 @@ const Sidebar = () => {
             <span>Session</span>
           </div>
           <form action={formAction} className={styles.logout}>
-            <button type="submit" onClick={() => dispatch(setReload(true))}>
+            <button
+              type="submit"
+              onClick={() => dispatch(setLogoutReload(true))}
+            >
               <span>
                 <TbLogout />
               </span>

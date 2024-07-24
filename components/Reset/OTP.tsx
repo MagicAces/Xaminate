@@ -7,7 +7,7 @@ import {
 } from "@/redux/slices/resetSlice";
 import { sendOTP, verifyOTP } from "@/server/actions/reset";
 import styles from "@/styles/otp.module.scss";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -157,23 +157,26 @@ const OTP = () => {
             inbox or spam folder.
           </p>
         </div>
-        <AnimatePresence>
+        {/* <AnimatePresence> */}
           {error && (
-            <motion.div
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0.1 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeInOut", duration: 1 }}
-              className={styles.errorBox}
-            >
+            // <motion.div
+            //   animate={{ opacity: 1 }}
+            //   initial={{ opacity: 0.1 }}
+            //   exit={{ opacity: 0 }}
+            //   transition={{ ease: "easeInOut", duration: 1 }}
+            //   className={styles.errorBox}
+            // >
+              <div className={styles.errorBox}>
               <span>
                 <MdInfoOutline />
                 <span>{error}</span>
               </span>
               <MdClose onClick={() => setError("")} />
-            </motion.div>
+
+              </div>
+            // {/* </motion.div> */}
           )}
-        </AnimatePresence>
+        {/* </AnimatePresence> */}
         <form ref={formRef} className={styles.otpForm}>
           <div className={styles.otpBox}>
             {otp.map((digit: string, index: number) => (

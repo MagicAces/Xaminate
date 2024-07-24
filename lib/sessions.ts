@@ -3,9 +3,8 @@
 import prisma from "@/prisma/prisma";
 import { Category, TempStatus } from "@prisma/client";
 import { format } from "date-fns";
-import { VenueBooking } from "@/types";
+import { SummaryProps, VenueBooking } from "@/types";
 import { revalidatePath } from "next/cache";
-import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import {
   formatDuration,
   formatSorRDate,
@@ -14,9 +13,59 @@ import {
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { render } from "@react-email/components";
+import Summary from "@/emails/Summary";
+import nodemailer from "nodemailer";
+import { auth } from "@/auth";
+
+class EmailError extends Error {
+  constructor(message: string, public code: number) {
+    super(message);
+    this.name = "EmailError";
+  }
+}
+
+const sendEmail = async (email: string, session: SummaryProps) => {
+  const emailHtml = render(Summary(session));
+  const sessionPDF = await generateSessionPDF(session.id);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: `"Xaminate" <${process.env.GMAIL_USER}>`,
+    to: email,
+    subject: `Session #${session.id?.toString()} Summary`,
+    html: emailHtml,
+    attachments: [
+      {
+        filename: `Session_${session.id}_Summary.pdf`,
+        content: Buffer.from(sessionPDF),
+        contentType: "application/pdf",
+      },
+    ],
+  };
+
+  return new Promise<void>((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+        return reject(new EmailError("Error occurred sending email", 501));
+      }
+      console.log("Email sent: " + info.response);
+      resolve();
+    });
+  });
+};
 
 export const checkSessionStatus = async () => {
   const now = new Date();
+  const sessionData = await auth();
 
   const [pendingToActiveSessions, activeToClosedSessions] = await Promise.all([
     prisma.session.findMany({
@@ -83,6 +132,28 @@ export const checkSessionStatus = async () => {
       data: [...pendingToActiveNotifications, ...activeToClosedNotifications],
     }),
   ]);
+
+  if (sessionData?.user?.emailAlerts) {
+    for (const session of activeToClosedSessions) {
+      if (!sessionData?.user) return;
+      if (sessionData?.user?.email) {
+        const summaryProps: SummaryProps = {
+          id: session.id,
+          startTime: session.start_time.toISOString(),
+          endTime: session.end_time.toISOString(),
+          first_name: sessionData.user.firstName || "Hello",
+        };
+        try {
+          await sendEmail(sessionData?.user?.email, summaryProps);
+        } catch (error) {
+          console.error(
+            `Failed to send email for session #${session.id}`,
+            error
+          );
+        }
+      }
+    }
+  }
 };
 
 export const isVenueAvailable = async (
@@ -123,7 +194,7 @@ export const isVenueAvailable = async (
 const pathsToRevalidate = [
   "/", // Root path
   "/sessions",
-  "/sessions/[id]",
+  "/reports",
   // Add more paths here if needed
 ];
 

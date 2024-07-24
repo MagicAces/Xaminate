@@ -70,6 +70,16 @@ const View = () => {
     if (status === "hasSucceeded" && result?.data?.success) exitModal();
   }, [status, exitModal]);
 
+  useEffect(() => {
+    router.prefetch(`/reports/${modalState.id}`);
+  }, []);
+
+  useEffect(() => {
+    if (report?.session_id) {
+      router.prefetch(`/sessions/${report?.session_id}`);
+    }
+  }, [report]);
+
   return (
     <>
       <div

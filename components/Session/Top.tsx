@@ -4,6 +4,7 @@ import { SessionOutput, SessionSummary } from "@/types";
 import { useModal } from "@/utils/context";
 import { capitalize } from "lodash";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { GiExitDoor } from "react-icons/gi";
 import { IoMdArrowBack, IoMdStats } from "react-icons/io";
@@ -82,6 +83,10 @@ const Top = () => {
       setState(session.id, 5, "session");
     }
   };
+
+  useEffect(() => {
+    router.prefetch("/sessions")
+  }, [])
 
   return (
     <>

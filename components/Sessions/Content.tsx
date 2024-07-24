@@ -31,6 +31,7 @@ const Content = () => {
   useEffect(() => {
     dispatch(setIsDisabled(isPlaceholderData || isLoading));
 
+    if (!isFetching && !isLoading) dispatch(setReload(false));
     if (error) {
       toast.error(error.message || "Error Fetching Sessions", {
         toastId: "E2",
@@ -91,6 +92,7 @@ const Content = () => {
 
     return true;
   };
+
   return (
     <>
       <main className={styles.sessionContent}>

@@ -5,7 +5,7 @@ import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 // import "@radix-ui/themes/styles.css";
 import { GeistSans } from "geist/font/sans";
-import { Theme } from "@radix-ui/themes";
+// import { Theme } from "@radix-ui/themes";
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +24,9 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className={GeistSans.className}>
         <AllProviders>
-          <Theme appearance="dark">{children}</Theme>
+          {/* <Theme appearance="dark"> */}
+          {children}
+          {/* </Theme> */}
         </AllProviders>
         <ToastContainer
           stacked

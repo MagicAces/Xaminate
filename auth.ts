@@ -81,11 +81,18 @@ const config = {
     maxAge: 24 * 60 * 60,
   },
   callbacks: {
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user, trigger, session }) => {
       if (user) {
         return {
           ...token,
           ...user,
+        };
+      }
+
+      if (trigger === "update" && session?.emailAlerts !== null) {
+        return {
+          ...token,
+          emailAlerts: session.emailAlerts,
         };
       }
       return token;

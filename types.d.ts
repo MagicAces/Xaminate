@@ -27,6 +27,13 @@ export interface OTPProps {
   otp: string;
 }
 
+export interface SummaryProps {
+  id: number;
+  startTime: string;
+  endTime: string;
+  first_name: string;
+}
+
 export interface ModalState {
   id: number;
   mode: number;
@@ -48,6 +55,7 @@ export interface ModalProviderProps {
 export interface Venue {
   id: number;
   name: string;
+  deleted: boolean;
   bookings: VenueBooking[];
   created_on: string;
   updated_at: string;
@@ -61,10 +69,23 @@ export interface VenueBooking {
   session_id: number;
 }
 
+export interface EditVenuesPayload {
+  deleted?: number[];
+  updated?: { id: number; name: string }[];
+  added?: { name: string }[];
+}
+
+export interface EditCamerasPayload {
+  deleted?: number[];
+  updated?: { id: number; name: string; venue_id: number; status: string }[];
+  added?: { name: string; venue_id: number; status: string }[];
+}
+
 export interface SelectOption {
   readonly value: number | string;
   readonly label: string;
   readonly isDisabled?: boolean;
+  readonly isDeleted?: boolean;
 }
 
 export type SessionEdit = {
@@ -83,7 +104,6 @@ export type SessionEdit = {
 };
 
 export interface ModalSliceState {
-  venues: Venue[];
   session: SessionEdit | {};
   report: ReportInfo | {};
   student: StudentInfo | {};
@@ -103,6 +123,13 @@ export interface Notification {
 
 export interface SidebarState {
   fullView: boolean;
+  logoutReload: boolean;
+}
+
+export interface SettingState {
+  reload: boolean;
+  venues: Venue[];
+  cameras: Camera[];
 }
 
 // ---------  Session ---------------
@@ -337,8 +364,8 @@ export interface ReportOutput {
         last_name: string;
       }
     | undefined;
-    created_on: string;
-    updated_at: string;
+  created_on: string;
+  updated_at: string;
   snapshot_url: string;
   valid_reports: number;
   total_reports: number;
@@ -364,6 +391,7 @@ export interface ReportInfo {
 }
 
 export interface StudentInfo {
+  id: number;
   fullName: string;
   index_number: number;
   reference_no: number;
@@ -374,4 +402,22 @@ export interface StudentInfo {
     session_id: number;
     report_count: number;
   }[];
+}
+
+// ---------------------- CAMERAS ----------------
+
+export interface Camera {
+  id: number;
+  name: string;
+  venue_id: number;
+  status: string;
+  created_on: string;
+  updated_at: string;
+  venue: CameraVenue;
+  reportCount: number;
+}
+
+interface CameraVenue {
+  id: number;
+  name: string;
 }

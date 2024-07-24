@@ -19,6 +19,7 @@ import {
   isVenueAvailable,
   revalidateAllPaths,
 } from "@/lib/sessions";
+import { revalidatePath } from "next/cache";
 
 export const createSession = authAction(
   sessionSchema,
@@ -391,6 +392,7 @@ export const getSession = async (id: number) => {
     throw error;
   }
 };
+
 export const getSessionForEdit = async (id: number) => {
   try {
     if (!id) return { error: "Id not found" };
@@ -515,7 +517,7 @@ export const getSessionPDF = authAction(
       if (!id) return { error: "Session ID not provided" };
 
       const pdfBuffer = await generateSessionPDF(id);
-      
+
       return { success: "Successfully exported", pdf: pdfBuffer };
     } catch (error) {
       console.error(error);
@@ -538,107 +540,118 @@ export const editSession = authAction(
         return TempStatus.active;
       };
 
-      const updatedSession = await prisma.$transaction(async (prisma) => {
-        if (!session.sessionStart || !session.sessionEnd)
-          return { error: "Dates cannot be empty" };
+      const updatedSession = await prisma.$transaction(
+        async (prisma) => {
+          if (!session.sessionStart || !session.sessionEnd)
+            return { error: "Dates cannot be empty" };
 
-        const sessionData = await prisma.session.findUnique({
-          where: { id: session.id },
-        });
-
-        if (!sessionData) return { error: "Session not found" };
-
-        const venueChanged = sessionData.venue_id !== session.venue;
-        const timeChanged =
-          session.sessionStart.getTime() !== sessionData.start_time.getTime() ||
-          session.sessionEnd.getTime() !== sessionData.end_time.getTime();
-
-        if (venueChanged || timeChanged) {
-          const isAvailable = await isVenueAvailable(
-            session.venue,
-            session.sessionStart,
-            session.sessionEnd,
-            undefined,
-            session.id
-          );
-
-          // if (sessionData.start_time)
-          if (!isAvailable) return { error: "Venue is not available" };
-
-          // If the venue is changing, release the previous booking
-          // if (venueChanged) {
-          await prisma.venueBooking.deleteMany({
-            where: { session_id: session.id },
+          const sessionData = await prisma.session.findUnique({
+            where: { id: session.id },
           });
-          // }
 
-          // Create a new booking for the new or updated venue/times
-          await prisma.venueBooking.create({
+          if (!sessionData) return { error: "Session not found" };
+
+          const venueChanged = sessionData.venue_id !== session.venue;
+          const timeChanged =
+            session.sessionStart.getTime() !==
+              sessionData.start_time.getTime() ||
+            session.sessionEnd.getTime() !== sessionData.end_time.getTime();
+
+          if (venueChanged || timeChanged) {
+            const isAvailable = await isVenueAvailable(
+              session.venue,
+              session.sessionStart,
+              session.sessionEnd,
+              undefined,
+              session.id
+            );
+
+            // if (sessionData.start_time)
+            if (!isAvailable) return { error: "Venue is not available" };
+
+            // If the venue is changing, release the previous booking
+            // if (venueChanged) {
+            await prisma.venueBooking.deleteMany({
+              where: { session_id: session.id },
+            });
+            // }
+
+            // Create a new booking for the new or updated venue/times
+            await prisma.venueBooking.create({
+              data: {
+                venue_id: session.venue,
+                session_id: session.id,
+                start_time: session.sessionStart,
+                end_time: session.sessionEnd,
+              },
+            });
+          }
+
+          const newTempStatus = timeChanged
+            ? updateStatus(
+                new Date(session.sessionStart),
+                new Date(session.sessionEnd)
+              )
+            : sessionData.temp_status;
+
+          const updatedSession = await prisma.session.update({
+            where: { id: session.id },
             data: {
-              venue_id: session.venue,
-              session_id: session.id,
               start_time: session.sessionStart,
               end_time: session.sessionEnd,
+              created_by: Number(userId),
+              course_names: session.courseNames.map((course) =>
+                _.startCase(_.lowerCase(course))
+              ),
+              course_codes: session.courseCodes.map((code) =>
+                _.upperCase(code)
+              ),
+              classes: session.classes.map((classe) => _.upperCase(classe)),
+              invigilators: session.invigilators.map((invigilator) =>
+                _.startCase(_.lowerCase(invigilator))
+              ),
+              venue_id: session.venue,
+              comments: session?.comments ? session.comments : "",
+              temp_status: newTempStatus,
+              actual_end_time: timeChanged
+                ? session.sessionEnd
+                : sessionData.actual_end_time,
             },
           });
+
+          await prisma.notification.create({
+            data: {
+              category: "Session",
+              message: `Session #${updatedSession.id} has been updated. It ${
+                newTempStatus === "pending"
+                  ? `will start at ${format(
+                      new Date(session.sessionStart),
+                      "h:mm a"
+                    )}`
+                  : newTempStatus === "active"
+                  ? `started at ${format(
+                      new Date(session.sessionStart),
+                      "h:mm a"
+                    )}`
+                  : `ended at ${format(new Date(session.sessionEnd), "h:mm a")}`
+              }`,
+              category_id: updatedSession.id,
+            },
+          });
+
+          if (updatedSession) return { success: "Session Updated" };
+
+          return { error: "Session could not be updated" };
+        },
+        {
+          maxWait: 5000, // default: 2000
+          timeout: 10000, // default: 5000
+          isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // optional, default defined by database configuration
         }
-
-        const newTempStatus = timeChanged
-          ? updateStatus(
-              new Date(session.sessionStart),
-              new Date(session.sessionEnd)
-            )
-          : sessionData.temp_status;
-
-        const updatedSession = await prisma.session.update({
-          where: { id: session.id },
-          data: {
-            start_time: session.sessionStart,
-            end_time: session.sessionEnd,
-            created_by: Number(userId),
-            course_names: session.courseNames.map((course) =>
-              _.startCase(_.lowerCase(course))
-            ),
-            course_codes: session.courseCodes.map((code) => _.upperCase(code)),
-            classes: session.classes.map((classe) => _.upperCase(classe)),
-            invigilators: session.invigilators.map((invigilator) =>
-              _.startCase(_.lowerCase(invigilator))
-            ),
-            venue_id: session.venue,
-            comments: session?.comments ? session.comments : "",
-            temp_status: newTempStatus,
-            actual_end_time: timeChanged
-              ? session.sessionEnd
-              : sessionData.actual_end_time,
-          },
-        });
-
-        await prisma.notification.create({
-          data: {
-            category: "Session",
-            message: `Session #${updatedSession.id} has been updated. It ${
-              newTempStatus === "pending"
-                ? `will start at ${format(
-                    new Date(session.sessionStart),
-                    "h:mm a"
-                  )}`
-                : newTempStatus === "active"
-                ? `started at ${format(
-                    new Date(session.sessionStart),
-                    "h:mm a"
-                  )}`
-                : `ended at ${format(new Date(session.sessionEnd), "h:mm a")}`
-            }`,
-            category_id: updatedSession.id,
-          },
-        });
-
-        if (updatedSession) return { success: "Session Updated" };
-
-        return { error: "Session could not be updated" };
-      });
+      );
 
       await revalidateAllPaths();
+      revalidatePath("/sessions/" + session.id);
 
       return updatedSession;
     } catch (error) {

@@ -66,7 +66,16 @@ const Notification = () => {
     if (notification.read) return;
 
     if (notification?.category_id && notification.category === "Session") {
+      router.prefetch(`/sessions/${notification.category_id}`);
       router.push(`/sessions/${notification.category_id}`);
+      markAsRead(notification.id);
+      exitModal();
+    } else if (
+      notification?.category_id &&
+      notification.category === "Report"
+    ) {
+      router.prefetch(`/reports/${notification.category_id}`);
+      router.push(`/reports/${notification.category_id}`);
       markAsRead(notification.id);
       exitModal();
     }

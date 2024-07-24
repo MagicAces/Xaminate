@@ -2,10 +2,10 @@
 
 import { LoginInput, loginSchema } from "@/lib/schema";
 import logo from "@/public/images/logo.svg";
-import { authenticate } from "@/server/actions/login";
+import { authenticate } from "@/server/actions/user";
 import styles from "@/styles/form.module.scss";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +19,7 @@ import Button from "../Utils/Button";
 import Loader from "../Utils/Loader";
 import { setReload } from "@/redux/slices/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setLogoutReload } from "@/redux/slices/sidebarSlice";
 
 export default function Form() {
   const [error, setError] = useState("");
@@ -68,13 +69,14 @@ export default function Form() {
   };
 
   useEffect(() => {
-    dispatch(setReload(false));
+    // dispatch(setReload(false));
+    dispatch(setLogoutReload(false));
   }, []);
 
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>
-        {(status === "executing" || reload)&& <Loader />}
+        {(status === "executing" || reload) && <Loader />}
         <div className={styles.topContainer}>
           <Image
             src={logo}
@@ -85,23 +87,25 @@ export default function Form() {
           />
           <h2>Login</h2>
         </div>
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeInOut", duration: 1 }}
-              className={styles.errorBox}
-            >
-              <span>
-                <MdInfoOutline />
-                <span>{error}</span>
-              </span>
-              <MdClose onClick={() => setError("")} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* <AnimatePresence> */}
+        {error && (
+          // <motion.div
+          //   animate={{ opacity: 1 }}
+          //   initial={{ opacity: 0 }}
+          //   exit={{ opacity: 0 }}
+          //   transition={{ ease: "easeInOut", duration: 1 }}
+          //   className={styles.errorBox}
+          // >
+          <div className={styles.errorBox}>
+            <span>
+              <MdInfoOutline />
+              <span>{error}</span>
+            </span>
+            <MdClose onClick={() => setError("")} />
+          </div>
+          // </motion.div>
+        )}
+        {/* </AnimatePresence> */}
         <div className={styles.inputContainer}>
           <div className={styles.emailBox}>
             <label
@@ -118,19 +122,21 @@ export default function Form() {
               disabled={status === "executing"}
               autoComplete="false"
             />
-            <AnimatePresence>
-              {errors["email"] && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ ease: "easeInOut", duration: 1 }}
-                  className={styles.errorText}
-                >
-                  {errors["email"]?.message as string}
-                </motion.p>
-              )}
-            </AnimatePresence>
+            {/* <AnimatePresence> */}
+            {errors["email"] && (
+              // <motion.p
+              //   initial={{ opacity: 0 }}
+              //   animate={{ opacity: 1 }}
+              //   exit={{ opacity: 0 }}
+              //   transition={{ ease: "easeInOut", duration: 1 }}
+              //   className={styles.errorText}
+              // >
+              <p className={styles.errorText}>
+                {errors["email"]?.message as string}
+              </p>
+              // </motion.p>
+            )}
+            {/* </AnimatePresence> */}
           </div>
           <div className={styles.passwordBox}>
             <label
@@ -153,19 +159,21 @@ export default function Form() {
                 <BsEyeFill onClick={() => setPasswordReveal(true)} />
               )}
             </div>
-            <AnimatePresence>
-              {errors["password"] && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ ease: "easeInOut", duration: 1 }}
-                  className={styles.errorText}
-                >
-                  {errors["password"]?.message as string}
-                </motion.p>
-              )}
-            </AnimatePresence>
+            {/* <AnimatePresence> */}
+            {errors["password"] && (
+              // <motion.p
+              //   initial={{ opacity: 0 }}
+              //   animate={{ opacity: 1 }}
+              //   exit={{ opacity: 0 }}
+              //   transition={{ ease: "easeInOut", duration: 1 }}
+              //   className={styles.errorText}
+              // >
+              <p className={styles.errorText}>
+                {errors["password"]?.message as string}
+              </p>
+              // {/* </motion.p> */}
+            )}
+            {/* </AnimatePresence> */}
           </div>
           <div className={styles.forgotBox}>
             <Link href={"/login/reset"}>Forgot Password?</Link>

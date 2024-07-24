@@ -43,7 +43,7 @@ const Student = () => {
     data: studentData,
     isLoading: studentLoading,
     error: studentError,
-  } = useGetStudent(modalState.id);
+  } = useGetStudent(student?.id);
 
   useEffect(() => {
     if (studentError || studentData?.error) {
@@ -67,6 +67,7 @@ const Student = () => {
 
   useEffect(() => {
     setIsClient(true);
+    router.prefetch(`/reports/${modalState.id}`);
   }, []);
 
   return (

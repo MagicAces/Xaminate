@@ -1,15 +1,20 @@
 "use server";
 
 import { signIn, signOut } from "@/auth";
-import { AutheniticateInput, authenticateSchema } from "@/lib/schema";
+import {
+  AutheniticateInput,
+  authenticateSchema,
+  emailAlertsSchema,
+} from "@/lib/schema";
 import { AuthError } from "next-auth";
 import {
   isRedirectError,
   RedirectType,
 } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
-import { action } from "./actions";
+import { action, authAction } from "./actions";
 import { revalidatePath } from "next/cache";
+import prisma from "@/prisma/prisma";
 
 export const authenticate = action(
   authenticateSchema,
@@ -45,3 +50,27 @@ export const logout = async () => {
     throw error;
   }
 };
+
+export const updateAlert = authAction(
+  emailAlertsSchema,
+  async ({ emailAlerts }: { emailAlerts: boolean }, { userId }) => {
+    try {
+      const updatedUser = await prisma.examsOfficer.update({
+        where: { id: Number(userId) },
+        data: {
+          email_alerts: emailAlerts,
+        },
+      });
+
+      revalidatePath("/settings");
+
+      return {
+        success: "Successfully Updated Status",
+        emailAlerts: updatedUser.email_alerts,
+      };
+    } catch (error: any) {
+      console.log(error);
+      return { error: "Something went wrong" };
+    }
+  }
+);

@@ -9,7 +9,7 @@ import styles from "@/styles/session.module.scss";
 import Top from "./Top";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setSession } from "@/redux/slices/sessionSlice";
+import { setReload, setSession } from "@/redux/slices/sessionSlice";
 import Skeleton from "react-loading-skeleton";
 import Reports from "./Reports";
 import Details from "./Details";
@@ -17,8 +17,8 @@ import { useModal } from "@/utils/context";
 import Modal from "../Modal/Modal";
 
 const Session = ({ id }: { id: number }) => {
-  const { data, isLoading, error } = useGetSession(id);
-  const { session } = useSelector((state: any) => state.session);
+  const { data, isLoading, error, isFetching } = useGetSession(id);
+  const { session, reload } = useSelector((state: any) => state.session);
   const router = useRouter();
   const dispatch = useDispatch();
   const { modalState } = useModal();
@@ -30,12 +30,14 @@ const Session = ({ id }: { id: number }) => {
       router.replace("/sessions");
     }
 
+    if (!isLoading && isFetching) dispatch(setReload(false));
+
     if (data?.success) dispatch(setSession(data?.success));
   }, [error, data, dispatch, router]);
 
   return (
     <>
-      {isLoading && <Loader curved={false} />}
+      {(reload || isLoading) && <Loader curved={false} />}
 
       {modalState.mode > 0 && modalState.id > 0 && <Modal />}
       <div className={styles.sessionPage}>

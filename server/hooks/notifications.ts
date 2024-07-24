@@ -20,7 +20,7 @@ export function useGetUnread() {
   return useQuery({
     queryFn: async () => {
       const data = await fetchUnread();
-     return { ...data.success };
+      return { ...data.success };
     },
     queryKey: ["unread"],
   });
@@ -77,9 +77,9 @@ export const useInvalidateNotifications = () => {
 export const useCheckStatus = () => {
   return useQuery({
     queryFn: async () => await updateStatus(),
-    queryKey: ['session_status'],
-    refetchInterval: 60 * 1000,
+    queryKey: ["session_status"],
+    refetchInterval: 5 * 1000,
     staleTime: Infinity,
-    refetchIntervalInBackground: true
+    refetchIntervalInBackground: true,
   });
-}
+};

@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from "react";
+import React, { ReactNode, useRef, useEffect } from "react";
 import {
   MenuItem,
   useMenuState,
@@ -17,12 +17,24 @@ import { GiExitDoor } from "react-icons/gi";
 import { MdPinEnd } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
-const SessionIcon = ({ id, status, openModal }: { id: number; status: string, openModal: (type: string) => void }) => {
+const SessionIcon = ({
+  id,
+  status,
+  openModal,
+}: {
+  id: number;
+  status: string;
+  openModal: (type: string) => void;
+}) => {
   const router = useRouter();
 
   const sessionIconRef = useRef(null);
   const [menuState, toggle] = useMenuState({ transition: true });
   const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
+
+  useEffect(() => {
+    router.prefetch(`/sessions/${id}`);
+  }, []);
 
   return (
     <>

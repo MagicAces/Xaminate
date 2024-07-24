@@ -1,13 +1,13 @@
 "use client";
 
 import styles from "@/styles/report.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import unknown from "@/public/images/unknown_user.png";
 import { ReportOutput } from "@/types";
 import { useModal } from "@/utils/context";
 import { formatSorRDate } from "@/utils/functs";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { MdFlipToBack, MdFlipToFront } from "react-icons/md";
 import { useSelector } from "react-redux";
 
@@ -18,6 +18,10 @@ const Details = () => {
   );
   const { exitModal } = useModal();
   const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(`/sessions/${report?.session_id}`);
+  }, []);
 
   return (
     <>
@@ -30,7 +34,7 @@ const Details = () => {
             {isFlipped ? (
               <MdFlipToFront onClick={() => setFlipped(false)} />
             ) : (
-              <MdFlipToBack onClick={() => setFlipped(false)} />
+              <MdFlipToBack onClick={() => setFlipped(true)} />
             )}
           </div>
           {!isFlipped ? (
@@ -141,7 +145,11 @@ const Details = () => {
                         ? `${report?.status} by`
                         : "Status changed by"}
                     </span>
-                    <p>{`${report?.editor?.last_name} ${report?.editor?.first_name}`}</p>
+                    <p>
+                      {report?.editor
+                        ? `${report?.editor?.last_name} ${report?.editor?.first_name}`
+                        : "N/A"}
+                    </p>
                   </div>
                 </div>
               </div>

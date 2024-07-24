@@ -10,7 +10,6 @@ import {
 } from "@/types";
 
 const initialState: ModalSliceState = {
-  venues: [],
   session: {},
   report: {},
   student: {},
@@ -22,9 +21,6 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    setVenues: (state, action: PayloadAction<Venue[]>) => {
-      state.venues = action.payload;
-    },
     setSession: (state, action: PayloadAction<SessionEdit>) => {
       state.session = action.payload;
     },
@@ -48,7 +44,6 @@ const modalSlice = createSlice({
 });
 
 export const {
-  setVenues,
   setSession,
   setReport,
   setStudent,
