@@ -413,6 +413,7 @@ export interface Camera {
   status: string;
   created_on: string;
   updated_at: string;
+  deleted: boolean;
   venue: CameraVenue;
   reportCount: number;
 }
@@ -420,4 +421,114 @@ export interface Camera {
 interface CameraVenue {
   id: number;
   name: string;
+}
+
+// ------------------ DASHBOARD -------------
+export interface DashboardTopRowData {
+  sessions: {
+    currentMonth: number;
+    total: number;
+    percentageChange: number;
+    pending: number;
+    active: number;
+    closed: number;
+  };
+  reports: {
+    currentMonth: number;
+    total: number;
+    percentageChange: number;
+    pending: number;
+    approved: number;
+    rejected: number;
+  };
+  venues: {
+    total: number;
+    percentageChange: number;
+  };
+  cameras: {
+    total: number;
+    percentageChange: number;
+    active: number;
+    inactive: number;
+    maintenance: number;
+  };
+}
+
+export interface VenueStats {
+  venue: {
+    id: number;
+    name: string;
+  };
+  sessions: number;
+  reports: number;
+}
+
+export interface VenueStatsResponse {
+  success?: VenueStats[];
+  error?: string;
+}
+
+export interface ReportStats {
+  pending: number;
+  approved: number;
+  rejected: number;
+}
+
+export interface ReportStatsResponse {
+  success?: ReportStats;
+  error?: string;
+}
+
+export interface ReportsPerSession {
+  sessionId: number;
+  reportsCount: number;
+}
+
+export interface ReportsPerSessionResponse {
+  success?: ReportsPerSession[];
+  error?: string;
+}
+
+interface SessionRecent {
+  id: number;
+  start_time: string;
+  end_time: string;
+  venue_id: number;
+  venue_name: string;
+  status: string;
+}
+
+interface ReportRecent {
+  id: number;
+  status: string;
+  student_index_no: number;
+  timestamp: string;
+}
+
+export interface RecentItemsResponse {
+  success?: {
+    sessions?: SessionRecent[];
+    reports?: ReportRecent[];
+  };
+  error?: string;
+}
+
+export interface DashboardState {
+  topRow: DashboardTopRowData;
+  venueStats: VenueStats[] | [];
+  reportStats: ReportStats;
+  recentSessions: SessionRecent[] | [];
+  recentReports: ReportRecent[] | [];
+  reportsPerSession: ReportsPerSession[] | [];
+  dateFilter: {
+    venue: string;
+    report: string;
+  };
+  sessionsBack: number;
+  category: "session" | "report";
+  reload: {
+    venueStats: boolean;
+    reportStats: boolean;
+    reportsPerSession: boolean;
+  };
 }

@@ -23,7 +23,7 @@ import { useGetVenues } from "@/server/hooks/venues";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogoutReload, setFullView } from "@/redux/slices/sidebarSlice";
 import { useGetCameras } from "@/server/hooks/cameras";
-import { setCameras, setVenues } from "@/redux/slices/settingSlice";
+import { setCameras, setReload, setVenues } from "@/redux/slices/settingSlice";
 
 const Sidebar = () => {
   const { fullView } = useSelector((state: any) => state.sidebar);
@@ -33,13 +33,24 @@ const Sidebar = () => {
   const [, formAction, isPending] = useFormState(logout, null);
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
-  const { data: venues, error: venuesError } = useGetVenues();
-  const { data: cameras, error: camerasError } = useGetCameras();
+  const {
+    data: venues,
+    error: venuesError,
+    isFetching: venuesFetching,
+    isLoading: venuesLoading,
+  } = useGetVenues();
+  const {
+    data: cameras,
+    error: camerasError,
+    isFetching: camerasFetching,
+    isLoading: camerasLoading,
+  } = useGetCameras();
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (venuesError) console.error(venuesError);
 
+    if (!venuesFetching && !venuesLoading) dispatch(setReload(false));
     if (venues !== undefined && Array.isArray(venues) && venues?.length)
       dispatch(setVenues(typeof venues === "string" ? [] : venues));
   }, [venues, venuesError, dispatch]);
@@ -47,6 +58,7 @@ const Sidebar = () => {
   useEffect(() => {
     if (camerasError) console.error(camerasError);
 
+    if (!camerasFetching && !camerasLoading) dispatch(setReload(false));
     if (cameras !== undefined && Array.isArray(cameras) && cameras?.length)
       dispatch(setCameras(typeof cameras === "string" ? [] : cameras));
   }, [cameras, camerasError, dispatch]);

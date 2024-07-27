@@ -82,14 +82,16 @@ export const limitOptions = (): readonly SelectOption[] => {
 };
 
 export const cameraVenues = (venues: Venue[]): readonly SelectOption[] => {
-  const options = venues.map((venue) => {
-    return {
-      value: venue.id,
-      label: venue.name,
-      isDisabled: false,
-      isDeleted: venue.deleted,
-    };
-  });
+  const options = venues
+    .filter((venue) => !venue.deleted)
+    .map((venue) => {
+      return {
+        value: venue.id,
+        label: venue.name,
+        isDisabled: false,
+        isDeleted: venue.deleted,
+      };
+    });
 
   return options;
 };
@@ -97,16 +99,37 @@ export const cameraVenues = (venues: Venue[]): readonly SelectOption[] => {
 export const cameraOptions = (): readonly SelectOption[] => {
   return [
     {
-      value: "active",
+      value: "Active",
       label: "Active",
     },
     {
-      value: "inactive",
+      value: "Inactive",
       label: "Inactive",
     },
     {
-      value: "maintenance",
+      value: "Maintenance",
       label: "Maintenance",
+    },
+  ];
+};
+
+export const sessionBackOptions = (): readonly SelectOption[] => {
+  return [
+    {
+      value: 7,
+      label: "7",
+    },
+    {
+      value: 10,
+      label: "10",
+    },
+    {
+      value: 12,
+      label: "12",
+    },
+    {
+      value: 15,
+      label: "15",
     },
   ];
 };

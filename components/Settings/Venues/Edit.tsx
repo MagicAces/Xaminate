@@ -195,7 +195,7 @@ const Edit = ({ setMode }: { setMode: any }) => {
 
   useEffect(() => {
     if (status === "hasSucceeded" && result?.data?.success) {
-      dispatch(setReload(true));
+      dispatch(setReload(false));
     }
   }, [status, result, dispatch]);
 

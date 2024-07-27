@@ -35,39 +35,41 @@ const View = () => {
               autoHideTimeout={1000}
             >
               <div className={styles.camerasRows}>
-                {cameras?.length > 0 ? (
-                  cameras?.map((camera: Camera, index: number) => (
-                    <div
-                      className={styles.camerasRowOuter}
-                      key={index}
-                      // style={{
-                      //   opacity: 0,
-                      //   animation: `slideIn 0.5s ease-out forwards`,
-                      //   animationDelay: `${index * 0.2}s`,
-                      // }}
-                    >
-                      <ScrollSyncPane>
-                        <div
-                          className={`${styles.camerasRowInner} hide-scrollbar`}
-                        >
-                          <span className={styles.actions}>
-                            <CameraTooltip camera={camera} />
-                          </span>
-                          <span className={styles.name}>{camera.name}</span>
-                          <span className={styles.venue}>
-                            {camera.venue.name}
-                          </span>
-                          <span
-                            className={`${styles.status} ${
-                              styles[camera.status]
-                            }`}
+                {cameras?.filter((cam: Camera) => !cam.deleted)?.length > 0 ? (
+                  cameras
+                    ?.filter((cam: Camera) => !cam.deleted)
+                    ?.map((camera: Camera, index: number) => (
+                      <div
+                        className={styles.camerasRowOuter}
+                        key={index}
+                        // style={{
+                        //   opacity: 0,
+                        //   animation: `slideIn 0.5s ease-out forwards`,
+                        //   animationDelay: `${index * 0.2}s`,
+                        // }}
+                      >
+                        <ScrollSyncPane>
+                          <div
+                            className={`${styles.camerasRowInner} hide-scrollbar`}
                           >
-                            {camera.status}
-                          </span>
-                        </div>
-                      </ScrollSyncPane>
-                    </div>
-                  ))
+                            <span className={styles.actions}>
+                              <CameraTooltip camera={camera} />
+                            </span>
+                            <span className={styles.name}>{camera.name}</span>
+                            <span className={styles.venue}>
+                              {camera.venue.name}
+                            </span>
+                            <span
+                              className={`${styles.status} ${
+                                styles[camera.status]
+                              }`}
+                            >
+                              {camera.status}
+                            </span>
+                          </div>
+                        </ScrollSyncPane>
+                      </div>
+                    ))
                 ) : (
                   <div className={styles.noCameras}>No cameras available</div>
                 )}

@@ -451,3 +451,117 @@
     }
   }
 }
+
+.sessionBreakdown,
+.cameraBreakdown,
+.reportBreakdown {
+  @include flexin;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+  padding: 0.5rem;
+  border-radius: 50%;
+
+  svg {
+    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1);
+    font-size: 16px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba($border-color, 0.5);
+    padding: 0.5rem;
+
+    svg {
+      color: $hover-green;
+    }
+  }
+}
+
+.sessionBreakdownMenu,
+.cameraBreakdownMenu,
+.reportBreakdownMenu {
+  background-color: $secondary-background;
+  border: 1px solid $border-color;
+  // padding: 0.5rem 1rem;
+  box-shadow: 0 8px 8px 0 $dark-shadow;
+  padding: 0;
+  border-radius: 0.5rem;
+  min-width: max-content;
+
+  @include flexin(
+    $justify: stretch,
+    $align: stretch,
+    $direction: column,
+    $gap: 0
+  );
+
+  &Content {
+    text-transform: none;
+    font-family: inherit !important;
+    color: $text-color;
+    font-size: 14px;
+    padding: 0;
+    width: 100%;
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $gap: 0,
+      $direction: column
+    );
+
+    & > div {
+      padding: 0.7rem 1.5rem 0.35rem 1rem;
+      width: 100%;
+      flex-grow: 1;
+      // border-bottom: 1px solid $border-color;
+      @include flexin($justify: space-between, $align: stretch, $gap: 1.5rem);
+
+      span:first-of-type {
+        font-weight: 400;
+        font-size: 13px;
+        flex-basis: 50%;
+        align-self: flex-start;
+      }
+
+      span:last-of-type {
+        flex-basis: 50%;
+        font-weight: 200;
+        font-size: 13px;
+        text-align: right;
+      }
+    }
+
+    .activeSessionsBox,
+    .activeCamerasBox,
+    .approvedReportsBox {
+      span:last-of-type {
+        color: $accent-green;
+      }
+    }
+
+    .pendingSessionsBox,
+    .pendingReportsBox,
+    .maintenanceCamerasBox {
+      span:last-of-type {
+        color: $pending-color;
+      }
+    }
+
+    .inactiveSessionsBox,
+    .rejectedReportsBox {
+      span:last-of-type {
+        color: $rejected-color;
+      }
+    }
+
+    .closedSessionsBox {
+      span:last-of-type {
+        color: $border-color;
+      }
+    }
+
+    & > div:last-of-type {
+      border: none;
+      padding-bottom: 0.7rem;
+    }
+  }
+}

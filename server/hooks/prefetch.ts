@@ -5,6 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { getVenues } from "../actions/venues";
 import { getSession, getSessions } from "../actions/sessions";
 import { getReport, getReports } from "../actions/reports";
+import { getCameras } from "../actions/cameras";
 // import { getReportsTest } from "../actions/reports";
 
 export const usePrefetchQueries = async (queryClient: QueryClient) => {
@@ -19,8 +20,27 @@ export const usePrefetchQueries = async (queryClient: QueryClient) => {
     queryClient.prefetchQuery({
       queryKey: ["venues"],
       queryFn: async () => {
-        const data = await getVenues();
-        if (data.success) return data.success;
+        try {
+          const data = await getVenues();
+          if (data?.success) return data.success;
+          return [];
+        } catch (error) {
+          // return { error: "Server Error" };
+          return [];
+        }
+      },
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["cameras"],
+      queryFn: async () => {
+        try {
+          const data = await getCameras();
+          if (data?.success) return data.success;
+          return [];
+        } catch (error) {
+          // return { error: "Server Error" };
+          return [];
+        }
       },
     }),
     queryClient.prefetchQuery({
@@ -128,7 +148,10 @@ export const usePrefetchSession = async (
   });
 };
 
-export const usePrefetchReport = async (queryClient: QueryClient, id: number) => {
+export const usePrefetchReport = async (
+  queryClient: QueryClient,
+  id: number
+) => {
   await queryClient.prefetchQuery({
     queryKey: ["report", { id }],
     queryFn: async () => {

@@ -3,7 +3,7 @@ import prisma from "@/prisma/prisma";
 import { revalidatePath } from "next/cache";
 import { authAction } from "./actions";
 // import { editCameraSchema } from "@/lib/schema";
-import { Prisma } from "@prisma/client";
+import { CameraStatus, Prisma } from "@prisma/client";
 import { editCameraSchema } from "@/lib/schema";
 import { EditCamerasPayload } from "@/types";
 // import { EditCamerasPayload } from "@/types";
@@ -48,15 +48,16 @@ export const editCameras = authAction(
   editCameraSchema,
   async ({ deleted, updated, added }: EditCamerasPayload, { userId }) => {
     try {
+      console.log(deleted, updated, added);
       await prisma.$transaction(
         async (prisma) => {
           // Delete cameras
-          // if (deleted && deleted.length > 0) {
-          //   await prisma.camera.updateMany({
-          //     where: { id: { in: deleted } },
-          //     data: { deleted: true, updated_at: new Date() },
-          //   });
-          // }
+          if (deleted && deleted.length > 0) {
+            await prisma.camera.updateMany({
+              where: { id: { in: deleted } },
+              data: { deleted: true, updated_at: new Date() },
+            });
+          }
 
           // Update cameras
           if (updated && updated.length > 0) {
@@ -65,6 +66,13 @@ export const editCameras = authAction(
                 where: { id: camera.id },
                 data: {
                   name: camera.name,
+                  venue_id: camera.venue_id,
+                  status:
+                    camera.status === "Active"
+                      ? CameraStatus.Active
+                      : camera.status === "Inactive"
+                      ? CameraStatus.Inactive
+                      : CameraStatus.Maintenance,
                   updated_at: new Date(),
                 },
               });
@@ -73,13 +81,20 @@ export const editCameras = authAction(
 
           // Add new cameras
           if (added && added.length > 0) {
-            // await prisma.camera.createMany({
-            //   data: added.map((camera) => ({
-            //     name: camera.name,
-            //     created_on: new Date(),
-            //     updated_at: new Date(),
-            //   })),
-            // });
+            await prisma.camera.createMany({
+              data: added.map((camera) => ({
+                name: camera.name,
+                venue_id: camera.venue_id,
+                status:
+                  camera.status === "Active"
+                    ? CameraStatus.Active
+                    : camera.status === "Inactive"
+                    ? CameraStatus.Inactive
+                    : CameraStatus.Maintenance,
+                created_on: new Date(),
+                updated_at: new Date(),
+              })),
+            });
           }
         },
         {

@@ -21,7 +21,6 @@ import { MdOutlineArrowDropDown } from "react-icons/md";
 import Select, { DropdownIndicatorProps, components } from "react-select";
 import { cameraOptions, cameraVenues } from "@/data/select";
 import { TbCameraPlus } from "react-icons/tb";
-import { base } from "@faker-js/faker";
 import { useAction } from "next-safe-action/hooks";
 import { editCameras } from "@/server/actions/cameras";
 
@@ -43,8 +42,12 @@ const Edit = ({ setMode }: any) => {
   );
 
   const dispatch = useDispatch();
-  const [originalCameras] = useState(cameras);
-  const [displayCameras, setDisplayCameras] = useState(cameras);
+  const [originalCameras] = useState(
+    cameras?.filter((cam: Camera) => !cam.deleted)
+  );
+  const [displayCameras, setDisplayCameras] = useState(
+    cameras?.filter((cam: Camera) => !cam.deleted)
+  );
   const [history, setHistory] = useState<any>([displayCameras]);
   const [pointer, setPointer] = useState(0);
   const [event, setEvent] = useState("");
@@ -187,11 +190,11 @@ const Edit = ({ setMode }: any) => {
 
     const added = displayCameras.filter((camera) => !camera.id);
 
-    // execute({
-    //   deleted: deleted.map((camera) => camera.id),
-    //   updated,
-    //   added,
-    // });
+    execute({
+      deleted: deleted.map((camera) => camera.id),
+      updated,
+      added,
+    });
     setMode("view");
   };
 
@@ -238,6 +241,12 @@ const Edit = ({ setMode }: any) => {
     if (event === "add" || event === "delete") setPointer(history.length - 1);
     if (event === "input" && save) setPointer(history.length - 1);
   }, [history, event, save]);
+
+  useEffect(() => {
+    if (status === "hasSucceeded" && result?.data?.success) {
+      dispatch(setReload(false));
+    }
+  }, [status, result, dispatch]);
 
   return (
     <>
@@ -336,8 +345,7 @@ const Edit = ({ setMode }: any) => {
                                 required={true}
                                 menuPlacement="auto"
                                 value={cameraOptions().filter(
-                                  (venue: any) =>
-                                    venue.value === camera.status.toLowerCase()
+                                  (venue: any) => venue.value === camera.status
                                 )}
                                 options={cameraOptions()}
                                 components={{ DropdownIndicator }}

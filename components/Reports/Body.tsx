@@ -146,9 +146,10 @@ const Body = () => {
                           </span>
                           <span
                             className={styles.sessionID}
-                            onClick={() =>
-                              router.push(`/sessions/${report.session_id}`)
-                            }
+                            onClick={() => {
+                              router.prefetch(`/sessions/${report.session_id}`);
+                              router.push(`/sessions/${report.session_id}`);
+                            }}
                           >
                             #{report.session_id}
                           </span>
@@ -167,9 +168,10 @@ const Body = () => {
                           <span className={styles.actions}>
                             <div
                               className="viewReport"
-                              onClick={() =>
-                                router.push(`/reports/${report.id}`)
-                              }
+                              onClick={() => {
+                                router.prefetch(`/reports/${report.id}`);
+                                router.push(`/reports/${report.id}`);
+                              }}
                             >
                               <FiExternalLink />
                             </div>

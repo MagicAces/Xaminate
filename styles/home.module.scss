@@ -1,27 +1,124 @@
-@import 'config';
-@import 'mixins';
+@import "config";
+@import "mixins";
 
 .homeSection {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    background-color: $primary-background;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: $primary-background;
 
-    @include flexin($justify: stretch,
+  @include flexin($justify: stretch, $align: stretch, $gap: 0);
+
+  .homeContainer {
+    @include flexin(
+      $justify: stretch,
+      $align: stretch,
+      $direction: column,
+      $gap: 0
+    );
+    width: calc(100vw - 4rem);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    height: 100%;
+
+    @media (max-width: 675px) {
+      width: 100vw;
+    }
+
+    .homeContent {
+      flex-grow: 1;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      overflow: auto;
+
+      @include flexin(
+        $justify: stretch,
         $align: stretch,
-        $gap: 0);
+        $direction: column,
+        $gap: 0rem
+      );
 
-    .homeContainer {
-        @include flexin($justify: stretch,
-            $align: stretch,
-            $direction: column,
-            $gap: 0);
-        width: calc(100vw - 4rem);
-        position: absolute;
-        right: 0;
+      &Top {
+        padding: 1rem 2rem 0.5rem;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        gap: 1.5rem;
+
+        @media (max-width: 1060px) {
+          grid-template-rows: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(200px, 1fr));
+        }
 
         @media (max-width: 675px) {
-            width: 100vw;
+          padding: 1rem;
         }
+
+        @media (max-width: 500px) {
+          grid-template-rows: repeat(4, 1fr);
+          grid-template-columns: repeat(1, minmax(200px, 1fr));
+        }
+        // @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
+
+        & > div {
+          border: 1px solid $border-color;
+          background-color: transparent;
+          //   flex-basis: 25%;
+          //   min-width: 250px;
+          //   border: 1px solid transparent;
+          //   background-color: $secondary-background;
+          padding: 0.5rem 1rem 1rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 4px 0 $dark-shadow;
+
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $gap: 0.55rem,
+            $direction: column
+          );
+
+          & > div {
+            width: 100%;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 2.5rem
+            );
+
+            & > span {
+              font-weight: 400;
+
+              & > span {
+                font-size: 11px;
+                font-weight: 200;
+              }
+            }
+          }
+
+          & > p {
+            font-size: 24px;
+            font-weight: 500;
+          }
+
+          .footerText {
+            font-size: 12px;
+            font-weight: 300;
+            color: gray;
+          }
+        }
+
+        .venueBox {
+          padding: 1rem;
+        }
+
+        .sessionBox,
+        .reportBox,
+        .venueBox,
+        .cameraBox {
+          flex: 1;
+        }
+      }
     }
+  }
 }

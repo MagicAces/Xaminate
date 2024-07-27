@@ -1,3 +1,14 @@
+import {
+  startOfDay,
+  endOfDay,
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+} from "date-fns";
+
 const getTime = (date: Date) => {
   const time = new Intl.DateTimeFormat("en-US", {
     hour: "2-digit",
@@ -53,4 +64,23 @@ export const filterPassedTime = (time: Date) => {
 export const isWeekday = (date: Date) => {
   const day = date.getDay();
   return day !== 0 && day !== 6;
+};
+
+export const getDateRange = (
+  date_filter: string
+): { start: Date; end: Date } => {
+  const now = new Date();
+  switch (date_filter) {
+    case "Today":
+      return { start: startOfDay(now), end: endOfDay(now) };
+    case "This Week":
+      return { start: startOfWeek(now), end: endOfWeek(now) };
+    case "This Month":
+      return { start: startOfMonth(now), end: endOfMonth(now) };
+    case "This Year":
+      return { start: startOfYear(now), end: endOfYear(now) };
+    case "All Time":
+    default:
+      return { start: new Date(0), end: now }; // from the start of time till now
+  }
 };

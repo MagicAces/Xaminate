@@ -106,6 +106,7 @@ model Camera {
   status      CameraStatus  @default(Active)
   created_on  DateTime      @default(now())
   updated_at  DateTime      @updatedAt
+  deleted     Boolean       @default(false)
   reports     Report[]
 
   venue       Venue         @relation(fields: [venue_id], references: [id])
