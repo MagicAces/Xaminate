@@ -31,11 +31,23 @@ const Venue = () => {
   const [series, setSeries] = useState([
     {
       name: "Sessions",
-      data: venueStats.map((venue: VenueStats) => venue.sessions),
+      data:
+        venueStats.length > 0
+          ? venueStats.map((venue: VenueStats) => venue.sessions)
+          : typeof venueStatsData !== "string" &&
+            typeof venueStatsData !== "undefined"
+          ? venueStatsData.map((venue: VenueStats) => venue.sessions)
+          : venueStats.map((venue: VenueStats) => venue.sessions),
     },
     {
       name: "Reports",
-      data: venueStats.map((venue: VenueStats) => venue.reports),
+      data:
+        venueStats.length > 0
+          ? venueStats.map((venue: VenueStats) => venue.reports)
+          : typeof venueStatsData !== "string" &&
+            typeof venueStatsData !== "undefined"
+          ? venueStatsData.map((venue: VenueStats) => venue.reports)
+          : venueStats.map((venue: VenueStats) => venue.reports),
     },
   ]);
 
@@ -77,7 +89,9 @@ const Venue = () => {
 
   return (
     <>
-      {!venueStatsLoading ? (
+      {!venueStatsLoading &&
+      typeof venueStatsData !== "string" &&
+      typeof venueStatsData !== "undefined" ? (
         <div className={styles.homeContentMiddleVenue}>
           {reload.venueStats && <Loader curved={true} />}
           <div className={styles.homeContentMiddleVenueTop}>
@@ -107,9 +121,15 @@ const Venue = () => {
                   colors: ["transparent"],
                 },
                 xaxis: {
-                  categories: venueStats.map(
-                    (venue: VenueStats) => venue.venue.name
-                  ),
+                  categories:
+                    venueStats.length > 0
+                      ? venueStats.map((venue: VenueStats) => venue.venue.name)
+                      : typeof venueStatsData !== "string" &&
+                        typeof venueStatsData !== "undefined"
+                      ? venueStatsData.map(
+                          (venue: VenueStats) => venue.venue.name
+                        )
+                      : venueStats.map((venue: VenueStats) => venue.venue.name),
                   axisTicks: {
                     show: false,
                   },
@@ -227,7 +247,7 @@ const Venue = () => {
           height={315}
           style={{
             borderRadius: "0.5rem",
-            flex: "1",
+            // flex: "1",s
             // marginTop: "0.5rem",
             padding: "1rem",
           }}

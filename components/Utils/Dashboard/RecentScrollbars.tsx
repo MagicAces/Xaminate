@@ -40,6 +40,7 @@ const RecentScrollbars: React.FC<RecentScrollbarsProps> = (props) => {
         left: "50%",
         width: "100px",
         top: 0,
+        backgroundColor: "transparent",
         transform: "translateX(-50%)",
       };
 
@@ -52,10 +53,10 @@ const RecentScrollbars: React.FC<RecentScrollbarsProps> = (props) => {
       renderView={renderView}
       renderThumbHorizontal={renderThumb}
       renderThumbVertical={renderThumb}
-      // renderTrackVertical={renderTrack}
-      // renderTrackHorizontal={renderTrack}
+      renderTrackVertical={renderTrack}
+      renderTrackHorizontal={renderTrack}
       hideTracksWhenNotNeeded={true}
-      // universal={true}
+      universal={true}
       //   autoHide={true}
       {...props}
     />

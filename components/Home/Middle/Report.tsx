@@ -28,7 +28,14 @@ const Report = () => {
     error: reportStatsError,
   } = useGetReportStats(dateFilter.report);
 
-  const [series, setSeries] = useState(Object.values(reportStats));
+  const [series, setSeries] = useState(
+    Object.values(reportStats).length > 0
+      ? Object.values(reportStats)
+      : typeof reportStatsData !== "string" &&
+        typeof reportStatsData !== "undefined"
+      ? Object.values(reportStatsData)
+      : Object.values(reportStats)
+  );
 
   useEffect(() => {
     if (
@@ -54,7 +61,14 @@ const Report = () => {
   }, [reportStatsError, reportStatsData, dispatch, reportStatsFetching]);
 
   useEffect(() => {
-    setSeries(Object.values(reportStats));
+    setSeries(
+      Object.values(reportStats).length > 0
+        ? Object.values(reportStats)
+        : typeof reportStatsData !== "string" &&
+          typeof reportStatsData !== "undefined"
+        ? Object.values(reportStatsData)
+        : Object.values(reportStats)
+    );
   }, [reportStats, reload, reportStatsData]);
 
   return (
@@ -132,9 +146,17 @@ const Report = () => {
                   },
                   hideEmptySeries: false,
                 },
-                labels: Object.keys(reportStats).map((label) =>
-                  capitalize(label)
-                ),
+                labels:
+                  Object.keys(reportStats).length > 0
+                    ? Object.keys(reportStats).map((label) => capitalize(label))
+                    : typeof reportStatsData !== "string" &&
+                      typeof reportStatsData !== "undefined"
+                    ? Object.keys(reportStatsData).map((label) =>
+                        capitalize(label)
+                      )
+                    : Object.keys(reportStats).map((label) =>
+                        capitalize(label)
+                      ),
                 colors: ["#FFC107", "#4CAF50", "#FF5252"],
                 dataLabels: {
                   enabled: true,

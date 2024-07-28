@@ -28,9 +28,19 @@ const Report = () => {
   const [series, setSeries] = useState([
     {
       name: "Reports Per Session",
-      data: reportsPerSession.map(
-        (report: ReportsPerSession) => report.reportsCount
-      ),
+      data:
+        reportsPerSession.length > 0
+          ? reportsPerSession.map(
+              (report: ReportsPerSession) => report.reportsCount
+            )
+          : typeof reportsPerSessionData !== "string" &&
+            typeof reportsPerSessionData !== "undefined"
+          ? reportsPerSessionData.map(
+              (report: ReportsPerSession) => report.reportsCount
+            )
+          : reportsPerSession.map(
+              (report: ReportsPerSession) => report.reportsCount
+            ),
     },
   ]);
 
@@ -61,9 +71,19 @@ const Report = () => {
     setSeries([
       {
         name: "Reports Per Session",
-        data: reportsPerSession.map(
-          (report: ReportsPerSession) => report.reportsCount
-        ),
+        data:
+          reportsPerSession.length > 0
+            ? reportsPerSession.map(
+                (report: ReportsPerSession) => report.reportsCount
+              )
+            : typeof reportsPerSessionData !== "string" &&
+              typeof reportsPerSessionData !== "undefined"
+            ? reportsPerSessionData.map(
+                (report: ReportsPerSession) => report.reportsCount
+              )
+            : reportsPerSession.map(
+                (report: ReportsPerSession) => report.reportsCount
+              ),
       },
     ]);
   }, [reportsPerSession, reload, reportsPerSessionData]);
@@ -131,7 +151,7 @@ const Report = () => {
                 // },
               },
               stroke: {
-                curve: "smooth",
+                curve: "straight",
                 width: 1,
               },
               fill: {
@@ -159,9 +179,19 @@ const Report = () => {
                 hideEmptySeries: false,
               },
               xaxis: {
-                categories: reportsPerSession?.map(
-                  (value) => `#${value.sessionId}`
-                ),
+                categories:
+                  reportsPerSession.length > 0
+                    ? reportsPerSession.map(
+                        (report: ReportsPerSession) => `${report.sessionId}`
+                      )
+                    : typeof reportsPerSessionData !== "string" &&
+                      typeof reportsPerSessionData !== "undefined"
+                    ? reportsPerSessionData.map(
+                        (report: ReportsPerSession) => `${report.sessionId}`
+                      )
+                    : reportsPerSession.map(
+                        (report: ReportsPerSession) => `${report.sessionId}`
+                      ),
                 axisTicks: {
                   show: false,
                 },
