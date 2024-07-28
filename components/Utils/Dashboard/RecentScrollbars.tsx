@@ -40,7 +40,7 @@ const RecentScrollbars: React.FC<RecentScrollbarsProps> = (props) => {
         left: "50%",
         width: "100px",
         top: 0,
-        backgroundColor: "transparent",
+        backgroundColor: "#1E1E1E",
         transform: "translateX(-50%)",
       };
 
