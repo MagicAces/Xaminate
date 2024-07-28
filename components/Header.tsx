@@ -32,6 +32,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { setFullView } from "@/redux/slices/sidebarSlice";
 import { useRouter } from "next/navigation";
+import { clearSessionsBox, setReload } from "@/redux/slices/sessionSlice";
+import {
+  clearReportsBox,
+  setReload as reportReload,
+} from "@/redux/slices/reportSlice";
 
 const Header = () => {
   const pathname = usePathname();
@@ -50,15 +55,19 @@ const Header = () => {
     if (notification.read) return;
 
     if (notification?.category_id && notification.category === "Session") {
+      // dispatch(setReload(true));
+      // dispatch(clearSessionsBox());
       // router.prefetch(`/sessions/${notification.category_id}`);
-      router.push(`/sessions/${notification.category_id}`);
+      // router.push(`/sessions/${notification.category_id}`);
       markAsRead({ id: notification.id });
     } else if (
       notification?.category_id &&
       notification.category === "Report"
     ) {
+      // dispatch(reportReload(true));
+      // dispatch(clearReportsBox());
       // router.prefetch(`/reports/${notification.category_id}`);
-      router.push(`/reports/${notification.category_id}`);
+      // router.push(`/reports/${notification.category_id}`);
       markAsRead({ id: notification.id });
     }
   }

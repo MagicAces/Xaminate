@@ -30,7 +30,7 @@ const Session = ({ id }: { id: number }) => {
       router.replace("/sessions");
     }
 
-    if (!isLoading && isFetching) dispatch(setReload(false));
+    if (!isLoading && !isFetching) dispatch(setReload(false));
 
     if (data?.success) dispatch(setSession(data?.success));
   }, [error, data, dispatch, router]);
