@@ -8,10 +8,30 @@ import styles from "@/styles/home.module.scss";
 import { DashboardState, ReportsPerSession } from "@/types";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 
 // import ReactCharts with no SSR
-const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactCharts = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+  loading: () => {
+    return (
+      <>
+        <Skeleton
+          baseColor="#2C2C2C"
+          highlightColor="#505050"
+          className={styles.homeContentBottomReportBody}
+          height={"100%"}
+          style={{
+            borderRadius: "0.5rem",
+            // marginTop: "0.5rem",
+            padding: "1rem",
+          }}
+        />
+      </>
+    );
+  },
+});
 
 const Report = () => {
   const { sessionsBack, reportsPerSession, reload }: DashboardState =

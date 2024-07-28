@@ -15,6 +15,7 @@ import Statistics from "./Statistics";
 import Details from "./Details";
 import { useModal } from "@/utils/context";
 import Modal from "../Modal/Modal";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Report = ({ id }: { id: number }) => {
   const { data, isLoading, error, isFetching } = useGetReport(id);
@@ -23,7 +24,6 @@ const Report = ({ id }: { id: number }) => {
   const dispatch = useDispatch();
   const { modalState } = useModal();
 
-  console.log(reload);
   useEffect(() => {
     if (error || data?.error) {
       console.log(error);
@@ -46,7 +46,7 @@ const Report = ({ id }: { id: number }) => {
           <Skeleton
             baseColor="#2C2C2C"
             highlightColor="#505050"
-            className={styles.reportPageTop}
+            containerClassName={styles.reportPageTop}
             height={30}
             style={{
               borderRadius: "0.5rem",

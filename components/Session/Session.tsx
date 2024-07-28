@@ -15,6 +15,7 @@ import Reports from "./Reports";
 import Details from "./Details";
 import { useModal } from "@/utils/context";
 import Modal from "../Modal/Modal";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Session = ({ id }: { id: number }) => {
   const { data, isLoading, error, isFetching } = useGetSession(id);
@@ -45,11 +46,12 @@ const Session = ({ id }: { id: number }) => {
           <Skeleton
             baseColor="#2C2C2C"
             highlightColor="#505050"
-            className={styles.sessionPageTop}
+            containerClassName={styles.sessionPageTop}
             height={30}
             style={{
               borderRadius: "0.5rem",
               marginTop: "0.5rem",
+              flex: "1",
               padding: "1rem",
             }}
           />
