@@ -489,7 +489,7 @@ export interface ReportsPerSessionResponse {
   error?: string;
 }
 
-interface SessionRecent {
+export interface SessionRecent {
   id: number;
   start_time: string;
   end_time: string;
@@ -498,7 +498,7 @@ interface SessionRecent {
   status: string;
 }
 
-interface ReportRecent {
+export interface ReportRecent {
   id: number;
   status: string;
   student_index_no: number;
@@ -517,8 +517,8 @@ export interface DashboardState {
   topRow: DashboardTopRowData;
   venueStats: VenueStats[] | [];
   reportStats: ReportStats;
-  recentSessions: SessionRecent[] | [];
-  recentReports: ReportRecent[] | [];
+  recentItems: SessionRecent[] | ReportRecent[];
+  // recentReports: [];
   reportsPerSession: ReportsPerSession[] | [];
   dateFilter: {
     venue: string;
@@ -530,5 +530,6 @@ export interface DashboardState {
     venueStats: boolean;
     reportStats: boolean;
     reportsPerSession: boolean;
+    recentItems: boolean;
   };
 }

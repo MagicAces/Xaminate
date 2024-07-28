@@ -28,12 +28,13 @@ import Button from "@/components/Utils/Button";
 import { venueOptions } from "@/data/select";
 
 // import { AnimatePresence, motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useAction } from "next-safe-action/hooks";
 import { createSession } from "@/server/actions/sessions";
 import { SessionInput } from "@/lib/schema";
 import Loader from "@/components/Utils/Loader";
+import { setReload } from "@/redux/slices/sessionSlice";
 
 const DropdownIndicator = (
   props: DropdownIndicatorProps<SelectOption, true>
@@ -78,7 +79,7 @@ SessionTimeInput.displayName = "SessionTimeInput";
 
 const Create: React.FC = () => {
   const { exitModal } = useModal();
-  const { venues } = useSelector((state: any) => state.modal);
+  const { venues } = useSelector((state: any) => state.setting);
   const [error, setError] = useState("");
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [values, setValues] = useState<SessionInput>({
@@ -111,6 +112,7 @@ const Create: React.FC = () => {
       if (error.serverError) toast.error("Server Error");
     },
   });
+  const dispatch = useDispatch();
 
   const disableWarning = (
     name: keyof SessionWarn,
@@ -294,7 +296,10 @@ const Create: React.FC = () => {
   }, [venues, values.sessionStart, values.sessionEnd]);
 
   useEffect(() => {
-    if (status === "hasSucceeded" && result?.data?.success) exitModal();
+    if (status === "hasSucceeded" && result?.data?.success) {
+      exitModal();
+      dispatch(setReload(true));
+    }
   }, [status, exitModal]);
 
   return (
@@ -450,8 +455,8 @@ const Create: React.FC = () => {
                   showTimeSelect
                   showTimeInput
                   tabIndex={1}
-                  filterTime={isWeekday}
-                  filterDate={isWeekday}
+                  // filterTime={isWeekday}
+                  // filterDate={isWeekday}
                   timeIntervals={5}
                   timeCaption="Time"
                   timeFormat="p"
@@ -490,8 +495,8 @@ const Create: React.FC = () => {
                   fixedHeight
                   showTimeSelect
                   showTimeInput
-                  filterTime={filterPassedTime}
-                  filterDate={isWeekday}
+                  // filterTime={filterPassedTime}
+                  // filterDate={isWeekday}
                   timeIntervals={15}
                   timeCaption="Time"
                   timeFormat="p"

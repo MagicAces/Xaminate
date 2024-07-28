@@ -7,7 +7,7 @@ export const venueOptions = async (
   sessionEnd: Date | string | null
 ): Promise<SelectOption[]> => {
   if (!sessionStart || !sessionEnd) {
-    return venues.map((venue) => ({
+    return venues?.map((venue) => ({
       value: venue.id,
       label: venue.name,
       isDisabled: false,

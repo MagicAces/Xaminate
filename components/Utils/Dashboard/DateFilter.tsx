@@ -32,6 +32,7 @@ const DateFilter = ({ category }: { category: "venue" | "report" }) => {
   const dispatch = useDispatch();
 
   const handleClick = (e: ClickEvent) => {
+    if (e.value === dateFilter[category]) return;
     dispatch(setDateFilter({ name: category, value: e.value }));
     dispatch(setReload({ name: `${category}Stats`, value: true }));
   };

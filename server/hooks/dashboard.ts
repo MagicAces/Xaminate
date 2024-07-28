@@ -83,7 +83,7 @@ export function useGetRecentItems(category: "session" | "report") {
         return data?.error;
       } catch (error) {
         // return { error: "Server Error" };
-        return { error: "Error fetching report stats" };
+        return "Error fetching report stats";
       }
     },
     queryKey: ["dashboard_bottom_ri", { category }],

@@ -20,11 +20,12 @@ export const authenticate = action(
   authenticateSchema,
   async (credentials: AutheniticateInput) => {
     try {
-      const data = await signIn("credentials", credentials);
+      // const data =
+      await signIn("credentials", credentials);
       // console.log(data);
-      revalidatePath("/");
+      // revalidatePath("/");
       // redirect(credentials.redirectTo);
-      return { success: "Welcome back", data };
+      // return { success: "Welcome back", data };
     } catch (error) {
       if (isRedirectError(error)) throw error;
 

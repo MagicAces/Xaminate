@@ -23,6 +23,7 @@ import { cameraOptions, cameraVenues } from "@/data/select";
 import { TbCameraPlus } from "react-icons/tb";
 import { useAction } from "next-safe-action/hooks";
 import { editCameras } from "@/server/actions/cameras";
+import Loader from "@/components/Utils/Loader";
 
 // import { AnimatePresence, motion } from "framer-motion";
 
@@ -174,7 +175,7 @@ const Edit = ({ setMode }: any) => {
       return;
     }
 
-    dispatch(setReload(true));
+    // dispatch(setReload(true));
 
     const deleted = originalCameras.filter(
       (origCamera) =>
@@ -195,7 +196,6 @@ const Edit = ({ setMode }: any) => {
       updated,
       added,
     });
-    setMode("view");
   };
 
   useEffect(() => {
@@ -244,13 +244,15 @@ const Edit = ({ setMode }: any) => {
 
   useEffect(() => {
     if (status === "hasSucceeded" && result?.data?.success) {
-      dispatch(setReload(false));
+      dispatch(setReload(true));
+      setMode("view");
     }
   }, [status, result, dispatch]);
 
   return (
     <>
       <div className={styles.settingContentCameraEdit}>
+        {status === "executing" && <Loader curved={true} />}
         <div className={styles.camerasPane}>
           <ScrollSync>
             <div className={styles.settingCameraTable}>
@@ -273,107 +275,111 @@ const Edit = ({ setMode }: any) => {
                 autoHideTimeout={1000}
               >
                 <div className={styles.camerasRows}>
-                  {displayCameras?.length > 0 ? (
-                    displayCameras?.map((camera: Camera, index: number) => (
-                      <div
-                        className={styles.camerasRowOuter}
-                        key={index}
-                        // style={{
-                        //   opacity: 0,
-                        //   animation: `slideIn 0.5s ease-out forwards`,
-                        //   animationDelay: `${index * 0.2}s`,
-                        // }}
-                      >
-                        <ScrollSyncPane>
-                          <div
-                            className={`${styles.camerasRowInner} hide-scrollbar`}
-                          >
-                            <span className={styles.actions}>
-                              <MdDelete onClick={() => handleDelete(index)} />
-                            </span>
-                            <span className={styles.name}>
-                              <input
-                                value={camera.name}
-                                onChange={(e) => handleInputChange(e, index)}
-                                placeholder="Enter venue"
-                                autoFocus={index === cameraVenues.length - 1}
-                              />
-                            </span>
-                            <span className={styles.venue}>
-                              {/* {camera.venue.name} */}
-                              <Select
-                                className={`${styles.venueInput}`}
-                                classNamePrefix="cameras-edit"
-                                name="venue"
-                                tabIndex={1}
-                                required={true}
-                                menuPlacement="auto"
-                                value={cameraVenues(venues).filter(
-                                  (venue: any) =>
-                                    venue.value === camera.venue_id
-                                )}
-                                options={cameraVenues(venues)}
-                                components={{ DropdownIndicator }}
-                                noOptionsMessage={({ inputValue }) =>
-                                  "No Venues Found"
-                                }
-                                isSearchable={true}
-                                onChange={(data) =>
-                                  handleSelectChange(data, index, "venue_id")
-                                }
-                                styles={{
-                                  noOptionsMessage: (base) => ({
-                                    ...base,
-                                    color: `#FFFFFF`,
-                                    backgroundColor: "#4CAF50",
-                                  }),
-                                  menuPortal: (base) => ({
-                                    ...base,
-                                    zIndex: 9999,
-                                  }),
-                                }}
-                                menuPortalTarget={document.body}
-                              />
-                            </span>
-                            <span className={`${styles.status}`}>
-                              {/* {camera.status} */}
-                              <Select
-                                className={`${styles.statusInput}`}
-                                classNamePrefix="cameras-edit"
-                                name="status"
-                                tabIndex={1}
-                                required={true}
-                                menuPlacement="auto"
-                                value={cameraOptions().filter(
-                                  (venue: any) => venue.value === camera.status
-                                )}
-                                options={cameraOptions()}
-                                components={{ DropdownIndicator }}
-                                noOptionsMessage={({ inputValue }) =>
-                                  "No Status Found"
-                                }
-                                isSearchable={false}
-                                onChange={(data) =>
-                                  handleSelectChange(data, index, "status")
-                                }
-                                styles={{
-                                  noOptionsMessage: (base) => ({
-                                    ...base,
-                                    color: `#FFFFFF`,
-                                    backgroundColor: "#4CAF50",
-                                  }),
-                                  menuPortal: (base) => ({
-                                    ...base,
-                                    zIndex: 9999,
-                                  }),
-                                }}
-                                menuPortalTarget={document.body}
-                              />
-                            </span>
-                          </div>
-                        </ScrollSyncPane>
-                      </div>
-                    ))
+                  {displayCameras?.filter((camera: Camera) => !camera.deleted)
+                    ?.length > 0 ? (
+                    displayCameras
+                      ?.filter((camera: Camera) => !camera.deleted)
+                      ?.map((camera: Camera, index: number) => (
+                        <div
+                          className={styles.camerasRowOuter}
+                          key={index}
+                          // style={{
+                          //   opacity: 0,
+                          //   animation: `slideIn 0.5s ease-out forwards`,
+                          //   animationDelay: `${index * 0.2}s`,
+                          // }}
+                        >
+                          <ScrollSyncPane>
+                            <div
+                              className={`${styles.camerasRowInner} hide-scrollbar`}
+                            >
+                              <span className={styles.actions}>
+                                <MdDelete onClick={() => handleDelete(index)} />
+                              </span>
+                              <span className={styles.name}>
+                                <input
+                                  value={camera.name}
+                                  onChange={(e) => handleInputChange(e, index)}
+                                  placeholder="Enter venue"
+                                  autoFocus={index === cameraVenues.length - 1}
+                                />
+                              </span>
+                              <span className={styles.venue}>
+                                {/* {camera.venue.name} */}
+                                <Select
+                                  className={`${styles.venueInput}`}
+                                  classNamePrefix="cameras-edit"
+                                  name="venue"
+                                  tabIndex={1}
+                                  required={true}
+                                  menuPlacement="auto"
+                                  value={cameraVenues(venues).filter(
+                                    (venue: any) =>
+                                      venue.value === camera.venue_id
+                                  )}
+                                  options={cameraVenues(venues)}
+                                  components={{ DropdownIndicator }}
+                                  noOptionsMessage={({ inputValue }) =>
+                                    "No Venues Found"
+                                  }
+                                  isSearchable={true}
+                                  onChange={(data) =>
+                                    handleSelectChange(data, index, "venue_id")
+                                  }
+                                  styles={{
+                                    noOptionsMessage: (base) => ({
+                                      ...base,
+                                      color: `#FFFFFF`,
+                                      backgroundColor: "#4CAF50",
+                                    }),
+                                    menuPortal: (base) => ({
+                                      ...base,
+                                      zIndex: 9999,
+                                    }),
+                                  }}
+                                  menuPortalTarget={document.body}
+                                />
+                              </span>
+                              <span className={`${styles.status}`}>
+                                {/* {camera.status} */}
+                                <Select
+                                  className={`${styles.statusInput}`}
+                                  classNamePrefix="cameras-edit"
+                                  name="status"
+                                  tabIndex={1}
+                                  required={true}
+                                  menuPlacement="auto"
+                                  value={cameraOptions().filter(
+                                    (venue: any) =>
+                                      venue.value === camera.status
+                                  )}
+                                  options={cameraOptions()}
+                                  components={{ DropdownIndicator }}
+                                  noOptionsMessage={({ inputValue }) =>
+                                    "No Status Found"
+                                  }
+                                  isSearchable={false}
+                                  onChange={(data) =>
+                                    handleSelectChange(data, index, "status")
+                                  }
+                                  styles={{
+                                    noOptionsMessage: (base) => ({
+                                      ...base,
+                                      color: `#FFFFFF`,
+                                      backgroundColor: "#4CAF50",
+                                    }),
+                                    menuPortal: (base) => ({
+                                      ...base,
+                                      zIndex: 9999,
+                                    }),
+                                  }}
+                                  menuPortalTarget={document.body}
+                                />
+                              </span>
+                            </div>
+                          </ScrollSyncPane>
+                        </div>
+                      ))
                   ) : (
                     <div className={styles.noCameras}>Add a camera</div>
                   )}

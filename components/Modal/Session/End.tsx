@@ -40,8 +40,8 @@ const End = () => {
 
   useEffect(() => {
     if (status === "hasSucceeded") {
-      dispatch(setReload(true));
       exitModal();
+      dispatch(setReload(true));
     }
   }, [status, exitModal, dispatch]);
 

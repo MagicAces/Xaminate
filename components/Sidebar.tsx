@@ -1,13 +1,13 @@
 "use client";
 
 import logo from "@/public/images/logo.svg";
-import { logout } from "@/server/actions/user";
+// import { logout } from "@/server/actions/user";
 import styles from "@/styles/sidebar.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+// import { useFormState, useFormStatus } from "react-dom";
 import { MdAdd } from "react-icons/md";
 import {
   TbHome,
@@ -24,13 +24,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLogoutReload, setFullView } from "@/redux/slices/sidebarSlice";
 import { useGetCameras } from "@/server/hooks/cameras";
 import { setCameras, setReload, setVenues } from "@/redux/slices/settingSlice";
+import { signOut } from "next-auth/react";
 
 const Sidebar = () => {
   const { fullView } = useSelector((state: any) => state.sidebar);
   const { reload } = useSelector((state: any) => state.modal);
   const pathname = usePathname();
-  const { pending } = useFormStatus();
-  const [, formAction, isPending] = useFormState(logout, null);
+  // const { pending } = useFormStatus();
+  // const [, formAction, isPending] = useFormState(logout, null);
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
   const {
@@ -87,7 +88,7 @@ const Sidebar = () => {
         onMouseLeave={() => dispatch(setFullView(false))}
         ref={divRef}
       >
-        {(isPending || pending) && <Loader />}
+        {/* {(isPending || pending) && <Loader />} */}
         <div className={styles.logoContainer}>
           <Image
             src={logo}
@@ -153,11 +154,14 @@ const Sidebar = () => {
             </span>
             <span>Session</span>
           </div>
-          <form action={formAction} className={styles.logout}>
-            <button
-              type="submit"
-              onClick={() => dispatch(setLogoutReload(true))}
-            >
+          <form
+            onSubmit={() => {
+              dispatch(setLogoutReload(true));
+              signOut({ redirect: true, callbackUrl: "/login" });
+            }}
+            className={styles.logout}
+          >
+            <button type="submit">
               <span>
                 <TbLogout />
               </span>

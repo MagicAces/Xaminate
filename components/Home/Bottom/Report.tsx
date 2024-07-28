@@ -70,16 +70,16 @@ const Report = () => {
 
   return (
     <>
-      <div className={styles.homeContentMiddleReport}>
+      <div className={styles.homeContentBottomReport}>
         {reload.reportsPerSession && <Loader curved={true} />}
-        <div className={styles.homeContentMiddleReportTop}>
-          <div className={styles.homeContentMiddleReportTopLeft}>
-            <span>Reports Per Session</span>
+        <div className={styles.homeContentBottomReportTop}>
+          <div className={styles.homeContentBottomReportTopLeft}>
+            <span>Reports Per Session</span>{" "}
             <span>| Last {sessionsBack} sessions</span>
           </div>
           <SessionBack />
         </div>
-        <div className={styles.homeContentMiddleReportBody}>
+        <div className={styles.homeContentBottomReportBody}>
           <ReactCharts
             options={{
               markers: {

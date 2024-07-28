@@ -80,7 +80,7 @@ const Top: React.FC = () => {
   const { sessionsBox, reload, isDisabled } = useSelector(
     (state: any) => state.session
   );
-  const { venues } = useSelector((state: any) => state.modal);
+  const { venues } = useSelector((state: any) => state.setting);
   const [isClient, setIsClient] = useState(false);
   const [options, setOptions] = useState<SelectOption[]>([]);
   const { setState, modalState } = useModal();

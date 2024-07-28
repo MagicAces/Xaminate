@@ -46,8 +46,8 @@ const initialState: DashboardState = {
     rejected: 0,
   },
   reportsPerSession: [],
-  recentSessions: [],
-  recentReports: [],
+  // recentSessions: [],
+  recentItems: [],
   dateFilter: {
     venue: "This Month",
     report: "This Month",
@@ -58,6 +58,7 @@ const initialState: DashboardState = {
     venueStats: false,
     reportStats: false,
     reportsPerSession: false,
+    recentItems: false,
   },
 };
 
@@ -80,12 +81,15 @@ const dashboardSlice = createSlice({
     ) => {
       state.reportsPerSession = action.payload;
     },
-    setRecentSessions: (state, action: PayloadAction<SessionRecent[]>) => {
-      state.recentSessions = action.payload;
+    setRecentItems: (
+      state,
+      action: PayloadAction<SessionRecent[] | ReportRecent[]>
+    ) => {
+      state.recentItems = action.payload;
     },
-    setRecentReports: (state, action: PayloadAction<ReportRecent[]>) => {
-      state.recentReports = action.payload;
-    },
+    // setRecentReports: (state, action: PayloadAction<ReportRecent[]>) => {
+    //   state.recentReports = action.payload;
+    // },
     setDateFilter: (state, action) => {
       const { name, value } = action.payload;
       state.dateFilter = {
@@ -115,8 +119,8 @@ export const {
   setVenueStats,
   setReportStats,
   setReportsPerSession,
-  setRecentSessions,
-  setRecentReports,
+  setRecentItems,
+  // setRecentReports,
   setDateFilter,
   setSessionsBack,
   setCategory,

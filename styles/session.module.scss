@@ -461,7 +461,7 @@
         flex-grow: 1;
         height: 100%;
         width: 100%;
-        margin: 3rem;
+        margin: 3rem 0;
         @include flexin;
         color: gray;
         @include flexin($justify: center, $align: center);

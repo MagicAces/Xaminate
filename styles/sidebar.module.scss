@@ -1,321 +1,300 @@
-@import 'config';
-@import 'mixins';
+@import "config";
+@import "mixins";
 
-.sidebarContainer, .sidebarFullContainer {
-    width: 4rem;
-    border-right: 1px solid $border-color;
-    height: 100vh;
-    overflow-y: auto;
-    scrollbar-width: none;
-    background-color: $secondary-background;
-    padding: 0.7rem;
-    font-size: 14px;
-    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+.sidebarContainer,
+.sidebarFullContainer {
+  width: 4rem;
+  border-right: 1px solid $border-color;
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  background-color: $secondary-background;
+  padding: 0.7rem;
+  font-size: 14px;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-    @include flexin($justify: space-between,
-        $align: flex-start,
-        $direction: column,
-        $gap: 2rem);
+  @include flexin(
+    $justify: space-between,
+    $align: flex-start,
+    $direction: column,
+    $gap: 2rem
+  );
 
-    .logoContainer {
-        @include flexin($justify: stretch,
-            $align: center,
-            $gap: 0.2rem);
+  .logoContainer {
+    @include flexin($justify: stretch, $align: center, $gap: 0.2rem);
 
-        span {
-            display: none;
+    span {
+      display: none;
+    }
+  }
+
+  .routesContainer {
+    @include flexin(
+      $justify: flex-start,
+      $align: stretch,
+      $direction: column,
+      $gap: 2rem
+    );
+    flex-basis: 70%;
+    width: 100%;
+
+    a {
+      color: $text-color;
+      padding: 10px;
+      border-radius: 0.5rem;
+      border: 1px solid transparent;
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+      @include flexin($justify: stretch, $align: center, $gap: 1rem);
+
+      span:first-of-type {
+        @include flexin();
+
+        svg {
+          font-size: 21px;
+          transform-style: preserve-3d;
+          transform-origin: center;
+          transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
         }
+      }
 
+      span:last-of-type {
+        display: none;
+        transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+      }
     }
 
+    a:first-of-type:hover {
+      svg {
+        animation: rotate3d 2s linear 1;
+      }
+    }
 
+    a:nth-of-type(2):hover {
+      svg {
+        animation: bounce 2s linear 1;
+      }
+    }
 
-    .routesContainer {
-        @include flexin($justify: flex-start,
-            $align: stretch,
-            $direction: column,
-            $gap: 2rem);
-        flex-basis: 70%;
+    a:nth-of-type(3):hover {
+      svg {
+        animation: wave 2s linear 1;
+      }
+    }
+
+    a:last-of-type:hover {
+      svg {
+        animation: rotateClockwise 2s linear 1;
+      }
+    }
+
+    .activeLink {
+      background-color: $border-color;
+    }
+
+    a:hover {
+      color: $hover-green;
+      border: 1px solid $hover-green;
+    }
+  }
+
+  .lowerContainer {
+    @include flexin(
+      $justify: flex-start,
+      $align: stretch,
+      $direction: column,
+      $gap: 2rem
+    );
+    flex-basis: 20%;
+    width: 100%;
+
+    form {
+      @include flexin($justify: stretch, $align: stretch);
+
+      button {
+        padding: 0;
         width: 100%;
+        background-color: transparent;
+        @include flexin($justify: flex-start, $align: center, $gap: 1rem);
 
-        a {
-            color: $text-color;
-            padding: 10px;
-            border-radius: 0.5rem;
-            border: 1px solid transparent;
-            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+        span:first-of-type {
+          @include flexin();
 
-
-            @include flexin($justify: stretch,
-                $align: center,
-                $gap: 1rem);
-
-
-
-            span:first-of-type {
-                @include flexin();
-
-                svg {
-                    font-size: 21px;
-                    transform-style: preserve-3d;
-                    transform-origin: center;
-                    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-                }
-            }
-
-            span:last-of-type {
-                display: none;
-                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-            }
+          svg {
+            font-size: 21px;
+          }
         }
 
-        a:first-of-type:hover {
-            svg {
-                animation: rotate3d 2s linear 1;
-            }
+        span:last-of-type {
+          display: none;
         }
-
-        a:nth-of-type(2):hover {
-            svg {
-                animation: bounce 2s linear 1;
-            }
-        }
-
-        a:nth-of-type(3):hover {
-            svg {
-                animation: wave 2s linear 1;
-            }
-        }
-
-        a:last-of-type:hover {
-            svg {
-                animation: rotateClockwise 2s linear 1;
-            }
-        }
-
-        .activeLink {
-            background-color: $border-color;
-
-        }
-
-        a:hover {
-            color: $hover-green;
-            border: 1px solid $hover-green;
-        }
+      }
     }
 
-    .lowerContainer {
-        @include flexin($justify: flex-start,
-            $align: stretch,
-            $direction: column,
-            $gap: 2rem);
-        flex-basis: 20%;
-        width: 100%;
-
-        form {
-            @include flexin($justify: stretch,
-                $align: stretch);
-
-            button {
-                padding: 0;
-                width: 100%;
-                background-color: transparent;
-                @include flexin($justify: flex-start,
-                    $align: center,
-                    $gap: 1rem);
-
-                span:first-of-type {
-                    @include flexin();
-
-                    svg {
-                        font-size: 21px;
-                    }
-                }
-
-                span:last-of-type {
-                    display: none
-                }
-            }
-
-
-
-
-
-        }
-
-        .addSession:hover,
-        button:hover {
-            color: $hover-green;
-        }
-
-        .addSession {
-            @include flexin($justify: stretch,
-                $align: center,
-                $gap: 1rem);
-            transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-            span:first-of-type {
-                @include flexin;
-                background-color: $accent-dark-green;
-                border-radius: 50%;
-                padding: 10px;
-                box-shadow: 0 4px 4px 0 $dark-shadow;
-                transition: padding 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
-
-                svg {
-                    font-size: 21px;
-                }
-            }
-
-            span:last-of-type {
-                display: none;
-            }
-        }
-
-        .addSession:hover {
-            padding: 10px;
-
-            cursor: pointer;
-
-            span:first-of-type {
-                background-color: transparent;
-                padding: 0;
-                box-shadow: none;
-            }
-        }
-
-        .logout {
-            padding: 10px;
-        }
-
-
+    .addSession:hover,
+    button:hover {
+      color: $hover-green;
     }
+
+    .addSession {
+      @include flexin($justify: stretch, $align: center, $gap: 1rem);
+      transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+      span:first-of-type {
+        @include flexin;
+        background-color: $accent-dark-green;
+        border-radius: 50%;
+        padding: 10px;
+        box-shadow: 0 4px 4px 0 $dark-shadow;
+        transition: padding 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+        svg {
+          font-size: 21px;
+        }
+      }
+
+      span:last-of-type {
+        display: none;
+      }
+    }
+
+    .addSession:hover {
+      padding: 10px;
+
+      cursor: pointer;
+
+      span:first-of-type {
+        background-color: transparent;
+        padding: 0;
+        box-shadow: none;
+      }
+    }
+
+    .logout {
+      padding: 10px;
+    }
+  }
 }
 
 .sidebarFullContainer {
-    width: 10rem;
-    z-index: 10;
-    position: absolute;
-    left: 0;
-    transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+  width: 10rem;
+  z-index: 10;
+  position: absolute;
+  left: 0;
+  transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
 
-    .logoContainer {
-        span {
-            @include flexin();
-            font-weight: 500;
-            letter-spacing: 0.2rem;
+  .logoContainer {
+    span {
+      @include flexin();
+      font-weight: 500;
+      letter-spacing: 0.2rem;
+    }
+  }
 
+  .routesContainer {
+    a {
+      span:last-of-type {
+        @include flexin();
+      }
+    }
+  }
+
+  .lowerContainer {
+    form {
+      button {
+        span:last-of-type {
+          display: inline-flex;
         }
+      }
     }
 
-    .routesContainer {
-        a {
-            span:last-of-type {
-                @include flexin();
-            }
-        }
+    .addSession {
+      padding: 10px;
+
+      span:first-of-type {
+        background-color: transparent;
+        padding: 0;
+        box-shadow: none;
+      }
+
+      span:last-of-type {
+        display: inline-flex;
+      }
     }
-
-    .lowerContainer {
-        form {
-            button {
-                span:last-of-type {
-                    display: inline-flex;
-                }
-            }
-        }
-
-
-
-        .addSession {
-            padding: 10px;
-
-            span:first-of-type {
-                background-color: transparent;
-                padding: 0;
-                box-shadow: none;
-            }
-
-            span:last-of-type {
-                display: inline-flex;
-            }
-        }
-    }
+  }
 }
 
 @media (max-width: 675px) {
-    .sidebarContainer {
-        display: none;
-    }
+  .sidebarContainer {
+    display: none;
+  }
 }
 @keyframes rotate3d {
-    0% {
-        transform: rotate3d(0, 1, 0, 0deg);
-        /* Initial rotation */
-    }
+  0% {
+    transform: rotate3d(0, 1, 0, 0deg);
+    /* Initial rotation */
+  }
 
-    100% {
-        transform: rotate3d(0, 1, 0, 360deg);
-        /* Final rotation */
-    }
+  100% {
+    transform: rotate3d(0, 1, 0, 360deg);
+    /* Final rotation */
+  }
 }
 
 /* Define keyframes for the bounce animation */
 @keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+    /* Initial, midway up, center, midway down, and final positions */
+  }
 
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-        /* Initial, midway up, center, midway down, and final positions */
-    }
+  40% {
+    transform: translateY(-10px);
+    /* Bounce up */
+  }
 
-    40% {
-        transform: translateY(-10px);
-        /* Bounce up */
-    }
-
-    60% {
-        transform: translateY(-5px);
-        /* Bounce down */
-    }
+  60% {
+    transform: translateY(-5px);
+    /* Bounce down */
+  }
 }
 
 @keyframes wave {
+  0%,
+  100% {
+    transform: translateY(0);
+    /* Start and end position */
+  }
 
-    0%,
-    100% {
-        transform: translateY(0);
-        /* Start and end position */
-    }
+  25% {
+    transform: translateY(-10px);
+    /* Move up */
+  }
 
-    25% {
-        transform: translateY(-10px);
-        /* Move up */
-    }
+  50% {
+    transform: translateY(0);
+    /* Return to center */
+  }
 
-    50% {
-        transform: translateY(0);
-        /* Return to center */
-    }
-
-    75% {
-        transform: translateY(10px);
-        /* Move down */
-    }
+  75% {
+    transform: translateY(10px);
+    /* Move down */
+  }
 }
 
 /* Define keyframes for the clockwise rotation animation */
 @keyframes rotateClockwise {
-    0% {
-        transform: rotate(0deg);
-        /* Initial rotation angle */
-    }
+  0% {
+    transform: rotate(0deg);
+    /* Initial rotation angle */
+  }
 
-    100% {
-        transform: rotate(360deg);
-        /* Final rotation angle */
-    }
+  100% {
+    transform: rotate(360deg);
+    /* Final rotation angle */
+  }
 }

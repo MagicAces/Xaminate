@@ -127,8 +127,6 @@ const Edit = ({ setMode }: { setMode: any }) => {
       return;
     }
 
-    dispatch(setReload(true));
-
     const deleted = originalVenues.filter(
       (origVenue) => !displayVenues.some((venue) => venue.id === origVenue.id)
     );
@@ -141,12 +139,12 @@ const Edit = ({ setMode }: { setMode: any }) => {
 
     const added = displayVenues.filter((venue) => !venue.id);
 
+    // dispatch(setReload(true));
     execute({
       deleted: deleted.map((venue) => venue.id),
       updated,
       added,
     });
-    setMode("view");
   };
 
   useEffect(() => {
@@ -195,26 +193,30 @@ const Edit = ({ setMode }: { setMode: any }) => {
 
   useEffect(() => {
     if (status === "hasSucceeded" && result?.data?.success) {
-      dispatch(setReload(false));
+      setMode("view");
+      dispatch(setReload(true));
     }
   }, [status, result, dispatch]);
 
   return (
     <>
       <div className={styles.settingContentVenueEdit}>
-        {venues.length > 0 ? (
+        {status === "executing" && <Loader curved={true} />}
+        {venues?.filter((venue: Venue) => !venue.deleted).length > 0 ? (
           <div className={styles.venues}>
-            {displayVenues.map((venue: any, index: number) => (
-              <div className={styles.venue} key={index}>
-                <input
-                  value={venue.name}
-                  onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Enter venue"
-                  autoFocus={index === displayVenues.length - 1}
-                />
-                <MdDelete onClick={() => handleDelete(index)} />
-              </div>
-            ))}
+            {displayVenues
+              .filter((venue: Venue) => !venue.deleted)
+              .map((venue: any, index: number) => (
+                <div className={styles.venue} key={index}>
+                  <input
+                    value={venue.name}
+                    onChange={(e) => handleInputChange(e, index)}
+                    placeholder="Enter venue"
+                    autoFocus={index === displayVenues.length - 1}
+                  />
+                  <MdDelete onClick={() => handleDelete(index)} />
+                </div>
+              ))}
           </div>
         ) : (
           <div className={styles.noVenues}>Add a venue</div>

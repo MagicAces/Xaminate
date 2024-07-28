@@ -12,14 +12,16 @@ const View = () => {
   return (
     <>
       <div className={styles.settingContentVenueView}>
-        {venues.length > 0 ? (
+        {venues?.filter((venue: Venue) => !venue.deleted).length > 0 ? (
           <div className={styles.venues}>
-            {venues.map((venue: Venue, index: number) => (
-              <div className={styles.venue} key={index}>
-                <span>{venue.name}</span>
-                <VenueTooltip venue={venue} />
-              </div>
-            ))}
+            {venues
+              .filter((venue: Venue) => !venue.deleted)
+              .map((venue: Venue, index: number) => (
+                <div className={styles.venue} key={index}>
+                  <span>{venue.name}</span>
+                  <VenueTooltip venue={venue} />
+                </div>
+              ))}
           </div>
         ) : (
           <div className={styles.noVenues}>No venues found</div>

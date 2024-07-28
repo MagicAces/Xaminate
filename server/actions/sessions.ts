@@ -20,11 +20,13 @@ import {
   revalidateAllPaths,
 } from "@/lib/sessions";
 import { revalidatePath } from "next/cache";
+import { performance } from "perf_hooks";
 
 export const createSession = authAction(
   sessionSchema,
   async (session: SessionInput, { userId }) => {
     try {
+      const start = performance.now();
       if (!session.sessionStart || !session.sessionEnd)
         return { error: "Dates can not be empty" };
 
@@ -44,67 +46,79 @@ export const createSession = authAction(
 
       if (!isAvailable) return { error: "Venue is not available" };
 
-      const newSession = await prisma.$transaction(async (prisma) => {
-        if (!session.sessionStart || !session.sessionEnd) return null;
+      const newSession = await prisma.$transaction(
+        async (prisma) => {
+          if (!session.sessionStart || !session.sessionEnd) return null;
 
-        const newSession = await prisma.session.create({
-          data: {
-            start_time: session.sessionStart,
-            end_time: session.sessionEnd,
-            created_by: Number(userId),
-            course_names: session.courseNames.map((course) =>
-              _.startCase(_.lowerCase(course))
-            ),
-            course_codes: session.courseCodes.map((code) => _.upperCase(code)),
-            classes: session.classes.map((classe) => _.upperCase(classe)),
-            invigilators: session.invigilators.map((invigilator) =>
-              _.startCase(_.lowerCase(invigilator))
-            ),
-            venue_id: session.venue,
-            temp_status:
-              session.sessionStart < new Date() ? "pending" : "active",
-            actual_end_time: session.sessionEnd,
-          },
-        });
+          const newSession = await prisma.session.create({
+            data: {
+              start_time: session.sessionStart,
+              end_time: session.sessionEnd,
+              created_by: Number(userId),
+              course_names: session.courseNames.map((course) =>
+                _.startCase(_.lowerCase(course))
+              ),
+              course_codes: session.courseCodes.map((code) =>
+                _.upperCase(code)
+              ),
+              classes: session.classes.map((classe) => _.upperCase(classe)),
+              invigilators: session.invigilators.map((invigilator) =>
+                _.startCase(_.lowerCase(invigilator))
+              ),
+              venue_id: session.venue,
+              temp_status:
+                session.sessionStart < new Date() ? "pending" : "active",
+              actual_end_time: session.sessionEnd,
+            },
+          });
 
-        await prisma.venueBooking.create({
-          data: {
-            venue_id: session.venue,
-            session_id: newSession.id,
-            start_time: session.sessionStart,
-            end_time: session.sessionEnd,
-          },
-        });
+          await prisma.venueBooking.create({
+            data: {
+              venue_id: session.venue,
+              session_id: newSession.id,
+              start_time: session.sessionStart,
+              end_time: session.sessionEnd,
+            },
+          });
 
-        await prisma.notification.create({
-          data: {
-            category: "Session",
-            message: `Session #${newSession.id} has been created. It ${
-              getStatusMessage(session.sessionStart, session.sessionEnd) ===
-              "pending"
-                ? `will start at ${format(
-                    new Date(session.sessionStart),
-                    "h:mm a"
-                  )}`
-                : `started at ${format(
-                    new Date(session.sessionStart),
-                    "h:mm a"
-                  )}`
-            }`,
-            category_id: newSession.id,
-          },
-        });
+          await prisma.notification.create({
+            data: {
+              category: "Session",
+              message: `Session #${newSession.id} has been created. It ${
+                getStatusMessage(session.sessionStart, session.sessionEnd) ===
+                "pending"
+                  ? `will start at ${format(
+                      new Date(session.sessionStart),
+                      "h:mm a"
+                    )}`
+                  : `started at ${format(
+                      new Date(session.sessionStart),
+                      "h:mm a"
+                    )}`
+              }`,
+              category_id: newSession.id,
+            },
+          });
 
-        await prisma.attendance.create({
-          data: {
-            session_id: newSession.id,
-          },
-        });
+          await prisma.attendance.create({
+            data: {
+              session_id: newSession.id,
+            },
+          });
 
-        return newSession;
-      });
+          return newSession;
+        },
+        {
+          maxWait: 5000, // default: 2000
+          timeout: 10000, // default: 5000
+          isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // optional, default defined by database configuration
+        }
+      );
 
       await revalidateAllPaths();
+
+      const end = performance.now();
+      console.log(`Execution Time: ${end - start}ms`);
 
       if (newSession) return { success: "Session Created" };
       return { error: "Session could not be created" };
@@ -530,6 +544,7 @@ export const editSession = authAction(
   sessionEditSchema,
   async (session: SessionEdit, { userId }) => {
     try {
+      const start = performance.now();
       if (!session.sessionStart || !session.sessionEnd)
         return { error: "Dates cannot be empty" };
 
@@ -652,6 +667,9 @@ export const editSession = authAction(
 
       await revalidateAllPaths();
       revalidatePath("/sessions/" + session.id);
+
+      const end = performance.now();
+      console.log(`Execution Time: ${end - start}ms`);
 
       return updatedSession;
     } catch (error) {

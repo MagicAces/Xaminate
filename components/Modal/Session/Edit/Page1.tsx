@@ -82,7 +82,7 @@ const Page1 = ({
   setSessionVal: any;
   setPage: any;
 }) => {
-  const { venues } = useSelector((state: any) => state.modal);
+  const { venues } = useSelector((state: any) => state.setting);
   const { exitModal } = useModal();
   const dispatch = useDispatch();
   const [error, setError] = useState("");
@@ -425,8 +425,8 @@ const Page1 = ({
                 fixedHeight
                 showTimeSelect
                 tabIndex={1}
-                filterTime={isWeekday}
-                filterDate={isWeekday}
+                // filterTime={isWeekday}
+                // filterDate={isWeekday}
                 timeIntervals={15}
                 timeCaption="Time"
                 timeFormat="p"
@@ -467,8 +467,8 @@ const Page1 = ({
                 onKeyDown={(e) => e.preventDefault()}
                 fixedHeight
                 showTimeSelect
-                filterTime={isWeekday}
-                filterDate={isWeekday}
+                // filterTime={isWeekday}
+                // filterDate={isWeekday}
                 timeIntervals={15}
                 timeCaption="Time"
                 timeFormat="p"

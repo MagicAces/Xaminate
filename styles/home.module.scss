@@ -39,10 +39,11 @@
       );
 
       &Top {
-        padding: 1rem 2rem 0.5rem;
+        padding: 1.5rem 2rem 0.5rem;
         width: 100%;
         display: grid;
         grid-template-columns: repeat(4, minmax(200px, 1fr));
+        grid-template-rows: 120px;
         gap: 1.5rem;
 
         @media (max-width: 1060px) {
@@ -52,21 +53,26 @@
 
         @media (max-width: 675px) {
           padding: 1rem;
+          padding-bottom: 0;
         }
 
         @media (max-width: 500px) {
           grid-template-rows: repeat(4, 1fr);
           grid-template-columns: repeat(1, minmax(200px, 1fr));
+          gap: 1rem;
         }
         // @include flexin($justify: stretch, $align: stretch, $gap: 1.5rem);
 
-        & > div {
-          border: 1px solid $border-color;
-          background-color: transparent;
+        .sessionBox,
+        .cameraBox,
+        .venueBox,
+        .reportBox {
+          // border: 1px solid $border-color;
+          // background-color: transparent;
           //   flex-basis: 25%;
           //   min-width: 250px;
-          //   border: 1px solid transparent;
-          //   background-color: $secondary-background;
+          border: 1px solid transparent;
+          background-color: $secondary-background;
           padding: 0.5rem 1rem 1rem;
           border-radius: 0.5rem;
           box-shadow: 0 4px 4px 0 $dark-shadow;
@@ -99,6 +105,10 @@
           & > p {
             font-size: 24px;
             font-weight: 500;
+
+            @media (max-width: 450px) {
+              font-size: 20px !important;
+            }
           }
 
           .footerText {
@@ -112,11 +122,337 @@
           padding: 1rem;
         }
 
-        .sessionBox,
-        .reportBox,
-        .venueBox,
-        .cameraBox {
-          flex: 1;
+        // .sessionBox,
+        // .reportBox,
+        // .venueBox,
+        // .cameraBox {
+        //   flex: 1;
+        // }
+      }
+
+      &Middle {
+        padding: 1rem 2rem 0.5rem;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+        grid-template-rows: minmax(315px, 1fr);
+        gap: 1.5rem;
+
+        @media (max-width: 1060px) {
+          grid-template-columns: minmax(250px, 1fr);
+          grid-template-rows: repeat(2, minmax(315px, 1fr));
+        }
+
+        @media (max-width: 675px) {
+          padding: 1rem;
+          padding-bottom: 0;
+          gap: 1rem;
+        }
+
+        &Venue,
+        &Report {
+          position: relative;
+          border-radius: 0.5rem;
+          // border: 1px solid $border-color;
+          // background-color: transparent;
+          box-shadow: 0 4px 4px 0 $dark-shadow;
+          padding: 1rem 1.5rem 0;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1rem
+          );
+
+          @media (max-width: 675px) {
+            padding: 1rem 1rem 0;
+          }
+
+          border: 1px solid transparent;
+          background-color: $secondary-background;
+
+          &Top {
+            width: 100%;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 3rem
+            );
+
+            &Left {
+              & > span:first-of-type {
+                font-weight: 400;
+              }
+
+              & > span:last-of-type {
+                font-size: 11px;
+                font-weight: 200;
+              }
+            }
+          }
+
+          &Body {
+            width: 100%;
+            position: relative;
+            left: -10px;
+          }
+        }
+      }
+
+      &Bottom {
+        padding: 1rem 2rem 1.5rem;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 2fr minmax(200px, 1fr);
+        grid-template-rows: minmax(315px, 1fr);
+        gap: 1.5rem;
+
+        @media (max-width: 1060px) {
+          grid-template-columns: minmax(250px, 1fr);
+          grid-template-rows: repeat(2, minmax(315px, 1fr));
+        }
+
+        @media (max-width: 675px) {
+          padding: 1rem;
+          gap: 1rem;
+        }
+
+        &Report {
+          position: relative;
+          border-radius: 0.5rem;
+          // border: 1px solid $border-color;
+          // background-color: transparent;
+          box-shadow: 0 4px 4px 0 $dark-shadow;
+          padding: 1rem 1.5rem 0;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1rem
+          );
+
+          border: 1px solid transparent;
+          background-color: $secondary-background;
+
+          @media (max-width: 675px) {
+            padding: 1rem 1rem 0;
+          }
+
+          &Top {
+            width: 100%;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 3rem
+            );
+
+            &Left {
+              & > span:first-of-type {
+                font-weight: 400;
+              }
+
+              & > span:last-of-type {
+                font-size: 11px;
+                font-weight: 200;
+
+                @media (max-width: 400px) {
+                  display: none;
+                }
+              }
+            }
+          }
+
+          &Body {
+            width: 100%;
+            position: relative;
+            left: -10px;
+          }
+        }
+
+        &Recent {
+          position: relative;
+          border-radius: 0.5rem;
+          // border: 1px solid $border-color;
+          // background-color: transparent;
+          border: 1px solid transparent;
+          background-color: $secondary-background;
+          box-shadow: 0 4px 4px 0 $dark-shadow;
+          padding: 1rem 0 0;
+          @include flexin(
+            $justify: stretch,
+            $align: stretch,
+            $direction: column,
+            $gap: 1rem
+          );
+
+          &Header {
+            // width: 100%;
+            padding: 0 0 0.5rem;
+            margin: 0 1.5rem;
+            border-bottom: 1px solid $border-color;
+            @include flexin(
+              $justify: space-between,
+              $align: center,
+              $gap: 3rem
+            );
+
+            @media (max-width: 675px) {
+              margin: 0 1rem;
+            }
+
+            & > span:first-of-type {
+              font-weight: 400;
+            }
+
+            & > span:last-of-type {
+              font-weight: 200;
+
+              svg {
+                font-size: 18px;
+              }
+            }
+          }
+
+          .bodyContainer {
+            width: 100%;
+
+            .recentRows {
+              padding: 0 1.5rem;
+              @include flexin(
+                $justify: flex-start,
+                $align: stretch,
+                $direction: column,
+                $gap: 1rem
+              );
+              // padding: 0;
+              width: 100%;
+              transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+              @media (max-width: 675px) {
+                padding: 0 1rem;
+              }
+
+              .recentRowOuter {
+                @include flexin(
+                  $justify: stretch,
+                  $align: stretch,
+                  $gap: 0.5rem
+                );
+                width: 100%;
+                padding: 1rem;
+                border: 1px solid $border-color;
+                border-radius: 0.5rem;
+                background-color: $primary-background;
+                // background-color: $secondary-background;
+                flex-grow: 1;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+
+                .iconBadge {
+                  padding: 0.5rem;
+                  background-color: $secondary-background;
+                  border-radius: 0.5rem;
+                  @include flexin;
+
+                  svg {
+                    font-size: 18px;
+                    color: $accent-dark-green;
+                  }
+                }
+
+                .textRegion {
+                  width: 100%;
+                  @include flexin(
+                    $justify: flex-start,
+                    $align: stretch,
+                    $direction: column,
+                    $gap: 0.3rem
+                  );
+
+                  &Top {
+                    width: 100%;
+                    @include flexin(
+                      $justify: space-between,
+                      $align: center,
+                      $gap: 0
+                    );
+
+                    span:first-of-type {
+                      font-weight: 400;
+                    }
+
+                    span:last-of-type {
+                      font-weight: 200;
+                      font-size: 12px;
+                    }
+
+                    span.pending {
+                      color: $pending-color;
+                    }
+
+                    span.approved,
+                    span.active {
+                      color: $approved-color;
+                    }
+
+                    span.closed {
+                      color: $border-color;
+                    }
+
+                    span.rejected {
+                      color: $rejected-color;
+                    }
+                  }
+
+                  &Bottom {
+                    @include flexin(
+                      $justify: flex-start,
+                      $align: center,
+                      $gap: 1.5rem
+                    );
+
+                    & > span {
+                      @include flexin(
+                        $justify: flex-start,
+                        $align: center,
+                        $gap: 0.5rem
+                      );
+                      font-size: 13px;
+                      font-weight: 300;
+                    }
+
+                    @media (max-width: 450px) {
+                      & > span:last-of-type {
+                        display: none;
+                      }
+                    }
+                  }
+                }
+              }
+
+              .recentRowOuter:hover {
+                background-color: rgba($color: $text-color, $alpha: 0.1);
+                cursor: pointer;
+              }
+            }
+          }
+
+          .noRecentData {
+            flex-grow: 1;
+            height: 100%;
+            width: 100%;
+            margin: 3rem 0;
+            color: gray;
+            @include flexin(
+              $justify: center,
+              $align: center,
+              $direction: column,
+              $gap: 1rem
+            );
+
+            img {
+              color: $text-color;
+            }
+          }
         }
       }
     }

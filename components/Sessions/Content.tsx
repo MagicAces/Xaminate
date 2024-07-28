@@ -38,7 +38,7 @@ const Content = () => {
       });
     }
 
-    if (!isFetching) dispatch(setReload(false));
+    if (!isFetching && !isLoading) dispatch(setReload(false));
     if (isSuccess && !isFetching && !isLoading) dispatch(setSessions(data));
   }, [
     dispatch,

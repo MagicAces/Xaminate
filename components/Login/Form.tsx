@@ -20,6 +20,7 @@ import Loader from "../Utils/Loader";
 import { setReload } from "@/redux/slices/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogoutReload } from "@/redux/slices/sidebarSlice";
+import { signIn } from "next-auth/react";
 
 export default function Form() {
   const [error, setError] = useState("");
@@ -50,11 +51,11 @@ export default function Form() {
         toast.error(data.error);
         setError(data.error);
       }
-      if (data?.success) {
-        toast.success(data?.success);
-        console.log(data?.data);
-        reset();
-      }
+      // if (data?.success) {
+      //   toast.success(data?.success);
+      //   console.log(data?.data);
+      reset();
+      // }
     },
     onError(error) {
       console.log(error);
@@ -65,7 +66,15 @@ export default function Form() {
   const onSubmitHandler: SubmitHandler<LoginInput> = async (
     values: LoginInput
   ) => {
-    execute({ ...values, redirectTo: callbackUrl });
+    dispatch(setReload(true));
+    const signInResult = await signIn("credentials", {
+      ...values,
+      redirect: true,
+      callbackUrl,
+    });
+    console.log(signInResult);
+    dispatch(setReload(false));
+    // execute({ ...values, redirect: false, callbackUrl });
   };
 
   useEffect(() => {

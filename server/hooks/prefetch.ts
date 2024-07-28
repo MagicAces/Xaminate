@@ -6,6 +6,13 @@ import { getVenues } from "../actions/venues";
 import { getSession, getSessions } from "../actions/sessions";
 import { getReport, getReports } from "../actions/reports";
 import { getCameras } from "../actions/cameras";
+import {
+  getDashboardTopRowData,
+  getRecentItems,
+  getReportsPerSession,
+  getReportStats,
+  getVenueStats,
+} from "../actions/dashboard";
 // import { getReportsTest } from "../actions/reports";
 
 export const usePrefetchQueries = async (queryClient: QueryClient) => {
@@ -68,6 +75,84 @@ export const usePrefetchQueries = async (queryClient: QueryClient) => {
         });
         return { ...data.success };
       },
+    }),
+    queryClient.prefetchQuery({
+      queryFn: async () => {
+        try {
+          const data = await getDashboardTopRowData();
+          if (data?.success) return data.success;
+          return data?.error;
+        } catch (error) {
+          // return { error: "Server Error" };
+          return "Error fetching dashboard data";
+        }
+      },
+      queryKey: ["dashboard_top"],
+    }),
+    queryClient.prefetchQuery({
+      queryFn: async () => {
+        try {
+          const data = await getVenueStats("This Month");
+          if (data?.success) return data.success;
+          return data?.error;
+        } catch (error) {
+          // return { error: "Server Error" };
+          return "Error fetching venue stats";
+        }
+      },
+      queryKey: ["dashboard_middle_venue", { date_filter: "This Month" }],
+    }),
+    queryClient.prefetchQuery({
+      queryFn: async () => {
+        try {
+          const data = await getReportStats("This Month");
+          if (data?.success) return data.success;
+          return data?.error;
+        } catch (error) {
+          // return { error: "Server Error" };
+          return "Error fetching report stats";
+        }
+      },
+      queryKey: ["dashboard_middle_report", { date_filter: "This Month" }],
+    }),
+    queryClient.prefetchQuery({
+      queryFn: async () => {
+        try {
+          const data = await getReportsPerSession(10);
+          if (data?.success) return data.success;
+          return data?.error;
+        } catch (error) {
+          // return { error: "Server Error" };
+          return "Error fetching report per session";
+        }
+      },
+      queryKey: ["dashboard_bottom_rps", { session_back: 10 }],
+    }),
+    queryClient.prefetchQuery({
+      queryFn: async () => {
+        try {
+          const data = await getRecentItems("session");
+          if (data?.success) return data.success;
+          return data?.error;
+        } catch (error) {
+          // return { error: "Server Error" };
+          return "Error fetching report stats";
+        }
+      },
+      queryKey: ["dashboard_bottom_ri", { category: "session" }],
+    }),
+    queryClient.prefetchQuery({
+      queryFn: async () => {
+        try {
+          const data = await getRecentItems("report");
+          if (data?.success) return data.success;
+          return data?.error;
+        } catch (error) {
+          // return { error: "Server Error" };
+          return "Error fetching report stats";
+        }
+      },
+      queryKey: ["dashboard_bottom_ri", { category: "report" }],
     }),
     queryClient.prefetchQuery({
       queryKey: [

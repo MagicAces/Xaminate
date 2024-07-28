@@ -76,7 +76,7 @@ const Filters = () => {
   const { sessionsBox, reload, isDisabled } = useSelector(
     (state: any) => state.session
   );
-  const { venues } = useSelector((state: any) => state.modal);
+  const { venues } = useSelector((state: any) => state.setting);
   const [isClient, setIsClient] = useState(false);
   const [options, setOptions] = useState<SelectOption[]>([]);
   const handleSelectChange = (data: any, name: string) => {
@@ -117,7 +117,9 @@ const Filters = () => {
             classNamePrefix="filter-select"
             name="venue"
             tabIndex={1}
-            value={options.find((option) => option.value === sessionsBox?.filter?.venue)}
+            value={options.find(
+              (option) => option.value === sessionsBox?.filter?.venue
+            )}
             components={{ DropdownIndicator }}
             noOptionsMessage={({ inputValue }) => "No Venues Found"}
             isClearable={true}
