@@ -96,7 +96,7 @@ const Report = () => {
               dataLabels: {
                 enabled: false,
               },
-              colors: ["#FFC107", "#4CAF50", "#FF5252"],
+              colors: ["#4CAF50", "#FFC107", "#FF5252"],
               yaxis: {
                 labels: {
                   formatter: function (val) {

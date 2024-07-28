@@ -309,6 +309,11 @@
 
               svg {
                 font-size: 18px;
+                transition: all 500ms cubic-bezier(0.6, 0.2, 0.2, 1) 0ms;
+              }
+
+              svg:hover {
+                color: $hover-green;
               }
             }
           }
@@ -448,10 +453,6 @@
               $direction: column,
               $gap: 1rem
             );
-
-            img {
-              color: $text-color;
-            }
           }
         }
       }

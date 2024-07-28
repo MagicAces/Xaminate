@@ -5,7 +5,7 @@ import logo from "@/public/images/logo.svg";
 import styles from "@/styles/sidebar.module.scss";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 // import { useFormState, useFormStatus } from "react-dom";
 import { MdAdd } from "react-icons/md";
@@ -34,6 +34,7 @@ const Sidebar = () => {
   // const [, formAction, isPending] = useFormState(logout, null);
   const { modalState, setState } = useModal();
   const dispatch = useDispatch();
+  const router = useRouter();
   const {
     data: venues,
     error: venuesError,
@@ -76,6 +77,7 @@ const Sidebar = () => {
       dispatch(setFullView(false));
     }
   };
+
   return (
     <>
       {/* {reload && <Loader />} */}
@@ -155,9 +157,13 @@ const Sidebar = () => {
             <span>Session</span>
           </div>
           <form
-            onSubmit={() => {
+            onSubmit={async (e) => {
+              e.preventDefault();
               dispatch(setLogoutReload(true));
-              signOut({ redirect: true, callbackUrl: "/login" });
+              await signOut({
+                redirect: true,
+                callbackUrl: "/login",
+              });
             }}
             className={styles.logout}
           >

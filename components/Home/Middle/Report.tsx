@@ -51,7 +51,7 @@ const Report = () => {
     ) {
       dispatch(setReportStats(reportStatsData));
     }
-  }, [reportStatsError, reportStatsData, dispatch]);
+  }, [reportStatsError, reportStatsData, dispatch, reportStatsFetching]);
 
   useEffect(() => {
     setSeries(Object.values(reportStats));

@@ -17,7 +17,7 @@ const Top = () => {
   );
 
   const dispatch = useDispatch();
-  const { data, error, isFetching, isLoading, isSuccess } =
+  const { data, error, isFetching, isLoading, isSuccess, status } =
     useGetDashboardTopRowData();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Top = () => {
 
     if (
       isSuccess &&
-      !isFetching &&
+      // !isFetching &&
       !isLoading &&
       typeof data !== "string" &&
       typeof data !== "undefined"
@@ -39,7 +39,9 @@ const Top = () => {
   return (
     <>
       <div className={styles.homeContentTop}>
-        {!isLoading ? (
+        {!isLoading &&
+        typeof data !== "string" &&
+        typeof data !== "undefined" ? (
           <div className={styles.sessionBox}>
             <div className={styles.sessionBoxTop}>
               <span>
@@ -48,28 +50,37 @@ const Top = () => {
               </span>
               <SessionBreakdown />
             </div>
-            <p>+{topRow.sessions.currentMonth}</p>
+            <p>+{topRow.sessions.currentMonth || data.sessions.currentMonth}</p>
             <span className={styles.footerText}>
               {topRow.sessions.percentageChange > 0
-                ? `+${topRow.sessions.percentageChange}%`
-                : `${topRow.sessions.percentageChange}%`}{" "}
+                ? `+${
+                    topRow.sessions.percentageChange ||
+                    data.sessions.percentageChange
+                  }%`
+                : `${
+                    topRow.sessions.percentageChange ||
+                    data.sessions.percentageChange
+                  }%`}{" "}
               from last month
             </span>
           </div>
         ) : (
           <Skeleton
-            className={styles.sessionBox}
+            // className={styles.sessionBox}
             baseColor="#2C2C2C"
             highlightColor="#505050"
             height={120}
             style={{
               borderRadius: "0.5rem",
+              flex: "1",
               // marginTop: "0.5rem",
               padding: "1rem",
             }}
           />
         )}
-        {!isLoading ? (
+        {!isLoading &&
+        typeof data !== "string" &&
+        typeof data !== "undefined" ? (
           <div className={styles.reportBox}>
             <div className={styles.reportBoxTop}>
               <span>
@@ -78,17 +89,23 @@ const Top = () => {
               </span>
               <ReportBreakdown />
             </div>
-            <p>+{topRow.reports.currentMonth}</p>
+            <p>+{topRow.reports.currentMonth || data.reports.currentMonth}</p>
             <span className={styles.footerText}>
               {topRow.reports.percentageChange > 0
-                ? `+${topRow.reports.percentageChange}%`
-                : `${topRow.reports.percentageChange}%`}{" "}
+                ? `+${
+                    topRow.reports.percentageChange ||
+                    data.reports.percentageChange
+                  }%`
+                : `${
+                    topRow.reports.percentageChange ||
+                    data.reports.percentageChange
+                  }%`}{" "}
               from last month
             </span>
           </div>
         ) : (
           <Skeleton
-            className={styles.reportBox}
+            // className={styles.reportBox}
             baseColor="#2C2C2C"
             highlightColor="#505050"
             height={120}
@@ -99,23 +116,31 @@ const Top = () => {
             }}
           />
         )}
-        {!isLoading ? (
+        {!isLoading &&
+        typeof data !== "string" &&
+        typeof data !== "undefined" ? (
           <div className={styles.cameraBox}>
             <div className={styles.cameraBoxTop}>
               <span>Total Cameras</span>
               <CameraBreakdown />
             </div>
-            <p>+{topRow.cameras.total}</p>
+            <p>+{topRow.cameras.total || data.cameras.total}</p>
             <span className={styles.footerText}>
               {topRow.cameras.percentageChange > 0
-                ? `+${topRow.cameras.percentageChange}%`
-                : `${topRow.cameras.percentageChange}%`}{" "}
+                ? `+${
+                    topRow.cameras.percentageChange ||
+                    data.cameras.percentageChange
+                  }%`
+                : `${
+                    topRow.cameras.percentageChange ||
+                    data.cameras.percentageChange
+                  }%`}{" "}
               from last month
             </span>
           </div>
         ) : (
           <Skeleton
-            className={styles.cameraBox}
+            // className={styles.cameraBox}
             baseColor="#2C2C2C"
             highlightColor="#505050"
             height={120}
@@ -126,7 +151,9 @@ const Top = () => {
             }}
           />
         )}
-        {!isLoading ? (
+        {!isLoading &&
+        typeof data !== "string" &&
+        typeof data !== "undefined" ? (
           <div className={styles.venueBox}>
             <div className={styles.venueBoxTop}>
               <span>Total Venues</span>
@@ -134,14 +161,20 @@ const Top = () => {
             <p>+{topRow.venues.total}</p>
             <span className={styles.footerText}>
               {topRow.venues.percentageChange > 0
-                ? `+${topRow.venues.percentageChange}%`
-                : `${topRow.venues.percentageChange}%`}{" "}
+                ? `+${
+                    topRow.venues.percentageChange ||
+                    data.venues.percentageChange
+                  }%`
+                : `${
+                    topRow.venues.percentageChange ||
+                    data.venues.percentageChange
+                  }%`}{" "}
               from last month
             </span>
           </div>
         ) : (
           <Skeleton
-            className={styles.venueBox}
+            // className={styles.venueBox}
             baseColor="#2C2C2C"
             highlightColor="#505050"
             height={120}

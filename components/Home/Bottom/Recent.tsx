@@ -68,7 +68,13 @@ const Recent = () => {
         )
       );
     }
-  }, [recentItemsError, recentItemsData, dispatch, category]);
+  }, [
+    recentItemsError,
+    recentItemsData,
+    recentItemsFetching,
+    dispatch,
+    category,
+  ]);
 
   return (
     <>
@@ -156,7 +162,6 @@ const Recent = () => {
             ) : (
               <div className={styles.noRecentData}>
                 <Image src={nodata} alt="🫙" height={50} width={50} />
-                <svg />
                 <p>No recent data</p>
               </div>
             )}

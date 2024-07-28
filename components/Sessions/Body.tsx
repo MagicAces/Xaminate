@@ -12,6 +12,9 @@ import { useModal } from "@/utils/context";
 import Modal from "../Modal/Modal";
 import { setReload, setSession } from "@/redux/slices/modalSlice";
 
+import nodata from "@/public/images/nodata.svg";
+import Image from "next/image";
+
 const Body = () => {
   const { data, isDisabled } = useSelector((state: any) => state.session);
   const { modalState, setState } = useModal();
@@ -158,7 +161,10 @@ const Body = () => {
                   />
                 ))
               ) : (
-                <div className={styles.noSessions}>No sessions available</div>
+                <div className={styles.noSessions}>
+                  <Image src={nodata} alt="🫙" height={50} width={50} />
+                  <span>No sessions available</span>
+                </div>
               )}
             </div>
           </SessionScrollbars>

@@ -10,6 +10,7 @@ import { formatToCCTVTimestamp } from "@/utils/functs";
 // import reports from "@/data/reports";
 import unknown from "@/public/images/unknown_user.png";
 import { useRouter } from "next/navigation";
+import nodata from "@/public/images/nodata.svg";
 
 const Reports = () => {
   const { session }: { session: SessionOutput } = useSelector(
@@ -107,7 +108,10 @@ const Reports = () => {
                 return;
               })
             ) : (
-              <div className={styles.noReports}>No Report Found</div>
+              <div className={styles.noReports}>
+                <Image src={nodata} alt="🫙" height={50} width={50} />
+                <span>No Report Found</span>
+              </div>
             )}
           </div>
 

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
@@ -30,6 +30,7 @@ export default function Form() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     reset,
@@ -72,7 +73,6 @@ export default function Form() {
       redirect: true,
       callbackUrl,
     });
-    console.log(signInResult);
     dispatch(setReload(false));
     // execute({ ...values, redirect: false, callbackUrl });
   };
@@ -189,7 +189,7 @@ export default function Form() {
           </div>
         </div>
         <Button
-          disabled={status === "executing"}
+          disabled={status === "executing" || reload}
           message="Login"
           buttonClass={styles.submit}
         />

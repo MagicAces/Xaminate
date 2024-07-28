@@ -18,6 +18,7 @@ import { PiStudent } from "react-icons/pi";
 import { FaRegEdit } from "react-icons/fa";
 import unknown from "@/public/images/unknown_user.png";
 import { toast } from "react-toastify";
+import nodata from "@/public/images/nodata.svg";
 
 const Body = () => {
   const { data, isDisabled } = useSelector((state: any) => state.report);
@@ -211,7 +212,10 @@ const Body = () => {
                   />
                 ))
               ) : (
-                <div className={styles.noReports}>No reports available</div>
+                <div className={styles.noReports}>
+                  <Image src={nodata} alt="🫙" height={50} width={50} />
+                  <span>No reports available</span>
+                </div>
               )}
             </div>
           </ReportScrollbars>
