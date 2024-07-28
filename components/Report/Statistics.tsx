@@ -133,6 +133,7 @@ const Statistics = () => {
                             fontWeight: 200,
                           },
                         },
+                        forceNiceScale: true,
                         // show: true,
                         // axisBorder: {
                         //   show: true,
