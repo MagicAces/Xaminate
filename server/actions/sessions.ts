@@ -188,6 +188,7 @@ export const getSessions = async (query: SessionQuery) => {
             start_time: true,
             end_time: true,
             actual_end_time: true,
+            terminated_by: true,
             venue: {
               select: {
                 id: true,
@@ -250,18 +251,19 @@ export const getSessions = async (query: SessionQuery) => {
         end_time,
         _count,
         venue,
-        attendance,
+        attendance,terminated_by,
+        
         ...rest
       } = session;
 
       const duration = actual_end_time
-        ? endTime >= actual_end_time
+        ? terminated_by
           ? "Terminated"
           : formatDuration(new Date(startTime), new Date(endTime))
         : formatDuration(new Date(startTime), new Date(endTime));
 
       const status = actual_end_time
-        ? endTime >= actual_end_time
+        ? terminated_by
           ? "closed"
           : getStatusMessage(new Date(startTime), new Date(endTime))
         : getStatusMessage(new Date(startTime), new Date(endTime));
