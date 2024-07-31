@@ -139,12 +139,17 @@ export const getDashboardTopRowData = async (): Promise<{
     // Venues
     const [totalVenues, currentMonthVenues, lastMonthVenues] =
       await Promise.all([
-        prisma.venue.count(),
+        prisma.venue.count({
+          where: {
+            deleted: false,
+          },
+        }),
         prisma.venue.count({
           where: {
             created_on: {
               gte: currentMonthStart,
             },
+            deleted: false,
           },
         }),
         prisma.venue.count({
@@ -153,6 +158,7 @@ export const getDashboardTopRowData = async (): Promise<{
               gte: lastMonthStart,
               lt: currentMonthStart,
             },
+            deleted: false,
           },
         }),
       ]);
@@ -252,6 +258,9 @@ export const getVenueStats = async (
 
   try {
     const venues = await prisma.venue.findMany({
+      where: {
+        deleted: false,
+      },
       include: {
         sessions: {
           where: {

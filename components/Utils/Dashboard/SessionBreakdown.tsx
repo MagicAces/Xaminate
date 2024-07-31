@@ -20,7 +20,6 @@ const SessionBreakdown = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [menuState, toggle] = useMenuState({
     transition: true,
-    initialMounted: true,
   });
   const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
   const { topRow }: { topRow: DashboardTopRowData } = useSelector(
@@ -42,6 +41,10 @@ const SessionBreakdown = () => {
         anchorRef={tooltipRef}
         onClose={() => toggle(false)}
         transition
+        portal={{
+          target: document.body,
+          stablePosition: true,
+        }}
         menuClassName={styles.sessionBreakdownMenu}
         gap={12}
         align="end"

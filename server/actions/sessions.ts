@@ -33,6 +33,7 @@ export const createSession = authAction(
       const venue = await prisma.venue.findUnique({
         where: {
           id: session.venue,
+          deleted: false,
         },
       });
 

@@ -20,7 +20,6 @@ const ReportBreakdown = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [menuState, toggle] = useMenuState({
     transition: true,
-    initialMounted: true,
   });
   const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
   const { topRow }: { topRow: DashboardTopRowData } = useSelector(
@@ -40,6 +39,10 @@ const ReportBreakdown = () => {
         transition
         menuClassName={styles.reportBreakdownMenu}
         gap={12}
+        portal={{
+          target: document.body,
+          stablePosition: true,
+        }}
         align="end"
         arrow={false}
       >
