@@ -3,6 +3,7 @@
 import {
   ControlledMenu,
   MenuHeader,
+  useClick,
   useHover,
   useMenuState,
 } from "@szhsin/react-menu";
@@ -18,10 +19,13 @@ import { useSelector } from "react-redux";
 
 const SessionBreakdown = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const [menuState, toggle] = useMenuState({
-    transition: true,
-  });
-  const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
+  // const [menuState, toggle] = useMenuState({
+  //   transition: true,
+  // });
+  // const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
+
+  const [menuState, toggle] = useMenuState({ transition: true });
+  const anchorProps = useClick(menuState.state, toggle);
   const { topRow }: { topRow: DashboardTopRowData } = useSelector(
     (state: any) => state.dashboard
   );
@@ -36,15 +40,11 @@ const SessionBreakdown = () => {
         <TbTimelineEventExclamation />
       </div>
       <ControlledMenu
-        {...hoverProps}
+        // {...hoverProps}
         {...menuState}
         anchorRef={tooltipRef}
         onClose={() => toggle(false)}
         transition
-        portal={{
-          target: document.body,
-          stablePosition: true,
-        }}
         menuClassName={styles.sessionBreakdownMenu}
         gap={12}
         align="end"

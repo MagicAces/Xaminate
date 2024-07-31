@@ -39,10 +39,6 @@ const ReportBreakdown = () => {
         transition
         menuClassName={styles.reportBreakdownMenu}
         gap={12}
-        portal={{
-          target: document.body,
-          stablePosition: true,
-        }}
         align="end"
         arrow={false}
       >

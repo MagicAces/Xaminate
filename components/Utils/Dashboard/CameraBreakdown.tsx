@@ -38,10 +38,6 @@ const CameraBreakdown = () => {
         transition
         menuClassName={styles.cameraBreakdownMenu}
         gap={12}
-        portal={{
-          target: document.body,
-          stablePosition: true,
-        }}
         align="end"
         arrow={false}
       >
