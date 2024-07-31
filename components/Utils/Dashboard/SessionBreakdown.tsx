@@ -53,7 +53,7 @@ const SessionBreakdown = () => {
           </div>
           <div className={styles.closedSessionsBox}>
             <span>Closed</span>
-            <span>{topRow.sessions.active}</span>
+            <span>{topRow.sessions.closed}</span>
           </div>
         </MenuHeader>
       </ControlledMenu>

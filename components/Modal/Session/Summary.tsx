@@ -22,7 +22,31 @@ import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 import { toast } from "react-toastify";
 
 // Dynamically import ReactCharts with no SSR
-const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactCharts = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+  loading: () => {
+    return (
+      <>
+        <Skeleton
+          baseColor="#1E1E1E"
+          highlightColor="#505050"
+          className={styles.reportSummaryBox}
+          // containerClassName={styles.flexContainer}
+          height={175}
+          width={"100%"}
+          style={{
+            borderRadius: "0.5rem",
+            margin: "0 0 1rem 0.5rem",
+            // width: "100%",
+            padding: "1rem",
+            position: "relative",
+            left: "0",
+          }}
+        />
+      </>
+    );
+  },
+});
 
 const Summary = () => {
   const { exitModal, modalState } = useModal();
@@ -116,156 +140,142 @@ const Summary = () => {
             <div className={styles.reportSummaryChart}>
               <span>Report Summary</span>
               <div className={styles.reportSummaryBox}>
-                {isClient ? (
-                  <ReactCharts
-                    options={{
-                      chart: {
-                        type: "donut",
-                        height: "170px",
-                        toolbar: {
-                          show: false,
-                        },
-                        dropShadow: {
-                          enabled: true,
-                        },
-                      },
-                      stroke: {
+                <ReactCharts
+                  options={{
+                    chart: {
+                      type: "donut",
+                      height: "170px",
+                      toolbar: {
                         show: false,
                       },
-                      title: {},
-                      legend: {
-                        show: true,
-                        position: "right",
-                        floating: false,
-                        labels: {
-                          colors: "#FFF",
-                          // useSeriesColors: true,
-                        },
-                        horizontalAlign: "center",
-                        offsetY: 35,
-                        offsetX: 50,
-                        itemMargin: {
-                          vertical: 8,
-                        },
-                        fontSize: "14px",
-                        fontFamily: "inherit",
-                        fontWeight: 300,
-                        markers: {
-                          radius: 10,
-                          offsetY: 2,
-                        },
-                      },
-                      tooltip: {
-                        theme: "dark",
-                        fillSeriesColor: true,
-                      },
-                      labels: Object.keys(summary.reports).map((label) =>
-                        capitalize(label)
-                      ),
-                      colors: ["#FFC107", "#4CAF50", "#FF5252"],
-                      dataLabels: {
+                      dropShadow: {
                         enabled: true,
-                        style: {
-                          fontSize: "12px",
-                          fontFamily: "inherit",
-                        },
                       },
-                      plotOptions: {
-                        pie: {
-                          startAngle: 60,
-                          endAngle: -300,
-                          offsetX: -40,
-                          dataLabels: {
-                            offset: -3,
-                          },
-                          expandOnClick: true,
-                          donut: {
-                            size: "50%",
-                            labels: {
+                    },
+                    stroke: {
+                      show: false,
+                    },
+                    title: {},
+                    legend: {
+                      show: true,
+                      position: "right",
+                      floating: false,
+                      labels: {
+                        colors: "#FFF",
+                        // useSeriesColors: true,
+                      },
+                      horizontalAlign: "center",
+                      offsetY: 35,
+                      offsetX: 50,
+                      itemMargin: {
+                        vertical: 8,
+                      },
+                      fontSize: "14px",
+                      fontFamily: "inherit",
+                      fontWeight: 300,
+                      markers: {
+                        radius: 10,
+                        offsetY: 2,
+                      },
+                    },
+                    tooltip: {
+                      theme: "dark",
+                      fillSeriesColor: true,
+                    },
+                    labels: Object.keys(summary.reports).map((label) =>
+                      capitalize(label)
+                    ),
+                    colors: ["#FFC107", "#4CAF50", "#FF5252"],
+                    dataLabels: {
+                      enabled: true,
+                      style: {
+                        fontSize: "12px",
+                        fontFamily: "inherit",
+                      },
+                    },
+                    plotOptions: {
+                      pie: {
+                        startAngle: 60,
+                        endAngle: -300,
+                        offsetX: -40,
+                        dataLabels: {
+                          offset: -3,
+                        },
+                        expandOnClick: true,
+                        donut: {
+                          size: "50%",
+                          labels: {
+                            show: true,
+                            name: {
                               show: true,
-                              name: {
-                                show: true,
-                                fontSize: "14px",
-                                fontFamily: "inherit",
-                                fontWeight: 300,
-                                color: "#FFF",
-                              },
-                              value: {
-                                color: "#FFF",
-                                fontFamily: "inherit",
-                              },
-                              total: {
-                                show: true,
-                                showAlways: false,
-                                label: "Total",
-                                fontFamily: "inherit",
-                                fontSize: "11px",
-                                color: "#FFF",
-                              },
+                              fontSize: "14px",
+                              fontFamily: "inherit",
+                              fontWeight: 300,
+                              color: "#FFF",
+                            },
+                            value: {
+                              color: "#FFF",
+                              fontFamily: "inherit",
+                            },
+                            total: {
+                              show: true,
+                              showAlways: false,
+                              label: "Total",
+                              fontFamily: "inherit",
+                              fontSize: "11px",
+                              color: "#FFF",
                             },
                           },
                         },
                       },
-                      fill: {
-                        type: "gradient",
-                        gradient: {
-                          opacityFrom: 1,
-                          opacityTo: 0.75,
-                        },
+                    },
+                    fill: {
+                      type: "gradient",
+                      gradient: {
+                        opacityFrom: 1,
+                        opacityTo: 0.75,
                       },
-                      responsive: [
-                        {
-                          breakpoint: 650,
-                          options: {
-                            chart: {
-                              width: "100%",
-                              height: "250px",
-                            },
-                            plotOptions: {
-                              pie: {
-                                offsetX: 0,
-                                donut: {
-                                  size: "60%",
-                                },
-                                labels: {
-                                  name: {
-                                    fontSize: "12px",
-                                  },
-                                },
-                              },
-                            },
-                            legend: {
-                              position: "bottom",
-                              horizontalAlign: "center",
-                              offsetY: 0,
+                    },
+                    responsive: [
+                      {
+                        breakpoint: 650,
+                        options: {
+                          chart: {
+                            width: "100%",
+                            height: "250px",
+                          },
+                          plotOptions: {
+                            pie: {
                               offsetX: 0,
-                              itemMargin: {
-                                horizontal: 8,
+                              donut: {
+                                size: "60%",
                               },
-                              width: "100%",
+                              labels: {
+                                name: {
+                                  fontSize: "12px",
+                                },
+                              },
                             },
                           },
+                          legend: {
+                            position: "bottom",
+                            horizontalAlign: "center",
+                            offsetY: 0,
+                            offsetX: 0,
+                            itemMargin: {
+                              horizontal: 8,
+                            },
+                            width: "100%",
+                          },
                         },
-                      ],
-                    }}
-                    series={series}
-                    type={"donut"}
-                    height={170}
-                    width={"100%"}
-                  />
-                ) : (
-                  <Skeleton
-                    baseColor="#2C2C2C"
-                    highlightColor="#505050"
-                    height={180}
-                    width={"100%"}
-                    style={{
-                      borderRadius: "0.5rem",
-                      // marginTop: "0.5rem",
-                      padding: "1rem",
-                    }}
-                  />
-                )}
+                      },
+                    ],
+                  }}
+                  series={series}
+                  type={"donut"}
+                  height={170}
+                  width={"100%"}
+                />
               </div>
             </div>
             <div className={styles.reportSummaryStudent}>

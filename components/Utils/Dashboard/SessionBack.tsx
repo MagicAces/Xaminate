@@ -1,5 +1,5 @@
 "use client";
-("");
+
 import { cameraVenues, sessionBackOptions } from "@/data/select";
 import { setReload, setSessionsBack } from "@/redux/slices/dashboardSlice";
 import styles from "@/styles/setting.module.scss";

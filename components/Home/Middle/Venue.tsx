@@ -1,6 +1,6 @@
 "use client";
 
-import DateFilter from "@/components/Utils/Dashboard/DateFilter";
+// import DateFilter from "@/components/Utils/Dashboard/DateFilter";
 import Loader from "@/components/Utils/Loader";
 import { setReload, setVenueStats } from "@/redux/slices/dashboardSlice";
 import { useGetVenueStats } from "@/server/hooks/dashboard";
@@ -12,7 +12,61 @@ import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 
 // import ReactCharts with no SSR
-const ReactCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactCharts = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+  loading: () => {
+    return (
+      <>
+        <Skeleton
+          baseColor="#1E1E1E"
+          highlightColor="#505050"
+          className={styles.homeContentMiddleVenueBody}
+          containerClassName={styles.flexContainer}
+          height={250}
+          width={"100%"}
+          style={{
+            borderRadius: "0.5rem",
+            margin: "0 0 1rem 0.5rem",
+            // width: "100%",
+            padding: "1rem",
+            position: "relative",
+            left: "0",
+          }}
+        />
+      </>
+    );
+  },
+});
+
+const DateFilter = dynamic(
+  () => import("@/components/Utils/Dashboard/DateFilter"),
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <>
+          <Skeleton
+            baseColor="#1E1E1E"
+            highlightColor="#505050"
+            // className={styles.homeContentBottomReportBody}
+            // containerClassName={styles.flexContainer}
+            height={20}
+            width={20}
+            circle={true}
+            style={
+              {
+                // borderRadius: "0.5rem",
+                // margin: "0 0 1rem 0.5rem",
+                // // width: "100%",
+                // padding: "1rem",
+              }
+            }
+          />
+        </>
+      );
+    },
+  }
+);
 
 const Venue = () => {
   const { dateFilter, venueStats, reload }: DashboardState = useSelector(
@@ -102,7 +156,7 @@ const Venue = () => {
   return (
     <>
       <div className={styles.homeContentMiddleVenue}>
-        {reload.venueStats && <Loader curved={true} />}
+        {(reload.venueStats || venueStatsLoading) && <Loader curved={true} />}
         <div className={styles.homeContentMiddleVenueTop}>
           <div className={styles.homeContentMiddleVenueTopLeft}>
             <span>Venue Stats</span> <span>| {dateFilter.venue}</span>

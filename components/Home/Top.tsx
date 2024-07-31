@@ -6,10 +6,101 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DashboardTopRowData } from "@/types";
 import styles from "@/styles/home.module.scss";
-import SessionBreakdown from "../Utils/Dashboard/SessionBreakdown";
-import ReportBreakdown from "../Utils/Dashboard/ReportBreakdown";
+// import SessionBreakdown from "../Utils/Dashboard/SessionBreakdown";
+// import ReportBreakdown from "../Utils/Dashboard/ReportBreakdown";
 import Skeleton from "react-loading-skeleton";
-import CameraBreakdown from "../Utils/Dashboard/CameraBreakdown";
+// import CameraBreakdown from "../Utils/Dashboard/CameraBreakdown";
+import dynamic from "next/dynamic";
+
+const SessionBreakdown = dynamic(
+  () => import("../Utils/Dashboard/SessionBreakdown"),
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <>
+          <Skeleton
+            baseColor="#1E1E1E"
+            highlightColor="#505050"
+            // className={styles.homeContentBottomReportBody}
+            // containerClassName={styles.flexContainer}
+            height={20}
+            width={20}
+            circle={true}
+            style={
+              {
+                // borderRadius: "0.5rem",
+                // margin: "0 0 1rem 0.5rem",
+                // // width: "100%",
+                // padding: "1rem",
+              }
+            }
+          />
+        </>
+      );
+    },
+  }
+);
+
+const ReportBreakdown = dynamic(
+  () => import("../Utils/Dashboard/ReportBreakdown"),
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <>
+          <Skeleton
+            baseColor="#1E1E1E"
+            highlightColor="#505050"
+            // className={styles.homeContentBottomReportBody}
+            // containerClassName={styles.flexContainer}
+            height={20}
+            width={20}
+            circle={true}
+            style={
+              {
+                // borderRadius: "0.5rem",
+                // margin: "0 0 1rem 0.5rem",
+                // // width: "100%",
+                // padding: "1rem",
+              }
+            }
+          />
+        </>
+      );
+    },
+  }
+);
+
+const CameraBreakdown = dynamic(
+  () => import("../Utils/Dashboard/CameraBreakdown"),
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <>
+          <Skeleton
+            baseColor="#1E1E1E"
+            highlightColor="#505050"
+            // className={styles.homeContentBottomReportBody}
+            // containerClassName={styles.flexContainer}
+            height={20}
+            width={20}
+            circle={true}
+            style={
+              {
+                // borderRadius: "0.5rem",
+                // margin: "0 0 1rem 0.5rem",
+                // // width: "100%",
+                // padding: "1rem",
+              }
+            }
+          />
+        </>
+      );
+    },
+  }
+);
 
 const Top = () => {
   const { topRow }: { topRow: DashboardTopRowData } = useSelector(

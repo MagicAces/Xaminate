@@ -79,7 +79,7 @@ const Recent = () => {
   return (
     <>
       <div className={styles.homeContentBottomRecent}>
-        {reload.recentItems && <Loader curved={true} />}
+        {(reload.recentItems || recentItemsLoading) && <Loader curved={true} />}
         <div className={styles.homeContentBottomRecentHeader}>
           <span>Recent {capitalize(category)}s</span>
           <span

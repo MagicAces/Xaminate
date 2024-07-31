@@ -1,12 +1,13 @@
 "use client";
 
-import SessionBack from "@/components/Utils/Dashboard/SessionBack";
+// import SessionBack from "@/components/Utils/Dashboard/SessionBack";
 import Loader from "@/components/Utils/Loader";
 import { setReload, setReportsPerSession } from "@/redux/slices/dashboardSlice";
 import { useGetReportsPerSession } from "@/server/hooks/dashboard";
 import styles from "@/styles/home.module.scss";
 import { DashboardState, ReportsPerSession } from "@/types";
 import dynamic from "next/dynamic";
+import { relative } from "path";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,20 +19,52 @@ const ReactCharts = dynamic(() => import("react-apexcharts"), {
     return (
       <>
         <Skeleton
-          baseColor="#2C2C2C"
+          baseColor="#1E1E1E"
           highlightColor="#505050"
           className={styles.homeContentBottomReportBody}
-          height={"100%"}
+          containerClassName={styles.flexContainer}
+          height={260}
+          width={"100%"}
           style={{
             borderRadius: "0.5rem",
-            // marginTop: "0.5rem",
+            margin: "0 0 1rem 0.5rem",
+            // width: "100%",
             padding: "1rem",
+            position: "relative",
+            left: "0",
           }}
         />
       </>
     );
   },
 });
+const SessionBack = dynamic(
+  () => import("@/components/Utils/Dashboard/SessionBack"),
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <>
+          <Skeleton
+            baseColor="#1E1E1E"
+            highlightColor="#505050"
+            // className={styles.homeContentBottomReportBody}
+            // containerClassName={styles.flexContainer}
+            height={20}
+            width={50}
+            // circle={true}
+            style={{
+              borderRadius: "0.5rem",
+              // margin: "0 0 1rem 0.5rem",
+              // // width: "100%",
+              // padding: "1rem",
+            }}
+          />
+        </>
+      );
+    },
+  }
+);
 
 const Report = () => {
   const { sessionsBack, reportsPerSession, reload }: DashboardState =
@@ -111,7 +144,9 @@ const Report = () => {
   return (
     <>
       <div className={styles.homeContentBottomReport}>
-        {reload.reportsPerSession && <Loader curved={true} />}
+        {(reload.reportsPerSession || reportsPerSessionLoading) && (
+          <Loader curved={true} />
+        )}
         <div className={styles.homeContentBottomReportTop}>
           <div className={styles.homeContentBottomReportTopLeft}>
             <span>Reports Per Session</span>{" "}
