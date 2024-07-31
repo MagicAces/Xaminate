@@ -5,7 +5,7 @@
 // extracting this part out into it's own file with 'use client' on top
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider, useSession } from "next-auth/react";
 import Providers from "@/redux/Providers";
 import { ModalProvider } from "@/utils/context";
@@ -34,7 +34,7 @@ export default function AllProviders({
       <Providers>
         <QueryClientProvider client={queryClient}>
           <ModalProvider>{children}</ModalProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </Providers>
     </SessionProvider>
