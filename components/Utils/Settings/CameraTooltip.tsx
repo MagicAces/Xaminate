@@ -27,7 +27,7 @@ const CameraTooltip = ({ camera }: { camera: Camera }) => {
         {...hoverProps}
         {...menuState}
         anchorRef={tooltipRef}
-        // onClose={() => toggle(false)}
+        onClose={() => toggle(false)}
         transition
         menuClassName={styles.cameraTooltipMenu}
         gap={10}

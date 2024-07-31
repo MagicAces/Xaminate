@@ -31,7 +31,7 @@ const ReportBreakdown = () => {
         {...hoverProps}
         {...menuState}
         anchorRef={tooltipRef}
-        // onClose={() => toggle(false)}
+        onClose={() => toggle(false)}
         transition
         menuClassName={styles.reportBreakdownMenu}
         gap={12}

@@ -27,7 +27,7 @@ const VenueTooltip = ({ venue }: { venue: Venue }) => {
         {...hoverProps}
         {...menuState}
         anchorRef={tooltipRef}
-        // onClose={() => toggle(false)}
+        onClose={() => toggle(false)}
         transition
         menuClassName={styles.venueTooltipMenu}
         gap={12}

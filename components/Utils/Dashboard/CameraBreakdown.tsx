@@ -30,7 +30,7 @@ const CameraBreakdown = () => {
         {...hoverProps}
         {...menuState}
         anchorRef={tooltipRef}
-        // onClose={() => toggle(false)}
+        onClose={() => toggle(false)}
         transition
         menuClassName={styles.cameraBreakdownMenu}
         gap={12}

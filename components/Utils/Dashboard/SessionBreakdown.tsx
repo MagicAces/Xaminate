@@ -35,7 +35,7 @@ const SessionBreakdown = () => {
         {...hoverProps}
         {...menuState}
         anchorRef={tooltipRef}
-        // onClose={() => toggle(false)}
+        onClose={() => toggle(false)}
         transition
         menuClassName={styles.sessionBreakdownMenu}
         gap={12}
