@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ControlledMenu,
   MenuHeader,
@@ -15,7 +17,10 @@ import { useSelector } from "react-redux";
 
 const CameraBreakdown = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const [menuState, toggle] = useMenuState({ transition: true });
+  const [menuState, toggle] = useMenuState({
+    transition: true,
+    initialMounted: true,
+  });
   const { anchorProps, hoverProps } = useHover(menuState.state, toggle);
   const { topRow }: { topRow: DashboardTopRowData } = useSelector(
     (state: any) => state.dashboard
