@@ -255,13 +255,13 @@ export const getSessions = async (query: SessionQuery) => {
       } = session;
 
       const duration = actual_end_time
-        ? startTime >= actual_end_time
+        ? endTime >= actual_end_time
           ? "Terminated"
           : formatDuration(new Date(startTime), new Date(endTime))
         : formatDuration(new Date(startTime), new Date(endTime));
 
       const status = actual_end_time
-        ? startTime >= actual_end_time
+        ? endTime >= actual_end_time
           ? "closed"
           : getStatusMessage(new Date(startTime), new Date(endTime))
         : getStatusMessage(new Date(startTime), new Date(endTime));
