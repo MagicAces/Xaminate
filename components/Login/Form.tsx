@@ -28,7 +28,7 @@ export default function Form() {
   const { reload } = useSelector((state: any) => state.modal);
 
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/home";
   const dispatch = useDispatch();
   const router = useRouter();
 
