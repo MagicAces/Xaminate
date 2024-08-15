@@ -13,7 +13,7 @@ import {
 import Content from "@/components/Home/Content";
 
 export const metadata: Metadata = {
-  title: "Xaminate | Home",
+  title: "Home",
 };
 
 export default async function Home() {
