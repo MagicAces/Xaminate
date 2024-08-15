@@ -104,8 +104,10 @@ const Sidebar = () => {
         </div>
         <div className={styles.routesContainer}>
           <Link
-            href={"/"}
-            className={pathname.split("/")[1] === "" ? styles.activeLink : ""}
+            href={"/home"}
+            className={
+              pathname.split("/home")[1] === "" ? styles.activeLink : ""
+            }
           >
             <span>
               <TbHome />
